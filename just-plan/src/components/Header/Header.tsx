@@ -6,20 +6,20 @@ import { useRouter } from "next/navigation";
 export const Header = () => {
   const router = useRouter();
   const onClickHome = () => {
-    router.replace("/home");
+    router.push("/home");
   };
   const onClicCreatePlan = () => {
-    router.replace("/add-plan");
+    router.push("/add-plan");
   };
   const onClickMBTI = () => {
-    router.replace("/mbti-test");
+    router.push("/mbti-test");
   };
   const onClickMypage = () => {
-    router.replace("/mypage");
+    router.push("/mypage");
   };
   return (
-    <div className="justify-between	pl-6 pr-6 size-full h-16 flex items-center shadow-lg">
-      <div className="w-48 h-full flex items-center" onClick={onClickHome}>
+    <div className="justify-between	px-8 size-full h-14 flex items-center shadow-lg">
+      <div className="w-32 h-full flex items-center" onClick={onClickHome}>
         <Image src="/logo.png" width={193} height={37} alt="logo" />
       </div>
       <div className="flex w-80 justify-between font-bold">
