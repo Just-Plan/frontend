@@ -1,14 +1,20 @@
 "use client";
 
-// import { ScrollArea } from "@/components/ScrollArea/ScrollArea";
 import Image from "next/image";
 import React from "react";
-// import SearchIcon from "../../../public/icons/search.svg";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import PlanCard from "@/components/PlanCard/PlanCard";
+import { Badge } from "@/components/ui/badge";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import { useRouter } from "next/navigation";
 
-// import { ReactComponent as Reservation } from "../../../public/icons/search.svg";
-const page = () => {
+const Home = () => {
   const tags = [
     { id: 1, name: "제주", country: "대한민국" },
     { id: 2, name: "제주", country: "대한민국" },
@@ -22,6 +28,10 @@ const page = () => {
     { id: 10, name: "제주", country: "대한민국" },
   ];
 
+  const router = useRouter();
+  const onClickAddPlan = () => {
+    router.push("/add-plan");
+  };
   return (
     <div className="px-60 py-32">
       <div className="flex justify-around">
@@ -76,7 +86,10 @@ const page = () => {
         </div>
       </div>
       <div className=" text-center mt-20">
-        <button className="bg-white text-cyan-600 border-cyan-600 border-4 rounded-2xl w-80 h-14">
+        <button
+          className="bg-white text-cyan-600 border-cyan-600 border-4 rounded-2xl w-80 h-14 hover:bg-cyan-600/20"
+          onClick={onClickAddPlan}
+        >
           내 일정 작성하러 가기!
         </button>
         <div className="text-3xl font-bold mt-12">인기 여행 플랜</div>
@@ -92,6 +105,37 @@ const page = () => {
         <div className="text-xl text-zinc-600 mt-2">
           ENFP, INFJ에 대한 검색 결과입니다.
         </div>
+        <Carousel className="mx-56">
+          <CarouselContent>
+            <CarouselItem>
+              <div className="flex w-full justify-center gap-5">
+                <Badge variant="unselected">INFJ</Badge>
+                <Badge variant="unselected">INFJ</Badge>
+                <Badge variant="unselected">INFJ</Badge>
+                <Badge variant="unselected">INFJ</Badge>
+                <Badge variant="selected">ESTP</Badge>
+                <Badge variant="selected">ESTP</Badge>
+                <Badge variant="selected">ESTP</Badge>
+                <Badge variant="selected">ESTP</Badge>
+              </div>
+            </CarouselItem>
+            <CarouselItem>
+              <div className="flex w-full justify-center gap-5">
+                <Badge variant="unselected">INFJ</Badge>
+                <Badge variant="unselected">INFJ</Badge>
+                <Badge variant="unselected">INFJ</Badge>
+                <Badge variant="unselected">INFJ</Badge>
+                <Badge variant="selected">ESTP</Badge>
+                <Badge variant="selected">ESTP</Badge>
+                <Badge variant="selected">ESTP</Badge>
+                <Badge variant="selected">ESTP</Badge>
+              </div>
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+
         <div className="grid grid-cols-3 place-items-center mt-5 gap-y-16">
           <PlanCard />
           <PlanCard />
@@ -107,4 +151,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Home;
