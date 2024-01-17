@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-export const LoginForm = () => {
+export const SignInForm = () => {
   return (
     <Card className="w-[350px] bg-ourGreen rounded-3xl ">
       <CardHeader></CardHeader>
