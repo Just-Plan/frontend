@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React from "react";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { Card, CardContent, CardHeader } from "../ui/Card";
 
 const PlanCard = () => {
   return (
-    <Card className="w-96">
+    <Card className="w-full sm:w-96">
       <CardHeader className="p-0">
         <Image
           src="/images/image1.png"

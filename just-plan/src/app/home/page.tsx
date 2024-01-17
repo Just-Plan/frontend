@@ -33,10 +33,10 @@ const Home = () => {
     router.push("/add-plan");
   };
   return (
-    <div className="px-60 py-32">
-      <div className="flex justify-around">
-        <div className="h-96">
-          <div className="h-5/6 w-96 relative">
+    <div className="py-10 px-5 sm:px-60 sm:py-32">
+      <div className="flex flex-col justify-around sm:flex-row ">
+        <div className="h-52 sm:h-96">
+          <div className="h-5/6 relative">
             <Image
               src="/mascot1.png"
               fill={true}
@@ -57,7 +57,7 @@ const Home = () => {
           <div className="text-sky-700 font-bold text-3xl mt-5 text-center">
             나의 여행 플랜 찾기
           </div>
-          <div className="bg-white w-fill h-10 rounded-3xl flex justify-between pl-5 pr-5 mt-5 border w-96">
+          <div className="bg-white h-10 rounded-3xl flex justify-between pl-5 pr-5 mt-5 border sm:w-96">
             <input
               className="outline-none bg-transparent"
               placeholder="어디로 떠나고 싶으신가요?"
@@ -68,7 +68,7 @@ const Home = () => {
               </g>
             </svg>
           </div>
-          <ScrollArea className="w-fill h-48 rounded-md border mt-10 bg-white">
+          <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
             <div className="py-4 px-8">
               {tags.map((tag) => (
                 <div
@@ -96,7 +96,7 @@ const Home = () => {
         <div className="text-xl text-zinc-600 mt-2">
           인기 여행 플랜을 확인해보세요!
         </div>
-        <div className="grid grid-cols-3 place-items-center mt-5">
+        <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
           <PlanCard />
           <PlanCard />
           <PlanCard />
@@ -105,10 +105,11 @@ const Home = () => {
         <div className="text-xl text-zinc-600 mt-2">
           ENFP, INFJ에 대한 검색 결과입니다.
         </div>
-        <Carousel className="mx-56">
+        {/* <Carousel className="sm:mx-56"> */}
+        <Carousel className="my-5 mx-12 sm:mx-40">
           <CarouselContent>
             <CarouselItem>
-              <div className="flex w-full justify-center gap-5">
+              <div className="flex w-full justify-center gap-1 sm:gap-5">
                 <Badge variant="unselected">INFJ</Badge>
                 <Badge variant="unselected">INFJ</Badge>
                 <Badge variant="unselected">INFJ</Badge>
@@ -120,7 +121,7 @@ const Home = () => {
               </div>
             </CarouselItem>
             <CarouselItem>
-              <div className="flex w-full justify-center gap-5">
+              <div className="flex w-full justify-center gap-1 sm:gap-5">
                 <Badge variant="unselected">INFJ</Badge>
                 <Badge variant="unselected">INFJ</Badge>
                 <Badge variant="unselected">INFJ</Badge>
@@ -136,7 +137,7 @@ const Home = () => {
           <CarouselNext />
         </Carousel>
 
-        <div className="grid grid-cols-3 place-items-center mt-5 gap-y-16">
+        <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-y-16">
           <PlanCard />
           <PlanCard />
           <PlanCard />
