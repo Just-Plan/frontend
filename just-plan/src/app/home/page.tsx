@@ -13,21 +13,13 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { useRouter } from "next/navigation";
+import {
+  MbtiCardContent,
+  PopularCardContent,
+  SearchResult,
+} from "../mocks/Main";
 
 const Home = () => {
-  const tags = [
-    { id: 1, name: "제주", country: "대한민국" },
-    { id: 2, name: "제주", country: "대한민국" },
-    { id: 3, name: "제주", country: "대한민국" },
-    { id: 4, name: "제주", country: "대한민국" },
-    { id: 5, name: "제주", country: "대한민국" },
-    { id: 6, name: "제주", country: "대한민국" },
-    { id: 7, name: "제주", country: "대한민국" },
-    { id: 8, name: "제주", country: "대한민국" },
-    { id: 9, name: "제주", country: "대한민국" },
-    { id: 10, name: "제주", country: "대한민국" },
-  ];
-
   const router = useRouter();
   const onClickAddPlan = () => {
     router.push("/add-plan");
@@ -70,15 +62,15 @@ const Home = () => {
           </div>
           <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
             <div className="py-4 px-8">
-              {tags.map((tag) => (
+              {SearchResult.map((item) => (
                 <div
-                  key={tag.id}
+                  key={item.id}
                   className="flex justify-between p-1 items-end"
                 >
                   <div className="font-bold text-neutral-600 text-2xl">
-                    {tag.name}
+                    {item.name}
                   </div>
-                  <div className="text-neutral-400">{tag.country}</div>
+                  <div className="text-neutral-400">{item.country}</div>
                 </div>
               ))}
             </div>
@@ -97,9 +89,9 @@ const Home = () => {
           인기 여행 플랜을 확인해보세요!
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
-          <PlanCard />
-          <PlanCard />
-          <PlanCard />
+          {PopularCardContent.map((item) => (
+            <PlanCard item={item} key={item.id} />
+          ))}
         </div>
         <div className="text-3xl font-bold mt-12">MBTI맞춤 여행 플랜</div>
         <div className="text-xl text-zinc-600 mt-2">
@@ -137,14 +129,9 @@ const Home = () => {
         </Carousel>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-y-16">
-          <PlanCard />
-          <PlanCard />
-          <PlanCard />
-          <PlanCard />
-          <PlanCard />
-          <PlanCard />
-          <PlanCard />
-          <PlanCard />
+          {MbtiCardContent.map((item) => (
+            <PlanCard item={item} key={item.id} />
+          ))}
         </div>
       </div>
     </div>

@@ -1,17 +1,20 @@
 import Image from "next/image";
-import React from "react";
-import { Card, CardContent, CardHeader } from "../ui/Card";
+import React, { PropsWithChildren } from "react";
+import { Card, CardContent, CardHeader } from "../ui/card";
+import { PopularCardContent } from "@/app/mocks";
+import type { ICardUserData, Props } from "./PlanCard.types";
 
-const PlanCard = () => {
+const PlanCard = ({ item }: Props) => {
+  const { id, image, profile, name, date, money, count, mbti, hashTags } = item;
   return (
     <Card className="w-full sm:w-96">
       <CardHeader className="p-0">
         <Image
-          src="/images/image1.png"
+          src={image}
           width={384}
           height={240}
           className="object-contain"
-          alt="이미지"
+          alt="장소 이미지"
         />
       </CardHeader>
       <CardContent className="bg-white p-0">
@@ -19,18 +22,18 @@ const PlanCard = () => {
           <div className="bg-red-300 w-16 h-16 rounded-full relative flex">
             <Image
               className="rounded-full"
-              src="/image1.png"
+              src={profile}
               fill={true}
-              alt="이미지"
+              alt="프로필"
             />
           </div>
           <div className=" w-60">
             <div className="text-base flex">
-              <b>강윤지님</b>의 오사카 뿌수기
+              <b>{name}님</b>의 오사카 뿌수기
             </div>
             <div className="flex justify-between">
-              <div className="text-sm">4박 5일</div>
-              <div className="text-sm">1,000,000 원</div>
+              <div className="text-sm">{date}</div>
+              <div className="text-sm">{money} 원</div>
             </div>
           </div>
           <div className="hover:bg-gray-300 w-10 h-10 rounded-full flex flex-col justify-center items-center">
@@ -48,12 +51,16 @@ const PlanCard = () => {
                 clipRule="evenodd"
               ></path>
             </svg>
-            <div className="text-xs">137</div>
+            <div className="text-xs">{count}</div>
           </div>
         </div>
         <div className=" flex justify-between p-3">
-          <div className="ml-3 font-bold text-stone-700">INFJ</div>
-          <div className="text-sky-600 font-bold">#감성 #먹부림</div>
+          <div className="ml-3 font-bold text-stone-700">{mbti}</div>
+          <div className="text-sky-600 font-bold">
+            {hashTags.map((tag) => (
+              <div key={tag.id}>{tag.tag}</div>
+            ))}
+          </div>
         </div>
       </CardContent>
     </Card>
