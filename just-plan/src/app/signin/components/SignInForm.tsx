@@ -5,13 +5,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/Card";
+} from "@/components/ui/card";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-export const LoginForm = () => {
+export const SignInForm = () => {
   return (
     <Card className="w-[350px] bg-ourGreen rounded-3xl ">
       <CardHeader></CardHeader>
