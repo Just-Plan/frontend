@@ -34,7 +34,7 @@ const Home = () => {
         <div className="h-52 sm:h-96">
           <div className="h-5/6 relative">
             <Image
-              src="/mascot1.png"
+              src="/images/mascot1.png"
               fill={true}
               alt="마스코트1"
               className="object-contain"
@@ -42,7 +42,7 @@ const Home = () => {
           </div>
           <div className="h-1/6 w-96 bg-red relative">
             <Image
-              src="/logo.png"
+              src="/images/logo.png"
               fill={true}
               className="object-contain"
               alt="로고"

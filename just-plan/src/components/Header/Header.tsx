@@ -11,10 +11,10 @@ export const Header = () => {
   return (
     <div className="justify-between	px-8 size-full h-14 flex items-center shadow-lg">
       <div
-        className="w-32 h-full flex items-center"
-        onClick={() => onMoveToOtherPage("/home")}
+        className="w-32 h-full flex items-center cursor-pointer"
+        onClick={() => onMoveToOtherPage("/")}
       >
-        <Image src="/logo.png" width={193} height={37} alt="logo" />
+        <Image src="/images/logo.png" width={193} height={37} alt="logo" />
       </div>
       <div className="flex w-80 justify-between font-bold">
         <div
