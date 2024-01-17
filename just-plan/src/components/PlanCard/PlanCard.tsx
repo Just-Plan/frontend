@@ -1,10 +1,9 @@
 import Image from "next/image";
 import React, { PropsWithChildren } from "react";
 import { Card, CardContent, CardHeader } from "../ui/card";
-import { PopularCardContent } from "@/app/mocks";
-import type { ICardUserData, Props } from "./PlanCard.types";
+import type { Props } from "./PlanCard.types";
 
-const PlanCard = ({ item }: Props) => {
+const PlanCard = ({ item }: PropsWithChildren<Props>) => {
   const { id, image, profile, name, date, money, count, mbti, hashTags } = item;
   return (
     <Card className="w-full sm:w-96">

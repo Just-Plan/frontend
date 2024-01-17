@@ -18,12 +18,15 @@ import {
   PopularCardContent,
   SearchResult,
 } from "../mocks/Main";
+import { HomePageConfig } from "@/constants/home.constants";
 
 const Home = () => {
   const router = useRouter();
-  const onClickAddPlan = () => {
+  const onMoveToAddPlan = () => {
     router.push("/add-plan");
   };
+  const { PopularPlan, PopularPlanDescription, MBTIPlan, MBTIPlanDescription } =
+    HomePageConfig;
   return (
     <div className="py-10 px-5 sm:px-60 sm:py-32">
       <div className="flex flex-col justify-around sm:flex-row ">
@@ -80,22 +83,22 @@ const Home = () => {
       <div className=" text-center mt-20">
         <button
           className="bg-white text-cyan-600 border-cyan-600 border-4 rounded-2xl w-80 h-14 hover:bg-cyan-600/20"
-          onClick={onClickAddPlan}
+          onClick={onMoveToAddPlan}
         >
           내 일정 작성하러 가기!
         </button>
-        <div className="text-3xl font-bold mt-12">인기 여행 플랜</div>
+        <div className="text-3xl font-bold mt-12">{PopularPlan}</div>
         <div className="text-xl text-zinc-600 mt-2">
-          인기 여행 플랜을 확인해보세요!
+          {PopularPlanDescription}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
           {PopularCardContent.map((item) => (
             <PlanCard item={item} key={item.id} />
           ))}
         </div>
-        <div className="text-3xl font-bold mt-12">MBTI맞춤 여행 플랜</div>
+        <div className="text-3xl font-bold mt-12">{MBTIPlan}</div>
         <div className="text-xl text-zinc-600 mt-2">
-          ENFP, INFJ에 대한 검색 결과입니다.
+          ENFP, INFJ{MBTIPlanDescription}
         </div>
         <Carousel className="my-5 mx-12 sm:mx-40">
           <CarouselContent>
