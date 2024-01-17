@@ -105,7 +105,6 @@ const Home = () => {
         <div className="text-xl text-zinc-600 mt-2">
           ENFP, INFJ에 대한 검색 결과입니다.
         </div>
-        {/* <Carousel className="sm:mx-56"> */}
         <Carousel className="my-5 mx-12 sm:mx-40">
           <CarouselContent>
             <CarouselItem>

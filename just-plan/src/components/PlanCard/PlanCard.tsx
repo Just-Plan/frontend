@@ -47,7 +47,7 @@ const PlanCard = () => {
                 fillRule="evenodd"
                 clipRule="evenodd"
               ></path>
-            </svg>{" "}
+            </svg>
             <div className="text-xs">137</div>
           </div>
         </div>
