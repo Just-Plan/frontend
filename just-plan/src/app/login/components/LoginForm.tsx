@@ -5,11 +5,11 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/Card";
+} from "@/components/ui/Card";
 
-import { Button } from "@/components/Button";
-import { Input } from "@/components/input";
-import { Label } from "@/components/label";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Image from "next/image";
 export const LoginForm = () => {
   return (
