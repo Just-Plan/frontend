@@ -7,7 +7,7 @@ export default function SignUp() {
       <div className="flex h-full gap-4 justify-center items-center">
         <Image
           className="md:block hidden"
-          src={"/images/SignUpImage.png"}
+          src={"/images/mascot1.png"}
           alt={""}
           width={300}
           height={300}
