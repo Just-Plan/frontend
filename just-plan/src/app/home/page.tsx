@@ -19,6 +19,7 @@ import {
   SearchResult,
 } from "../mocks/Main";
 import { HomePageConfig } from "@/constants/home.constants";
+import { MBTI } from "@/constants/mbti.constans";
 
 const Home = () => {
   const router = useRouter();
@@ -104,26 +105,20 @@ const Home = () => {
           <CarouselContent>
             <CarouselItem>
               <div className="flex w-full justify-center gap-1 sm:gap-5">
-                <Badge variant="unselected">INFJ</Badge>
-                <Badge variant="unselected">INFJ</Badge>
-                <Badge variant="unselected">INFJ</Badge>
-                <Badge variant="unselected">INFJ</Badge>
-                <Badge variant="selected">ESTP</Badge>
-                <Badge variant="selected">ESTP</Badge>
-                <Badge variant="selected">ESTP</Badge>
-                <Badge variant="selected">ESTP</Badge>
+                {MBTI.slice(0, 8).map((item) => (
+                  <Badge key={item} variant="unselected">
+                    {item}
+                  </Badge>
+                ))}
               </div>
             </CarouselItem>
             <CarouselItem>
               <div className="flex w-full justify-center gap-1 sm:gap-5">
-                <Badge variant="unselected">INFJ</Badge>
-                <Badge variant="unselected">INFJ</Badge>
-                <Badge variant="unselected">INFJ</Badge>
-                <Badge variant="unselected">INFJ</Badge>
-                <Badge variant="selected">ESTP</Badge>
-                <Badge variant="selected">ESTP</Badge>
-                <Badge variant="selected">ESTP</Badge>
-                <Badge variant="selected">ESTP</Badge>
+                {MBTI.slice(8).map((item) => (
+                  <Badge key={item} variant="unselected">
+                    {item}
+                  </Badge>
+                ))}
               </div>
             </CarouselItem>
           </CarouselContent>
