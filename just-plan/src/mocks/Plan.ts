@@ -7,6 +7,7 @@ export const Plan = [
     title: "성산 일출봉",
     category: "명소",
     address: "인천시 미추홀구",
+    time: "120",
   },
   {
     id: 2,
@@ -15,6 +16,7 @@ export const Plan = [
     title: "성산 일출봉",
     category: "명소",
     address: "인천시 미추홀구",
+    time: "120",
   },
   {
     id: 3,
@@ -23,6 +25,7 @@ export const Plan = [
     title: "성산 일출봉",
     category: "명소",
     address: "인천시 미추홀구",
+    time: "120",
   },
   {
     id: 4,
@@ -31,6 +34,7 @@ export const Plan = [
     title: "성산 일출봉",
     category: "명소",
     address: "인천시 미추홀구",
+    time: "120",
   },
   {
     id: 5,
@@ -39,6 +43,7 @@ export const Plan = [
     title: "성산 일출봉",
     category: "명소",
     address: "인천시 미추홀구",
+    time: "120",
   },
   {
     id: 6,
@@ -47,6 +52,7 @@ export const Plan = [
     title: "성산 일출봉",
     category: "명소",
     address: "인천시 미추홀구",
+    time: "120",
   },
   {
     id: 7,
@@ -55,5 +61,6 @@ export const Plan = [
     title: "성산 일출봉",
     category: "명소",
     address: "인천시 미추홀구",
+    time: "120",
   },
 ];
