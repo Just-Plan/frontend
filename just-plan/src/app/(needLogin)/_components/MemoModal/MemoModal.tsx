@@ -16,14 +16,14 @@ const MemoModal = () => {
   const [bg, setBG] = useState("bg-white");
 
   return (
-    <DialogContent className="sm:max-w-[550px]">
+    <DialogContent className="w-96 sm:w-[550px]">
       <DialogHeader>
         <DialogTitle className="text-2xl mb-3">메모</DialogTitle>
         <DialogDescription className="flex justify-between border-t-2 border-b-2 py-1">
           {memoBGList.map((item) => (
             <div
               onClick={() => setBG(item)}
-              className={`${item} w-14 h-8 rounded-3xl hover:cursor-pointer ${
+              className={`${item} w-10 sm:w-14 h-8 rounded-3xl hover:cursor-pointer ${
                 item === "bg-white" ? "border" : ""
               }`}
               key={item}
@@ -32,7 +32,7 @@ const MemoModal = () => {
         </DialogDescription>
       </DialogHeader>
       <textarea
-        className={`flex h-96 p-5 resize-none outline-none text-xl ${bg} ${
+        className={`flex h-80 sm:h-96 p-5 resize-none outline-none text-xl ${bg} ${
           bg === "bg-white" ? "border" : ""
         }`}
       />
