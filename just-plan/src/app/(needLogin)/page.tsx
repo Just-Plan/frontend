@@ -17,7 +17,7 @@ import {
   MbtiCardContent,
   PopularCardContent,
   SearchResult,
-} from "../mocks/Main";
+} from "../../mocks/Main";
 import { HomePageConfig } from "@/constants/home.constants";
 import { MBTI } from "@/constants/mbti.constans";
 

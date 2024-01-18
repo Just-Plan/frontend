@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { PropsWithChildren } from "react";
-import { Card, CardContent, CardHeader } from "../ui/card";
+import { Card, CardContent, CardHeader } from "../ui/Card";
 import type { Props } from "./PlanCard.types";
 
 const PlanCard = ({ item }: PropsWithChildren<Props>) => {
