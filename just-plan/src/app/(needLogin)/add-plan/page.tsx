@@ -1,9 +1,11 @@
 import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
 import { Button } from "@/components/ui/Button";
-import { Plan } from "@/mocks";
+import { Plan, PlanInfo } from "@/mocks";
 import Image from "next/image";
+import ShowMoney from "../_components/ShowMoney/ShowMoney";
 
 const page = () => {
+  const { location, date, title, hashTags, cache, card } = PlanInfo;
   return (
     <div className="m-5 sm:m-10">
       <div className="">
@@ -14,13 +16,13 @@ const page = () => {
             height={25}
             alt="비행기 아이콘"
           />
-          <div className="ml-2">제주도</div>
-          <div className="text-xs ml-28">2024-01-05~2024-02-05</div>
+          <div className="ml-2">{location}</div>
+          <div className="text-xs ml-28">{date}</div>
         </div>
         <div className="flex">
           <div className="flex items-center flex-1">
             <div className="font-bold text-2xl sm:text-3xl my-2 sm:my-3 mr-5">
-              강윤지님의 제주도 먹고뿌셔
+              {title}
             </div>
             <div className="hover:cursor-pointer rounded-full p-1 hover:bg-gray-200">
               <Image src="/images/edit.png" alt="수정" width={27} height={27} />
@@ -33,35 +35,16 @@ const page = () => {
         </div>
 
         <div className="flex">
-          <div className="text-cyan-600 font-bold flex-1 my-auto">
-            # 해시태그 # 해시태그
+          <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
+            {hashTags.map((tag) => (
+              <div key={tag.id}># {tag.tag}</div>
+            ))}
           </div>
           <Button variant="outline" className="w-12 sm:w-28">
             저장
           </Button>
         </div>
-        <div className="flex justify-between items-center">
-          <div className="flex gap-2 sm:gap-5 my-5">
-            <div className="bg-ourGreen/60 flex p-2 sm:px-5 rounded-full items-center">
-              <Image src="/cash.png" alt="현금" width={30} height={30} />
-              <div className="ml-2 text-neutral-700 text-xs sm:text-base">
-                200,000₩
-              </div>
-            </div>
-            <div className="bg-ourGreen/60 flex p-2 sm:px-5 rounded-full items-center">
-              <Image src="/card.png" alt="카드" width={30} height={30} />
-              <div className="ml-2 text-neutral-700 text-xs sm:text-base">
-                500,000₩
-              </div>
-            </div>
-            <div className="border-2 border-ourGreen/60 flex p-2 sm:px-5 rounded-full items-center">
-              <Image src="/cash.png" alt="현금" width={30} height={30} />
-              <div className="ml-2 text-neutral-700 text-xs sm:text-base">
-                200,000₩
-              </div>
-            </div>
-          </div>
-        </div>
+        <ShowMoney cache={cache} card={card} />
       </div>
       <div className="bg-ourGreen flex flex-col p-3 sm:p-5 rounded-2xl">
         <div className=" bg-white h-20 rounded-2xl mb-5 flex gap-5 sm:gap-10 items-center p-5 sm:px-8 font-bold overflow-x-auto overflow-y-hidden">
