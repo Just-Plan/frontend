@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const page = () => {
   return (
-    <div className="m-10">
+    <div className="m-5 sm:m-10">
       <div className="">
         <div className="flex items-center">
           <Image
@@ -19,7 +19,7 @@ const page = () => {
         </div>
         <div className="flex">
           <div className="flex items-center flex-1">
-            <div className="font-bold text-3xl my-3 mr-5">
+            <div className="font-bold text-2xl sm:text-3xl my-2 sm:my-3 mr-5">
               강윤지님의 제주도 먹고뿌셔
             </div>
             <div className="hover:cursor-pointer rounded-full p-1 hover:bg-gray-200">
@@ -27,38 +27,46 @@ const page = () => {
             </div>
           </div>
 
-          <div className="flex items-center hover:cursor-pointer rounded-full p-1 w-10 h-10 hover:bg-gray-200">
+          <div className="hidden sm:flex items-center hover:cursor-pointer rounded-full p-1 w-10 h-10 hover:bg-gray-200">
             <Image src="/images/map.png" alt="지도" width={40} height={40} />
           </div>
         </div>
 
-        <div className="text-cyan-600 font-bold"># 해시태그 # 해시태그</div>
-        <div className="flex justify-between items-center">
-          <div className="flex gap-5 my-5">
-            <div className="bg-ourGreen/60 flex p-2 px-5 rounded-full items-center">
-              <Image src="/cash.png" alt="현금" width={30} height={30} />
-              <div className="ml-2 text-neutral-700">200,000₩</div>
-            </div>
-            <div className="bg-ourGreen/60 flex p-2 px-5 rounded-full items-center">
-              <Image src="/card.png" alt="카드" width={30} height={30} />
-              <div className="ml-2 text-neutral-700">500,000₩</div>
-            </div>
-            <div className="border-2 border-ourGreen/60 flex p-2 px-5 rounded-full items-center">
-              <Image src="/cash.png" alt="현금" width={30} height={30} />
-              <div className="ml-2 text-neutral-700">200,000₩</div>
-            </div>
+        <div className="flex">
+          <div className="text-cyan-600 font-bold flex-1 my-auto">
+            # 해시태그 # 해시태그
           </div>
-          <div>
-            <Button variant="outline" className="w-28">
-              저장
-            </Button>
+          <Button variant="outline" className="w-12 sm:w-28">
+            저장
+          </Button>
+        </div>
+        <div className="flex justify-between items-center">
+          <div className="flex gap-2 sm:gap-5 my-5">
+            <div className="bg-ourGreen/60 flex p-2 sm:px-5 rounded-full items-center">
+              <Image src="/cash.png" alt="현금" width={30} height={30} />
+              <div className="ml-2 text-neutral-700 text-xs sm:text-base">
+                200,000₩
+              </div>
+            </div>
+            <div className="bg-ourGreen/60 flex p-2 sm:px-5 rounded-full items-center">
+              <Image src="/card.png" alt="카드" width={30} height={30} />
+              <div className="ml-2 text-neutral-700 text-xs sm:text-base">
+                500,000₩
+              </div>
+            </div>
+            <div className="border-2 border-ourGreen/60 flex p-2 sm:px-5 rounded-full items-center">
+              <Image src="/cash.png" alt="현금" width={30} height={30} />
+              <div className="ml-2 text-neutral-700 text-xs sm:text-base">
+                200,000₩
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div className="bg-ourGreen flex flex-col p-5 rounded-2xl">
-        <div className=" bg-white h-20 rounded-2xl mb-5 flex gap-10 items-center px-8 font-bold overflow-x-auto">
-          <div className="hover:cursor-pointer py-3 px-5 relative">
-            <div>전체보기</div>
+      <div className="bg-ourGreen flex flex-col p-3 sm:p-5 rounded-2xl">
+        <div className=" bg-white h-20 rounded-2xl mb-5 flex gap-5 sm:gap-10 items-center p-5 sm:px-8 font-bold overflow-x-auto overflow-y-hidden">
+          <div className="hidden sm:block hover:cursor-pointer py-3 px-5 relative">
+            <div className="">전체보기</div>
             <div className="bg-blue-300 w-full h-1 absolute bottom-0 left-0"></div>
           </div>
 

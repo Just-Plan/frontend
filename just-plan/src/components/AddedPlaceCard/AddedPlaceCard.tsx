@@ -5,8 +5,8 @@ import { IProps } from "./AddedPlaceCard.types";
 export const AddedPlaceCard = ({ item }: PropsWithChildren<IProps>) => {
   const { id, date, image, title, category, address, time } = item;
   return (
-    <div className="flex relative flex-col hover:cursor-pointer">
-      <div className="border w-80 rounded-xl flex p-3 z-10 bg-white">
+    <div className="flex relative flex-col w-full hover:cursor-pointer">
+      <div className="border w-[280px] sm:w-80 rounded-xl flex p-3 z-10 bg-white">
         <div className="w-16 h-16 relative my-auto">
           <Image
             src={image}
