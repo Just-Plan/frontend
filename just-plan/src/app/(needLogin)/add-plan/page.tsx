@@ -63,7 +63,6 @@ const page = () => {
           </div>
 
           {Plan.map((item) => (
-            // <DayPlanCard key={item.id} item={item} />
             <div
               className="flex flex-col items-center hover:cursor-pointer py-1 px-2 relative"
               key={item.id}

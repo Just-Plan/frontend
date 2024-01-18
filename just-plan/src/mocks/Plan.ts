@@ -61,6 +61,6 @@ export const Plan = [
     title: "성산 일출봉",
     category: "명소",
     address: "인천시 미추홀구",
-    time: "120",
+    time: null,
   },
 ];

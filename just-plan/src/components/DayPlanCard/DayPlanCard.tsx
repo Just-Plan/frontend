@@ -1,7 +1,8 @@
 import React, { PropsWithChildren } from "react";
 import { Switch } from "../ui/switch";
-import AddedPlaceCard from "../AddedPlaceCard/AddedPlaceCard";
 import { IProps } from "./DayPlanCard.types";
+import { Plan } from "@/mocks";
+import { AddedPlaceCard } from "..";
 
 const DayPlanCard = ({ item }: PropsWithChildren<IProps>) => {
   const { id, date, image, title, category, address } = item;
@@ -20,16 +21,10 @@ const DayPlanCard = ({ item }: PropsWithChildren<IProps>) => {
           </label>
         </div>
       </div>
-      <div className="flex flex-col gap-10 items-center h-[600px] overflow-y-scroll relative">
-        <div className="border h-[600px] w-px absolute border-dashed	"></div>
-        <AddedPlaceCard />
-        <AddedPlaceCard />
-        <AddedPlaceCard />
-        <AddedPlaceCard />
-        <AddedPlaceCard />
-        <AddedPlaceCard />
-        <AddedPlaceCard />
-        <AddedPlaceCard />
+      <div className="flex flex-col items-center h-[600px] overflow-y-scroll relative">
+        {Plan.map((item) => (
+          <AddedPlaceCard key={item.id} item={item} />
+        ))}
       </div>
     </div>
   );
