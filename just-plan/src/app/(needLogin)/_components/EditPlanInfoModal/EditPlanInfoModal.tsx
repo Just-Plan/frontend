@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/Button";
 import {
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -15,18 +14,13 @@ import { Input } from "@/components/ui/input";
 
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
 import Image from "next/image";
-import {
-  ChangeEvent,
-  FormEvent,
-  MouseEvent,
-  MouseEventHandler,
-  PropsWithChildren,
-  useState,
-} from "react";
+import { ChangeEvent, MouseEvent, PropsWithChildren, useState } from "react";
 import { IProps } from "./EditPlanInfoModal.types";
+import HouseholdContent from "./_components/HouseholdContent/HouseholdContent";
 
 const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
   const [addHashTag, setAddHashTag] = useState<string>("");
+  const [isCheckedHousehold, setIsCheckedHousehold] = useState(false);
   const { date, title, hashTags, cache, card } = info;
 
   const onChangeMoney = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +49,8 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
       hashTags: newHashTagList,
     });
   };
+
+  console.log(isCheckedHousehold);
 
   return (
     <DialogContent className="w-80 sm:w-[450px]">
@@ -151,9 +147,14 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
             <Label htmlFor="household" variant="subTitle">
               여행 가계부 작성하기
             </Label>
-            <Switch />
+            <Switch
+              checked={isCheckedHousehold}
+              onCheckedChange={setIsCheckedHousehold}
+              id="household"
+            />
           </div>
         </div>
+        {isCheckedHousehold && <HouseholdContent />}
       </DialogHeader>
       <DialogFooter className="m-auto">
         <DialogClose asChild>
