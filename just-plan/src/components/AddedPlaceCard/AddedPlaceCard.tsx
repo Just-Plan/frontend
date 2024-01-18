@@ -1,9 +1,13 @@
+"use client";
 import Image from "next/image";
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useState } from "react";
 import { IProps } from "./AddedPlaceCard.types";
+import { Dialog, DialogTrigger } from "../ui/dialog";
+import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
 
 export const AddedPlaceCard = ({ item }: PropsWithChildren<IProps>) => {
   const { id, date, image, title, category, address, time } = item;
+
   return (
     <div className="flex relative flex-col w-full hover:cursor-pointer">
       <div className="border w-[280px] sm:w-80 rounded-xl flex p-3 z-10 bg-white">
@@ -22,10 +26,13 @@ export const AddedPlaceCard = ({ item }: PropsWithChildren<IProps>) => {
             <div className=" text-sky-600 font-bold mr-2">{category}</div>
             <div className=" text-slate-400">{address}</div>
           </div>
-          <div className="flex">
-            <Image src="/images/memo.png" alt="메모" width={23} height={23} />
-            <div className="text-slate-500">메모</div>
-          </div>
+          <Dialog>
+            <DialogTrigger className="flex hover:underline">
+              <Image src="/images/memo.png" alt="메모" width={23} height={23} />
+              <div className="text-slate-500">메모</div>
+            </DialogTrigger>
+            <MemoModal />
+          </Dialog>
         </div>
         <div className="float-right">x</div>
       </div>
