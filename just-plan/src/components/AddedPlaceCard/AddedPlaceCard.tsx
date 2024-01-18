@@ -23,7 +23,7 @@ export const AddedPlaceCard = ({ item }: PropsWithChildren<IProps>) => {
             <div className=" text-slate-400">{address}</div>
           </div>
           <div className="flex">
-            <Image src="/memo.png" alt="메모" width={23} height={23} />
+            <Image src="/images/memo.png" alt="메모" width={23} height={23} />
             <div className="text-slate-500">메모</div>
           </div>
         </div>

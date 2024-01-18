@@ -11,7 +11,7 @@ const page = () => {
       <div className="">
         <div className="flex items-center">
           <Image
-            src="/airplane.png"
+            src="/images/airplane.png"
             width={25}
             height={25}
             alt="비행기 아이콘"
