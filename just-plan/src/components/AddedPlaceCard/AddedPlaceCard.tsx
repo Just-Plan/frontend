@@ -3,13 +3,15 @@ import Image from "next/image";
 const AddedPlaceCard = () => {
   return (
     <div className="border w-80 rounded-xl flex p-3 z-10 bg-white">
-      <Image
-        src="/image1.png"
-        alt="장소 이미지"
-        width={50}
-        height={50}
-        className="rounded-md"
-      />
+      <div className="w-16 h-16 relative my-auto">
+        <Image
+          src="/image1.png"
+          alt="장소 이미지"
+          fill={true}
+          className="rounded-md"
+        />
+      </div>
+
       <div className="flex flex-col flex-1 ml-3">
         <div className="font-bold">성산 일출봉</div>
         <div className="flex">

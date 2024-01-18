@@ -1,5 +1,6 @@
 import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
 import { Button } from "@/components/ui/Button";
+import { Plan } from "@/mocks";
 import Image from "next/image";
 
 const page = () => {
@@ -55,55 +56,20 @@ const page = () => {
         </div>
       </div>
       <div className="bg-ourGreen flex flex-col p-5 rounded-2xl">
-        <div className=" bg-white h-20 rounded-2xl mb-5 flex gap-10 items-center px-8 font-bold overflow-y-scroll">
+        <div className=" bg-white h-20 rounded-2xl mb-5 flex gap-10 items-center px-8 font-bold overflow-x-auto">
           <div>ALL</div>
-          <div className="flex flex-col items-center">
-            <div>Day1</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div>Day2</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div>Day3</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div>Day4</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div>Day5</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div>Day6</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div>Day7</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div>Day8</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div>Day9</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
-          <div className="flex flex-col items-center">
-            <div>Day10</div>
-            <div className="text-slate-400 text-xs">2024.01.12</div>
-          </div>
+          {Plan.map((item) => (
+            // <DayPlanCard key={item.id} item={item} />
+            <div className="flex flex-col items-center" key={item.id}>
+              <div>Day{item.id}</div>
+              <div className="text-slate-400 text-xs">{item.date}</div>
+            </div>
+          ))}
         </div>
         <div className="flex gap-10 overflow-x-scroll">
-          <DayPlanCard />
-          <DayPlanCard />
-          <DayPlanCard />
-          <DayPlanCard />
-          <DayPlanCard />
+          {Plan.map((item) => (
+            <DayPlanCard key={item.id} item={item} />
+          ))}
         </div>
       </div>
     </div>
