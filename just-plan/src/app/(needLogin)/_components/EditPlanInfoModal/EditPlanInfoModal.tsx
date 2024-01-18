@@ -9,26 +9,38 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import ShowMoney from "../ShowMoney/ShowMoney";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
 import Image from "next/image";
+import { ChangeEvent, PropsWithChildren } from "react";
+import { IProps } from "./EditPlanInfoModal.types";
 
-const EditPlanInfoModal = () => {
+const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
+  const { date, title, hashTags, cache, card } = info;
+
+  const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+    const [name, value] = [e.target.name, e.target.value];
+    if (Number.isNaN(Number(value))) return null;
+    setInfo({
+      ...info,
+      [name]: value,
+    });
+  };
+  console.log(cache + card);
   return (
-    <DialogContent className="w-96 sm:w-[550px]">
+    <DialogContent className="w-80 sm:w-[450px]">
       <DialogHeader>
         <DialogTitle className="mb-3">여행 정보 수정</DialogTitle>
-        <DialogDescription className="">
+        <DialogDescription className="m-2">
           <Label htmlFor="title" variant="subTitle">
             여행 제목
           </Label>
           <Input
             id="title"
-            placeholder="강윤지님의 제주도 먹고 뿌셔 복사본"
+            placeholder={title}
             className="bg-ourGreen/80 mb-3 mt-1"
           />
           <Label htmlFor="hashtag" variant="subTitle">
@@ -39,7 +51,16 @@ const EditPlanInfoModal = () => {
             placeholder="추가할 태그를 입력해주세요"
             className="bg-ourGreen/80 mb-3 mt-1"
           />
-          <div className="text-blue-500">#식도락 x #먹고뿌셔x</div>
+          <div className="flex gap-5 -mt-2 mb-4 ml-2">
+            {hashTags.map((tag) => (
+              <div key={tag.id} className="flex gap-0.5">
+                <div className="text-blue-500">#{tag.tag}</div>
+                <div className="hover:cursor-pointer hover:bg-gray-200 w-5 h-5 flex justify-center rounded-full">
+                  x
+                </div>
+              </div>
+            ))}
+          </div>
           <Label htmlFor="hashtag" variant="subTitle">
             여행 날짜
           </Label>
@@ -48,33 +69,47 @@ const EditPlanInfoModal = () => {
             여행 예산
           </Label>
 
-          <div className="flex justify-between items-center">
-            <div className="flex gap-2 sm:gap-5 my-5">
+          <div className="flex justify-between items-center mt-1 mb-3">
+            <div className="flex gap-2 sm:gap-5">
               <div className="flex relative ">
                 <Image
                   src="/images/cash.png"
                   alt="현금"
-                  className="absolute top-1 left-2"
-                  width={30}
-                  height={30}
+                  className="absolute top-2 left-2"
+                  width={25}
+                  height={25}
                 />
-                <Input type="number" variant={"showMoney"} />
+                <Input
+                  variant={"showMoney"}
+                  name="cache"
+                  value={cache}
+                  onChange={onChangeValue}
+                />
               </div>
-              <div className="flex relative ">
+              <div className="flex relative justify-center">
                 <Image
                   src="/images/card.png"
                   alt="카드"
-                  className="absolute top-1 left-2"
-                  width={30}
-                  height={30}
+                  className="absolute top-2 left-2"
+                  width={25}
+                  height={25}
                 />
-                <Input type="number" variant={"showMoney"} />
+                <Input
+                  variant={"showMoney"}
+                  name="card"
+                  value={card}
+                  onChange={onChangeValue}
+                />
               </div>
               <div className="flex relative ">
                 <div className="absolute top-1 left-2 w-8 h-8 text-md font-bold flex items-center justify-center">
                   All
                 </div>
-                <Input type="number" variant={"totalMoney"} />
+                <Input
+                  variant={"totalMoney"}
+                  value={Number(cache) + Number(card)}
+                  readOnly
+                />
               </div>
             </div>
           </div>

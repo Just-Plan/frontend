@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
 import { Button } from "@/components/ui/Button";
 import { Plan, PlanInfo } from "@/mocks";
@@ -5,8 +8,11 @@ import Image from "next/image";
 import ShowMoney from "../_components/ShowMoney/ShowMoney";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import EditPlanInfoModal from "../_components/EditPlanInfoModal/EditPlanInfoModal";
+import type { IPlanInfo } from "@/types/plan.types";
 
-const page = () => {
+const Page = () => {
+  const [info, setInfo] = useState<IPlanInfo>(PlanInfo);
+
   const { location, date, title, hashTags, cache, card } = PlanInfo;
   return (
     <div className="m-5 sm:m-10">
@@ -35,7 +41,7 @@ const page = () => {
                   height={27}
                 />
               </DialogTrigger>
-              <EditPlanInfoModal />
+              <EditPlanInfoModal info={info} setInfo={setInfo} />
               {/* <MemoModal /> */}
             </Dialog>
           </div>
@@ -85,4 +91,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

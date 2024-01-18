@@ -9,9 +9,9 @@ const inputVariants = cva(
     variants: {
       variant: {
         showMoney:
-          "bg-ourGreen/60 pl-12 focus-visible:ring-0 focus-visible:ring-offset-0",
+          "bg-ourGreen/60 pl-10 focus-visible:ring-0 focus-visible:ring-offset-0 text-xs -webkit-appearance-none ",
         totalMoney:
-          "border-2 border-ourGreen/60 pl-12 focus-visible:ring-0 focus-visible:ring-offset-0",
+          "border-2 border-ourGreen/60 pl-10 focus-visible:ring-0 focus-visible:ring-offset-0 text-xs -webkit-appearance-none ",
       },
     },
   }
