@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/Button";
 import { Plan, PlanInfo } from "@/mocks";
 import Image from "next/image";
 import ShowMoney from "../_components/ShowMoney/ShowMoney";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import EditPlanInfoModal from "../_components/EditPlanInfoModal/EditPlanInfoModal";
 
 const page = () => {
   const { location, date, title, hashTags, cache, card } = PlanInfo;
@@ -24,9 +26,18 @@ const page = () => {
             <div className="font-bold text-2xl sm:text-3xl my-2 sm:my-3 mr-5">
               {title}
             </div>
-            <div className="hover:cursor-pointer rounded-full p-1 hover:bg-gray-200">
-              <Image src="/images/edit.png" alt="수정" width={27} height={27} />
-            </div>
+            <Dialog>
+              <DialogTrigger className="hover:cursor-pointer rounded-full p-1 hover:bg-gray-200">
+                <Image
+                  src="/images/edit.svg"
+                  alt="수정"
+                  width={27}
+                  height={27}
+                />
+              </DialogTrigger>
+              <EditPlanInfoModal />
+              {/* <MemoModal /> */}
+            </Dialog>
           </div>
 
           <div className="hidden sm:flex items-center hover:cursor-pointer rounded-full p-1 w-10 h-10 hover:bg-gray-200">
