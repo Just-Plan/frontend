@@ -15,13 +15,21 @@ import { Input } from "@/components/ui/input";
 
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
 import Image from "next/image";
-import { ChangeEvent, PropsWithChildren } from "react";
+import {
+  ChangeEvent,
+  FormEvent,
+  MouseEvent,
+  MouseEventHandler,
+  PropsWithChildren,
+  useState,
+} from "react";
 import { IProps } from "./EditPlanInfoModal.types";
 
 const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
+  const [addHashTag, setAddHashTag] = useState<string>("");
   const { date, title, hashTags, cache, card } = info;
 
-  const onChangeValue = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChangeMoney = (e: ChangeEvent<HTMLInputElement>) => {
     const [name, value] = [e.target.name, e.target.value];
     if (Number.isNaN(Number(value))) return null;
     setInfo({
@@ -29,12 +37,30 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
       [name]: value,
     });
   };
-  console.log(cache + card);
+
+  const handleAddHashTag = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    setInfo({
+      ...info,
+      hashTags: [...info.hashTags, addHashTag],
+    });
+    setAddHashTag("");
+  };
+
+  const handleDeleteHashTag = (tag: string) => {
+    const newHashTagList = info.hashTags.filter((item) => item !== tag);
+    setInfo({
+      ...info,
+      hashTags: newHashTagList,
+    });
+  };
+
   return (
     <DialogContent className="w-80 sm:w-[450px]">
       <DialogHeader>
         <DialogTitle className="mb-3">여행 정보 수정</DialogTitle>
-        <DialogDescription className="m-2">
+        <div className="m-2">
           <Label htmlFor="title" variant="subTitle">
             여행 제목
           </Label>
@@ -46,16 +72,23 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
           <Label htmlFor="hashtag" variant="subTitle">
             여행 해시태그
           </Label>
-          <Input
-            id="hashtag"
-            placeholder="추가할 태그를 입력해주세요"
-            className="bg-ourGreen/80 mb-3 mt-1"
-          />
+          <div className="flex gap-6">
+            <Input
+              id="hashtag"
+              placeholder="추가할 태그를 입력해주세요"
+              className="bg-ourGreen/80 mb-3 mt-1"
+              onChange={(e) => setAddHashTag(e.target.value)}
+            />
+            <Button onClick={handleAddHashTag}>추가</Button>
+          </div>
           <div className="flex gap-5 -mt-2 mb-4 ml-2">
             {hashTags.map((tag) => (
-              <div key={tag.id} className="flex gap-0.5">
-                <div className="text-blue-500">#{tag.tag}</div>
-                <div className="hover:cursor-pointer hover:bg-gray-200 w-5 h-5 flex justify-center rounded-full">
+              <div key={tag} className="flex gap-0.5">
+                <div className="text-blue-500">#{tag}</div>
+                <div
+                  className="hover:cursor-pointer hover:bg-gray-200 w-5 h-5 flex justify-center rounded-full"
+                  onClick={() => handleDeleteHashTag(tag)}
+                >
                   x
                 </div>
               </div>
@@ -83,7 +116,7 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
                   variant={"showMoney"}
                   name="cache"
                   value={cache}
-                  onChange={onChangeValue}
+                  onChange={onChangeMoney}
                 />
               </div>
               <div className="flex relative justify-center">
@@ -98,7 +131,7 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
                   variant={"showMoney"}
                   name="card"
                   value={card}
-                  onChange={onChangeValue}
+                  onChange={onChangeMoney}
                 />
               </div>
               <div className="flex relative ">
@@ -120,7 +153,7 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
             </Label>
             <Switch />
           </div>
-        </DialogDescription>
+        </div>
       </DialogHeader>
       <DialogFooter className="m-auto">
         <DialogClose asChild>

@@ -16,7 +16,7 @@ export interface IPlanInfo {
   location: string;
   date: string;
   title: string;
-  hashTags: { id: number; tag: string }[];
+  hashTags: string[];
   cache: number;
   card: number;
 }

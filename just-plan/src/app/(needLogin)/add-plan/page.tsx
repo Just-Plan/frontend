@@ -54,7 +54,7 @@ const Page = () => {
         <div className="flex">
           <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
             {hashTags.map((tag) => (
-              <div key={tag.id}># {tag.tag}</div>
+              <div key={tag}># {tag}</div>
             ))}
           </div>
           <Button variant="outline" className="w-12 sm:w-28">

@@ -71,10 +71,7 @@ export const PlanInfo: IPlanInfo = {
   location: "제주도",
   date: "2024-01-05~2024-02-05",
   title: "강윤지님의 제주도 먹고뿌셔",
-  hashTags: [
-    { id: 1, tag: "해시태그1" },
-    { id: 2, tag: "해시태그2" },
-  ],
+  hashTags: ["감성", "먹부림"],
   cache: 200000,
   card: 500000,
 };
