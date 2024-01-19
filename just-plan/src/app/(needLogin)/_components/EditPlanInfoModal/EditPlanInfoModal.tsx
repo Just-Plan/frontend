@@ -53,10 +53,10 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
   console.log(isCheckedHousehold);
 
   return (
-    <DialogContent className="w-80 sm:w-[450px]">
+    <DialogContent className="w-90 sm:w-[450px] max-h-[40rem] overflow-y-auto overflow-x-hidden">
       <DialogHeader>
         <DialogTitle className="mb-3">여행 정보 수정</DialogTitle>
-        <div className="m-2">
+        <div className="m-1 sm:m-2">
           <Label htmlFor="title" variant="subTitle">
             여행 제목
           </Label>
