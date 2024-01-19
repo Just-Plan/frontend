@@ -1,7 +1,24 @@
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import React from "react";
+import React, { useState } from "react";
 
 const HouseholdContent = () => {
+  const [household, setHousehold] = useState({
+    food: 0,
+    car: 0,
+    room: 0,
+    shopping: 0,
+    etc: 0,
+  });
+  const onChangeMoney = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (Number.isNaN(Number(value))) return null;
+    console.log(name, value);
+    setHousehold({
+      ...household,
+      [name]: value,
+    });
+  };
   return (
     <div className="flex justify-between">
       <div className="flex flex-col gap-2">
@@ -9,27 +26,45 @@ const HouseholdContent = () => {
           <div className="bg-ourGreen p-2 w-10 h-10 rounded-full">
             <Image src="/images/food.png" alt="식비" width={30} height={30} />
           </div>
-          <div className="border-ourGreen border-2 rounded-full flex w-[13rem] items-center px-4 justify-between">
-            <div className="">식비</div>
-            <div className="">400,000₩</div>
+          <div className="relative w-[13rem]">
+            <div className="absolute top-2 left-4">식비</div>
+            <Input
+              name="food"
+              value={household.food}
+              onChange={onChangeMoney}
+              variant={"detailMoney"}
+              placeholder="400,000"
+            />
           </div>
         </div>
         <div className="flex gap-3">
           <div className="bg-ourGreen p-2 w-10 h-10 rounded-full">
-            <Image src="/images/car.png" alt="식비" width={30} height={30} />
+            <Image src="/images/car.png" alt="교통비" width={30} height={30} />
           </div>
-          <div className="border-ourGreen border-2 rounded-full flex w-[13rem] items-center px-4 justify-between">
-            <div>교통비</div>
-            <div>400,000₩</div>
+          <div className="relative w-[13rem]">
+            <div className="absolute top-2 left-4">교통비</div>
+            <Input
+              name="car"
+              value={household.car}
+              onChange={onChangeMoney}
+              variant={"detailMoney"}
+              placeholder="400,000"
+            />
           </div>
         </div>
         <div className="flex gap-3">
           <div className="bg-ourGreen p-2 w-10 h-10 rounded-full">
-            <Image src="/images/room.png" alt="식비" width={30} height={30} />
+            <Image src="/images/room.png" alt="숙박" width={30} height={30} />
           </div>
-          <div className="border-ourGreen border-2 rounded-full flex w-[13rem] items-center px-4 justify-between">
-            <div>숙박비</div>
-            <div>400,000₩</div>
+          <div className="relative w-[13rem]">
+            <div className="absolute top-2 left-4">숙박비</div>
+            <Input
+              name="room"
+              value={household.room}
+              onChange={onChangeMoney}
+              variant={"detailMoney"}
+              placeholder="400,000"
+            />
           </div>
         </div>
         <div className="flex gap-3">
@@ -41,18 +76,30 @@ const HouseholdContent = () => {
               height={30}
             />
           </div>
-          <div className="border-ourGreen border-2 rounded-full flex w-[13rem] items-center px-4 justify-between">
-            <div>쇼핑비</div>
-            <div>400,000₩</div>
+          <div className="relative w-[13rem]">
+            <div className="absolute top-2 left-4">쇼핑비</div>
+            <Input
+              name="shopping"
+              value={household.shopping}
+              onChange={onChangeMoney}
+              variant={"detailMoney"}
+              placeholder="400,000"
+            />
           </div>
         </div>
         <div className="flex gap-3">
           <div className="bg-ourGreen p-2 w-10 h-10 rounded-full">
-            <Image src="/images/etc.png" alt="식비" width={30} height={30} />
+            <Image src="/images/etc.png" alt="기타" width={30} height={30} />
           </div>
-          <div className="border-ourGreen border-2 rounded-full flex w-[13rem] items-center px-4 justify-between">
-            <div>기타 비용</div>
-            <div>400,000₩</div>
+          <div className="relative w-[13rem]">
+            <div className="absolute top-2 left-4">기타 비용</div>
+            <Input
+              name="etc"
+              value={household.etc}
+              onChange={onChangeMoney}
+              variant={"detailMoney"}
+              placeholder="400,000"
+            />
           </div>
         </div>
       </div>

@@ -12,6 +12,8 @@ const inputVariants = cva(
           "bg-ourGreen/60 pl-10 focus-visible:ring-0 focus-visible:ring-offset-0 text-xs -webkit-appearance-none ",
         totalMoney:
           "border-2 border-ourGreen/60 pl-10 focus-visible:ring-0 focus-visible:ring-offset-0 text-xs -webkit-appearance-none ",
+        detailMoney:
+          "border-2 border-ourGreen/60 pl-20 text-right focus-visible:ring-0 focus-visible:ring-offset-0 text-xs -webkit-appearance-none ",
       },
     },
   }
