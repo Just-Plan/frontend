@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import { PropsWithChildren, useState } from "react";
-import { IProps } from "./AddedPlaceCard.types";
+import type { IProps } from "./AddedPlaceCard.types";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
-import DetailPlace from "@/app/(needLogin)/add-plan/_components/DetailPlace/DetailPlace";
+import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
 
 export const AddedPlaceCard = ({ item }: PropsWithChildren<IProps>) => {
   const { id, date, image, title, category, address, time } = item;

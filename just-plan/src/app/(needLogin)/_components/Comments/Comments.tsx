@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React from "react";
-import { IProps } from "./Comments.types";
+import type { IProps } from "./Comments.types";
 
 const Comments = ({ comment }: IProps) => {
   const { id, profile, name, mbti, date, content } = comment;

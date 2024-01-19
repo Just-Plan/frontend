@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
 import Image from "next/image";
 import { ChangeEvent, MouseEvent, PropsWithChildren, useState } from "react";
-import { IProps } from "./EditPlanInfoModal.types";
+import type { IProps } from "./EditPlanInfoModal.types";
 import HouseholdContent from "./_components/HouseholdContent/HouseholdContent";
 
 const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {

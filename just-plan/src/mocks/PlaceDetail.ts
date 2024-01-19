@@ -1,4 +1,4 @@
-import { IComments } from "@/app/(needLogin)/add-plan/_components/Comments/Comments.types";
+import { IComments } from "@/app/(needLogin)/_components/Comments/Comments.types";
 
 interface IPlaceDetailInfo {
   category: string;
