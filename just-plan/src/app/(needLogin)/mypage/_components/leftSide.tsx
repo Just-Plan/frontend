@@ -5,7 +5,7 @@ import { Label } from "@radix-ui/react-label";
 const LeftSide = () => {
   return (
     <div className="flex flex-col justify-center items-center px-5 gap-5">
-      <Avatar className="w-full h-full ">
+      <Avatar className="w-full h-full max-h-72 max-w-72">
         <AvatarImage src="https://github.com/shadcn.png" />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
