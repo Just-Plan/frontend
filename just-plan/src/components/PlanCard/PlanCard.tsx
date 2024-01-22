@@ -6,7 +6,7 @@ import type { Props } from "./PlanCard.types";
 const PlanCard = ({ item }: PropsWithChildren<Props>) => {
   const { id, image, profile, name, date, money, count, mbti, hashTags } = item;
   return (
-    <Card className="w-full sm:w-96">
+    <Card className="w-[350px]">
       <CardHeader className="p-0">
         <Image
           src={image}
