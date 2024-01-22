@@ -1,9 +1,9 @@
-import { SignInForm } from "@/app/signin/components/SignInForm";
+import { SignInForm } from "@/app/signin/_components/SignInForm";
 import Image from "next/image";
 
 export default function SignIn() {
   return (
-    <div className="w-full h-dvh ">
+    <div className="w-full h-dvh">
       <div className="flex h-full gap-4 justify-center items-center">
         <Image
           className="md:block hidden"
