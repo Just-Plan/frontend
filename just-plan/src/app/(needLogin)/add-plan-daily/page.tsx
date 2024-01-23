@@ -10,7 +10,8 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import EditPlanInfoModal from "../_components/EditPlanInfoModal/EditPlanInfoModal";
 import type { IPlanInfo } from "@/types/plan.types";
 import { PlanDayHeader } from "../_components/PlanDayHeader/PlanDayHeader";
-import { AddedPlaceCard } from "@/components";
+import { AddedPlaceCard, StoredPlaceCard } from "@/components";
+import MemoModal from "../_components/MemoModal/MemoModal";
 
 const Page = () => {
   const [info, setInfo] = useState<IPlanInfo>(PlanInfo);
@@ -44,7 +45,6 @@ const Page = () => {
                 />
               </DialogTrigger>
               <EditPlanInfoModal info={info} setInfo={setInfo} />
-              {/* <MemoModal /> */}
             </Dialog>
           </div>
 
@@ -66,15 +66,27 @@ const Page = () => {
         <ShowMoney cache={cache} card={card} />
       </div>
       <div className="bg-ourGreen flex flex-row p-3 sm:p-5 rounded-2xl gap-5">
-        <div className="bg-white rounded-2xl">
-          <div>장소 보관함</div>
+        <div className="bg-white rounded-2xl p-5">
+          <div className="mb-5 flex justify-between">
+            <div className="text-2xl font-bold ">장소 보관함</div>
+            <Dialog>
+              <DialogTrigger className="flex">
+                <div className="flex justify-end w-full">
+                  <Button className="h-full bg-indigo-400 rounded-none">
+                    장소 추가
+                  </Button>
+                </div>
+              </DialogTrigger>
+              <MemoModal />
+            </Dialog>
+          </div>
           <div className="flex flex-col gap-5">
             {StoredPlace.map((item) => (
-              <AddedPlaceCard key={item.id} item={item} />
+              <StoredPlaceCard key={item.id} item={item} />
             ))}
           </div>
         </div>
-        <div>
+        <div className="flex flex-col w-full">
           <PlanDayHeader days={Plan} />
           <div className="flex gap-5">
             <DayPlanCard item={Plan[0]} />
