@@ -3,13 +3,14 @@
 import { useState } from "react";
 import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
 import { Button } from "@/components/ui/Button";
-import { Plan, PlanInfo } from "@/mocks";
+import { Plan, PlanInfo, StoredPlace } from "@/mocks";
 import Image from "next/image";
 import ShowMoney from "../_components/ShowMoney/ShowMoney";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import EditPlanInfoModal from "../_components/EditPlanInfoModal/EditPlanInfoModal";
 import type { IPlanInfo } from "@/types/plan.types";
 import { PlanDayHeader } from "../_components/PlanDayHeader/PlanDayHeader";
+import { AddedPlaceCard } from "@/components";
 
 const Page = () => {
   const [info, setInfo] = useState<IPlanInfo>(PlanInfo);
@@ -64,12 +65,21 @@ const Page = () => {
         </div>
         <ShowMoney cache={cache} card={card} />
       </div>
-      <div className="bg-ourGreen flex flex-col p-3 sm:p-5 rounded-2xl">
-        <PlanDayHeader days={Plan} />
-        <div className="flex gap-10 overflow-x-scroll">
-          {Plan.map((item) => (
-            <DayPlanCard key={item.id} item={item} />
-          ))}
+      <div className="bg-ourGreen flex flex-row p-3 sm:p-5 rounded-2xl gap-5">
+        <div className="bg-white rounded-2xl">
+          <div>장소 보관함</div>
+          <div className="flex flex-col gap-5">
+            {StoredPlace.map((item) => (
+              <AddedPlaceCard key={item.id} item={item} />
+            ))}
+          </div>
+        </div>
+        <div>
+          <PlanDayHeader days={Plan} />
+          <div className="flex gap-5">
+            <DayPlanCard item={Plan[0]} />
+            <div className="bg-white w-full">지도</div>
+          </div>
         </div>
       </div>
     </div>
