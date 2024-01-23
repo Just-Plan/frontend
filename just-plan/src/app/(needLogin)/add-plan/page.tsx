@@ -1,5 +1,5 @@
 import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/Button";
 import { Plan, PlanInfo } from "@/mocks";
 import Image from "next/image";
 import ShowMoney from "../_components/ShowMoney/ShowMoney";

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { PropsWithChildren } from "react";
 import { IProps } from "./AddedPlaceCard.types";
 
-export const AddedPlaceCard = ({ item }: PropsWithChildren<IProps>) => {
+export const AddedPlaceCard = ({ item }: IProps) => {
   const { id, date, image, title, category, address, time } = item;
   return (
     <div className="flex relative flex-col w-full hover:cursor-pointer">
