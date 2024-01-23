@@ -12,6 +12,7 @@ import type { IPlanInfo } from "@/types/plan.types";
 import { PlanDayHeader } from "../_components/PlanDayHeader/PlanDayHeader";
 import { AddedPlaceCard, StoredPlaceCard } from "@/components";
 import MemoModal from "../_components/MemoModal/MemoModal";
+import { AddPlaceModal } from "../_components";
 
 const Page = () => {
   const [info, setInfo] = useState<IPlanInfo>(PlanInfo);
@@ -77,7 +78,7 @@ const Page = () => {
                   </Button>
                 </div>
               </DialogTrigger>
-              <MemoModal />
+              <AddPlaceModal />
             </Dialog>
           </div>
           <div className="flex flex-col gap-5">
