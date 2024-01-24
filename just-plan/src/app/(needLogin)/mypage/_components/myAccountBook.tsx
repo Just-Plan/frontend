@@ -1,6 +1,6 @@
 import { MbtiCardContent } from "@/mocks";
 import { ExampleChart } from "./chart";
-import { Card } from "@/components/ui/Card";
+import { Card } from "@/components/Card";
 import { mypageData } from "@/mocks/mypage";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,7 @@ const MyAccountBook = () => {
               key={item.id}
               className={cn(
                 "p-4 cursor-pointer",
-                selectedCard === item.id ? "bg-green-200" : "bg-ourGreen"
+                selectedCard === item.id ? "bg-green-200" : "bg-ourGreen",
               )}
               onClick={() => handleCardClick(item)}
             >
