@@ -1,14 +1,14 @@
-import { Button } from "@/components/ui/Button";
 import {
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
+} from "@/components/dialog";
+import { Input } from "@/components/Input";
 import Image from "next/image";
 import Comments from "../Comments/Comments";
 import { PlaceDetailInfo } from "@/mocks";
+import { Button } from "@/components/Button";
 
 const DetailPlace = () => {
   const {

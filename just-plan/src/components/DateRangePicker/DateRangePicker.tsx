@@ -3,14 +3,14 @@ import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from "@/components/popover";
 import { cn } from "@/lib/utils";
 import { HTMLAttributes, useState } from "react";
 import { DateRange } from "react-day-picker";
 import { addDays, format } from "date-fns";
-import { Calendar } from "@/components/ui/calendar";
+import { Calendar } from "@/components/calendar";
 import { CalendarIcon } from "lucide-react";
-import { Button } from "../ui/Button";
+import { Button } from "../Button";
 
 const DateRangePicker = ({ className }: HTMLAttributes<HTMLDivElement>) => {
   const [date, setDate] = useState<DateRange | undefined>({

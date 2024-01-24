@@ -1,5 +1,5 @@
 import React, { PropsWithChildren } from "react";
-import { Switch } from "../ui/switch";
+import { Switch } from "../Switch";
 import type { IProps } from "./DayPlanCard.types";
 import { Plan } from "@/mocks";
 import { AddedPlaceCard } from "..";
