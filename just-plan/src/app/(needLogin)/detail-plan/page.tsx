@@ -1,64 +1,18 @@
 "use client";
 
 import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
-import { Button } from "@/components/ui/Button";
-import { Plan, PlanInfo } from "@/mocks";
-import Image from "next/image";
-import ShowMoney from "../_components/ShowMoney/ShowMoney";
+import { Plan } from "@/mocks";
 import { PlanDayHeader } from "../_components/PlanDayHeader/PlanDayHeader";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
+import { PlanInfoHeader } from "../_components";
 
 const Page = () => {
-  const { location, date, title, hashTags, cache, card } = PlanInfo;
   const searchParams = useSearchParams();
-  const router = useRouter();
   const planId = searchParams.get("planId");
-
-  const handleEdit = () => {
-    router.push(`/modify?planId=${planId}&day=`);
-  };
 
   return (
     <div className="m-5 sm:m-10">
-      <div className="">
-        <div className="flex items-center">
-          <Image
-            src="/images/airplane.png"
-            width={25}
-            height={25}
-            alt="비행기 아이콘"
-          />
-          <div className="ml-2">{location}</div>
-          <div className="text-xs ml-28">{date}</div>
-        </div>
-        <div className="flex">
-          <div className="flex items-center flex-1">
-            <div className="font-bold text-2xl sm:text-3xl my-2 sm:my-3 mr-5">
-              {title}
-            </div>
-          </div>
-
-          <div className="hidden sm:flex items-center hover:cursor-pointer rounded-full p-1 w-10 h-10 hover:bg-gray-200">
-            <Image src="/images/map.png" alt="지도" width={40} height={40} />
-          </div>
-        </div>
-
-        <div className="flex">
-          <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
-            {hashTags.map((tag) => (
-              <div key={tag}># {tag}</div>
-            ))}
-          </div>
-          <Button
-            variant="outline"
-            className="w-12 sm:w-28"
-            onClick={handleEdit}
-          >
-            편집하기
-          </Button>
-        </div>
-        <ShowMoney cache={cache} card={card} />
-      </div>
+      <PlanInfoHeader />
       <div className="bg-ourGreen flex flex-row p-3 sm:p-5 rounded-2xl gap-5">
         <div className="flex flex-col w-full">
           <PlanDayHeader days={Plan} />
