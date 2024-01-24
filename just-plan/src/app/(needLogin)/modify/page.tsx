@@ -13,9 +13,6 @@ const Page = () => {
   const planId = searchParams.get("planId");
   const day = searchParams.get("day");
 
-  console.log("planId:", planId, typeof planId);
-  console.log("day:", day, typeof day);
-
   return (
     <div className="m-5 sm:m-10">
       <PlanInfoHeader isModify />

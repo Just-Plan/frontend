@@ -9,18 +9,25 @@ import { PlanInfoHeader } from "../_components";
 const Page = () => {
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
+  const day = searchParams.get("day");
 
   return (
     <div className="m-5 sm:m-10">
       <PlanInfoHeader />
-      <div className="bg-ourGreen flex flex-row p-3 sm:p-5 rounded-2xl gap-5">
-        <div className="flex flex-col w-full">
-          <PlanDayHeader days={Plan} />
+      <div className="bg-ourGreen flex flex-col p-3 sm:p-5 rounded-2xl">
+        <PlanDayHeader days={Plan} />
+        {!day ? (
+          <div className="flex gap-10 overflow-x-scroll">
+            {Plan.map((item) => (
+              <DayPlanCard key={item.id} item={item} />
+            ))}
+          </div>
+        ) : (
           <div className="flex gap-5">
             <DayPlanCard item={Plan[0]} />
             <div className="bg-white w-full hidden sm:block">지도</div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
