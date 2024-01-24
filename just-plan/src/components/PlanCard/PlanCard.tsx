@@ -6,7 +6,7 @@ import type { Props } from "./PlanCard.types";
 const PlanCard = ({ item }: PropsWithChildren<Props>) => {
   const { id, image, profile, name, date, money, count, mbti, hashTags } = item;
   return (
-    <Card className="w-full sm:w-96">
+    <Card className="w-[350px]">
       <CardHeader className="p-0">
         <Image
           src={image}
@@ -57,7 +57,7 @@ const PlanCard = ({ item }: PropsWithChildren<Props>) => {
           <div className="ml-3 font-bold text-stone-700">{mbti}</div>
           <div className="text-sky-600 font-bold">
             {hashTags.map((tag) => (
-              <div key={tag.id}>{tag.tag}</div>
+              <div key={tag}>{tag}</div>
             ))}
           </div>
         </div>
