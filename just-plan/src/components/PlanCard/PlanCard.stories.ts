@@ -19,8 +19,8 @@ const itemData = {
   count: 137,
   mbti: "INFJ",
   hashTags: [
-    { id: 1, tag: "감성" },
-    { id: 2, tag: "먹부림" },
+    "감성",
+    "먹부림"
   ],
 };
 export const Primary: Story = {
