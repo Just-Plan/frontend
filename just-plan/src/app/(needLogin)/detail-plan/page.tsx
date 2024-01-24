@@ -1,12 +1,23 @@
+"use client";
+
 import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
 import { Button } from "@/components/ui/Button";
 import { Plan, PlanInfo } from "@/mocks";
 import Image from "next/image";
 import ShowMoney from "../_components/ShowMoney/ShowMoney";
 import { PlanDayHeader } from "../_components/PlanDayHeader/PlanDayHeader";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Page = () => {
   const { location, date, title, hashTags, cache, card } = PlanInfo;
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const planId = searchParams.get("planId");
+
+  const handleEdit = () => {
+    router.push(`/modify?planId=${planId}&day=`);
+  };
+
   return (
     <div className="m-5 sm:m-10">
       <div className="">
@@ -38,8 +49,12 @@ const Page = () => {
               <div key={tag}># {tag}</div>
             ))}
           </div>
-          <Button variant="outline" className="w-12 sm:w-28">
-            저장
+          <Button
+            variant="outline"
+            className="w-12 sm:w-28"
+            onClick={handleEdit}
+          >
+            편집하기
           </Button>
         </div>
         <ShowMoney cache={cache} card={card} />

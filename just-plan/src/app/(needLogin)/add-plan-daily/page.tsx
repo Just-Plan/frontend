@@ -12,9 +12,12 @@ import type { IPlanInfo } from "@/types/plan.types";
 import { PlanDayHeader } from "../_components/PlanDayHeader/PlanDayHeader";
 import { StoredPlaceCard } from "@/components";
 import { AddPlaceModal, StoredPlaceMiniCard } from "../_components";
+import { useSearchParams } from "next/navigation";
 
 const Page = () => {
   const [info, setInfo] = useState<IPlanInfo>(PlanInfo);
+  const searchParams = useSearchParams();
+  const planId = searchParams.get("planId");
 
   const { location, date, title, hashTags, cache, card } = PlanInfo;
   return (

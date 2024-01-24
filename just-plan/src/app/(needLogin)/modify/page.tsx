@@ -17,8 +17,10 @@ const Page = () => {
   const searchParams = useSearchParams();
 
   const planId = searchParams.get("planId");
-
+  const day = searchParams.get("day");
   // planId에 맞는 정보 요청 보내기
+  console.log("planId:", planId, typeof planId);
+  console.log("day:", day, typeof day);
 
   const { location, date, title, hashTags, cache, card } = PlanInfo;
   return (
@@ -70,7 +72,7 @@ const Page = () => {
         <ShowMoney cache={cache} card={card} />
       </div>
       <div className="bg-ourGreen flex flex-col p-3 sm:p-5 rounded-2xl">
-        <PlanDayHeader days={Plan} />
+        <PlanDayHeader days={Plan} isModify />
         <div className="flex gap-10 overflow-x-scroll">
           {Plan.map((item) => (
             <DayPlanCard key={item.id} item={item} />
