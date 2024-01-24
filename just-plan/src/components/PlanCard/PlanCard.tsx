@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { PropsWithChildren } from "react";
-import { Card, CardContent, CardHeader } from "../ui/Card";
+import { Card, CardContent, CardHeader } from "../Card";
 import type { Props } from "./PlanCard.types";
 
 const PlanCard = ({ item }: PropsWithChildren<Props>) => {
@@ -57,7 +57,7 @@ const PlanCard = ({ item }: PropsWithChildren<Props>) => {
           <div className="ml-3 font-bold text-stone-700">{mbti}</div>
           <div className="text-sky-600 font-bold">
             {hashTags.map((tag) => (
-              <div key={tag.id}>{tag.tag}</div>
+              <div key={tag}>{tag}</div>
             ))}
           </div>
         </div>

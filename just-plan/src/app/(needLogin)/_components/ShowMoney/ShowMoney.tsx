@@ -1,6 +1,6 @@
 import Image from "next/image";
 import React, { PropsWithChildren } from "react";
-import { IProps } from "./ShowMoney.types";
+import type { IProps } from "./ShowMoney.types";
 
 const ShowMoney = ({ cache, card }: PropsWithChildren<IProps>) => {
   return (

@@ -1,5 +1,5 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { Label } from "@radix-ui/react-label";
 
 const LeftSide = () => {

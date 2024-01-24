@@ -22,10 +22,7 @@ export const PopularCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
   {
     id: 2,
@@ -36,10 +33,7 @@ export const PopularCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
   {
     id: 3,
@@ -50,10 +44,7 @@ export const PopularCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
 ];
 
@@ -67,10 +58,7 @@ export const MbtiCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
   {
     id: 2,
@@ -81,10 +69,7 @@ export const MbtiCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
   {
     id: 3,
@@ -95,10 +80,7 @@ export const MbtiCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
   {
     id: 4,
@@ -109,10 +91,7 @@ export const MbtiCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
   {
     id: 5,
@@ -123,10 +102,7 @@ export const MbtiCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
   {
     id: 6,
@@ -137,10 +113,7 @@ export const MbtiCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
   {
     id: 7,
@@ -151,10 +124,7 @@ export const MbtiCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
   {
     id: 8,
@@ -165,9 +135,6 @@ export const MbtiCardContent = [
     money: "1,000,000원",
     count: 137,
     mbti: "INFJ",
-    hashTags: [
-      { id: 1, tag: "감성" },
-      { id: 2, tag: "먹부림" },
-    ],
+    hashTags: ["감성", "먹부림"],
   },
 ];

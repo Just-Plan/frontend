@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
+import { AspectRatio } from "@/components/AspectRatio";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/Button";
 import { cn } from "@/lib/utils";
 import MyPlanList from "./_components/myPlanList";
 import MyScrapPlanList from "./_components/myScrapPlanList";
