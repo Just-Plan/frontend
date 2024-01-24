@@ -11,7 +11,7 @@ export const AddedPlaceCard = ({ item }: PropsWithChildren<IProps>) => {
 
   return (
     <Dialog>
-      <DialogTrigger className="hover:cursor-pointer">
+      <DialogTrigger asChild className="hover:cursor-pointer">
         <div className="flex relative flex-col w-full hover:cursor-pointer">
           <div className="border w-[280px] sm:w-80 rounded-xl flex p-3 z-10 bg-white">
             <div className="w-16 h-16 relative my-auto">
