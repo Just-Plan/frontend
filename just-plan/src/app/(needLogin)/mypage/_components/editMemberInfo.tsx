@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 import { Label } from "@radix-ui/react-label";
