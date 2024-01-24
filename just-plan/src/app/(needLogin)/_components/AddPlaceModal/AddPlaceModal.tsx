@@ -21,15 +21,14 @@ export const AddPlaceModal = () => {
 
   return (
     <DialogContent className="max-w-7xl max-h-full sm:max-h-[150rem] overflow-y-auto bg-ourGreen flex flex-col items-center">
-      {/* <DialogContent className="w-90 sm:w-[450px] max-w-3xl  bg-ourGreen"> */}
       <DialogHeader>
-        <DialogTitle className="text-3xl mb-3">
+        <DialogTitle className="text-4xl mb-3 mt-5 font-bold">
           여행하고 싶은 장소를 추가해보세요!
         </DialogTitle>
         <DialogDescription></DialogDescription>
       </DialogHeader>
       <div className="flex gap-5 w-full px-10">
-        <div>
+        <div className="flex flex-col items-center gap-5">
           <div className="bg-white flex flex-col justify-center items-center p-3 rounded-full w-20 h-20">
             <Image
               src="/images/archive.png"
@@ -39,10 +38,10 @@ export const AddPlaceModal = () => {
             />
             <div className="text-xs font-semibold">장소 보관함</div>
           </div>
-          <div className="bg-white p-4 rounded-xl gap-3 flex flex-col">
-            <StoredPlaceMiniCard />
-            <StoredPlaceMiniCard />
-            <StoredPlaceMiniCard />
+          <div className="bg-white p-4 rounded-xl gap-3 flex flex-col h-full">
+            {StoredPlace.map((item) => (
+              <StoredPlaceMiniCard key={item.id} place={item} />
+            ))}
           </div>
         </div>
 
@@ -50,7 +49,7 @@ export const AddPlaceModal = () => {
           <div>
             <Input placeholder="떠나고 싶은 장소를 입력해주세요" />
           </div>
-          <div className="bg-white rounded-lg gap-5 flex flex-col">
+          <div className="bg-white rounded-xl gap-5 flex flex-col h-[35rem] p-5">
             {StoredPlace.map((item) => (
               <StoredPlaceCard key={item.id} item={item} />
             ))}
@@ -61,7 +60,7 @@ export const AddPlaceModal = () => {
       </div>
       <DialogFooter className="m-auto">
         <DialogClose asChild>
-          <Button type="submit">저장하기</Button>
+          <Button>저장하기</Button>
         </DialogClose>
       </DialogFooter>
     </DialogContent>
