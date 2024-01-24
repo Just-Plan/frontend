@@ -8,7 +8,7 @@ export const StoredPlaceMiniCard = ({ place }: { place: ILocationInfo }) => {
       <div className="w-14 h-14 relative">
         <Image src={place.image} alt="사진" fill className="rounded-lg" />
       </div>
-      <div className="font-semibold">{place.title}</div>
+      <div className="font-semibold text-xs">{place.title}</div>
     </div>
   );
 };
