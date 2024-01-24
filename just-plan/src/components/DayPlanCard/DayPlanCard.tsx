@@ -1,6 +1,6 @@
 import React, { PropsWithChildren } from "react";
 import { Switch } from "../Switch";
-import { IProps } from "./DayPlanCard.types";
+import type { IProps } from "./DayPlanCard.types";
 import { Plan } from "@/mocks";
 import { AddedPlaceCard } from "..";
 

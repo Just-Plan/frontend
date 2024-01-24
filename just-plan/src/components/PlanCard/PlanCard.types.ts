@@ -7,10 +7,7 @@ export interface ICardUserData {
   money: string;
   count: number;
   mbti: string;
-  hashTags: {
-    id: number;
-    tag: string;
-  }[];
+  hashTags: string[];
 }
 
 export interface Props {
