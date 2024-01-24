@@ -57,7 +57,7 @@ const PlanCard = ({ item }: PropsWithChildren<Props>) => {
           <div className="ml-3 font-bold text-stone-700">{mbti}</div>
           <div className="text-sky-600 font-bold">
             {hashTags.map((tag) => (
-              <div key={tag.id}>{tag.tag}</div>
+              <div key={tag}>{tag}</div>
             ))}
           </div>
         </div>

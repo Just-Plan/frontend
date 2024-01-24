@@ -18,8 +18,7 @@ import {
   PopularCardContent,
   SearchResult,
 } from "../../mocks/Main";
-import { HomePageConfig } from "@/constants/home.constants";
-import { MBTI } from "@/constants/mbti.constans";
+import { HomePageConfig, MBTI } from "@/constants";
 
 const Home = () => {
   const router = useRouter();

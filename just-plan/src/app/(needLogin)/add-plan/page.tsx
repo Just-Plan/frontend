@@ -1,10 +1,18 @@
+"use client";
+
+import { useState } from "react";
 import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
 import { Button } from "@/components/ui/Button";
 import { Plan, PlanInfo } from "@/mocks";
 import Image from "next/image";
 import ShowMoney from "../_components/ShowMoney/ShowMoney";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import EditPlanInfoModal from "../_components/EditPlanInfoModal/EditPlanInfoModal";
+import type { IPlanInfo } from "@/types/plan.types";
 
-const page = () => {
+const Page = () => {
+  const [info, setInfo] = useState<IPlanInfo>(PlanInfo);
+
   const { location, date, title, hashTags, cache, card } = PlanInfo;
   return (
     <div className="m-5 sm:m-10">
@@ -24,9 +32,18 @@ const page = () => {
             <div className="font-bold text-2xl sm:text-3xl my-2 sm:my-3 mr-5">
               {title}
             </div>
-            <div className="hover:cursor-pointer rounded-full p-1 hover:bg-gray-200">
-              <Image src="/images/edit.png" alt="수정" width={27} height={27} />
-            </div>
+            <Dialog>
+              <DialogTrigger className="hover:cursor-pointer rounded-full p-1 hover:bg-gray-200">
+                <Image
+                  src="/images/edit.svg"
+                  alt="수정"
+                  width={27}
+                  height={27}
+                />
+              </DialogTrigger>
+              <EditPlanInfoModal info={info} setInfo={setInfo} />
+              {/* <MemoModal /> */}
+            </Dialog>
           </div>
 
           <div className="hidden sm:flex items-center hover:cursor-pointer rounded-full p-1 w-10 h-10 hover:bg-gray-200">
@@ -37,7 +54,7 @@ const page = () => {
         <div className="flex">
           <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
             {hashTags.map((tag) => (
-              <div key={tag.id}># {tag.tag}</div>
+              <div key={tag}># {tag}</div>
             ))}
           </div>
           <Button variant="outline" className="w-12 sm:w-28">
@@ -74,4 +91,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
