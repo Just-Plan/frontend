@@ -2,16 +2,16 @@
 
 import Image from "next/image";
 import React from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ScrollArea";
 import PlanCard from "@/components/PlanCard/PlanCard";
-import { Badge } from "@/components/ui/badge";
+import { Badge } from "@/components/Badge";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "@/components/Carousel";
 import { useRouter } from "next/navigation";
 import {
   MbtiCardContent,

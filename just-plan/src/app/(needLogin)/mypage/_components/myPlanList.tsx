@@ -1,5 +1,5 @@
-import { MbtiCardContent, PopularCardContent } from "@/app/mocks";
 import PlanCard from "@/components/PlanCard/PlanCard";
+import { MbtiCardContent } from "@/mocks";
 
 const MyPlanList = () => {
   return (

@@ -1,4 +1,3 @@
-"use client";
 import {
   Card,
   CardContent,
@@ -6,17 +5,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/Card";
+} from "@/components/ui/card";
 
-import { Button } from "@/components/Button";
-import { Input } from "@/components/Input";
-import { Label } from "@/components/Label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { Spinner } from "@/components/Spinner";
-import { useState } from "react";
-export const SignUpForm = () => {
-  const [isLoading, setIsLoading] = useState(false);
-
+export const SignInForm = () => {
   return (
     <Card className="w-[350px] bg-ourGreen rounded-3xl ">
       <CardHeader></CardHeader>
@@ -24,26 +19,12 @@ export const SignUpForm = () => {
         <form>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="email">이름</Label>
-              <Input id="email" placeholder="이름을 입력해주세요" />
-            </div>
-            <div className="flex flex-col space-y-1.5">
               <Label htmlFor="email">이메일</Label>
-              <div className="flex gap-3">
-                <Input id="email" placeholder="이메일을 입력해주세요" />
-                <Button size={"sm"}>{isLoading ? <Spinner /> : "인증"}</Button>
-              </div>
+              <Input id="email" placeholder="이메일을 입력해주세요" />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label htmlFor="password">비밀번호</Label>
               <Input id="password" placeholder="비밀번호를 입력해주세요" />
-            </div>
-            <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="passwordConfirm">비밀번호 확인</Label>
-              <Input
-                id="passwordConfirm"
-                placeholder="비밀번호를 한번 더 입력해주세요"
-              />
             </div>
           </div>
         </form>
@@ -51,11 +32,14 @@ export const SignUpForm = () => {
       <CardFooter className="flex justify-center gap-5 flex-col">
         <div className="w-full">
           <Button size={"lg"} className="w-full">
-            회원가입하기
+            로그인하기
           </Button>
           <div className="flex justify-center ">
             <Button variant={"link"} className="text-slate-500">
-              로그인
+              회원가입
+            </Button>
+            <Button variant={"link"} className="text-slate-500">
+              비밀번호 찾기
             </Button>
           </div>
         </div>

@@ -2,11 +2,11 @@
 import Image from "next/image";
 import { PropsWithChildren, useState } from "react";
 import type { IProps } from "./AddedPlaceCard.types";
-import { Dialog, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogTrigger } from "../dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
 import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
 
-export const AddedPlaceCard = ({ item }: PropsWithChildren<IProps>) => {
+export const AddedPlaceCard = ({ item }: IProps) => {
   const { id, date, image, title, category, address, time } = item;
 
   return (

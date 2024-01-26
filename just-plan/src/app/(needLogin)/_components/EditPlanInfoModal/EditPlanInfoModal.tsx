@@ -1,16 +1,16 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/Button";
 import {
   DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+} from "@/components/dialog";
+import { Switch } from "@/components/Switch";
+import { Label } from "@/components/Label";
+import { Input } from "@/components/Input";
 
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
 import Image from "next/image";
