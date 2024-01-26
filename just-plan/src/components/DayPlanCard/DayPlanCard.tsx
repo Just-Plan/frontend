@@ -7,7 +7,7 @@ import { AddedPlaceCard } from "..";
 const DayPlanCard = ({ item }: PropsWithChildren<IProps>) => {
   const { id, date, image, title, category, address } = item;
   return (
-    <div className="bg-white flex flex-col w-full p-6  rounded-3xl">
+    <div className="bg-white flex flex-col w-fit p-6  rounded-3xl">
       <div className="flex justify-between">
         <div>
           <div className="font-bold text-2xl text-slate-400">{id}일차</div>

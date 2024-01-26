@@ -1,12 +1,12 @@
 "use client";
 import Image from "next/image";
-import { PropsWithChildren, useState } from "react";
-import type { IProps } from "./AddedPlaceCard.types";
-import { Dialog, DialogTrigger } from "../dialog";
+import { Dialog, DialogTrigger } from "../ui/dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
 import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
+import { IProps } from "./StoredPlaceCard.types";
+import { Button } from "../ui/Button";
 
-export const AddedPlaceCard = ({ item }: IProps) => {
+export const StoredPlaceCard = ({ item }: IProps) => {
   const { id, date, image, title, category, address, time } = item;
 
   return (
@@ -29,29 +29,14 @@ export const AddedPlaceCard = ({ item }: IProps) => {
                 <div className=" text-sky-600 font-bold mr-2">{category}</div>
                 <div className=" text-slate-400">{address}</div>
               </div>
-              <Dialog>
-                <DialogTrigger className="flex hover:underline">
-                  <Image
-                    src="/images/memo.png"
-                    alt="메모"
-                    width={23}
-                    height={23}
-                  />
-                  <div className="text-slate-500">메모</div>
-                </DialogTrigger>
-                <MemoModal />
-              </Dialog>
+              <div className="flex justify-end w-full">
+                <Button variant={"outline"} className="h-7">
+                  장소 추가
+                </Button>
+              </div>
             </div>
             <div className="float-right">x</div>
           </div>
-          {time && (
-            <div className="flex items-center justify-center h-10 relatvie">
-              <div className="border h-10 w-px absolute left-1/2 border-dashed" />
-              <div className="z-10 bg-white text-xs text-zinc-500 hover:cursor-pointer">
-                {time}분
-              </div>
-            </div>
-          )}
         </div>
       </DialogTrigger>
       <DetailPlace />
