@@ -1,7 +1,7 @@
-import { IPlanInfo } from "@/types/plan.types";
+import type { ILocationInfo, IPlanInfo } from "@/types/plan.types";
 
 // 일정 페이지 목데이터
-export const Plan = [
+export const Plan: ILocationInfo[] = [
   {
     id: 1,
     date: "2024.01.12",
@@ -75,3 +75,34 @@ export const PlanInfo: IPlanInfo = {
   cache: 200000,
   card: 500000,
 };
+
+// 장소 보관함
+export const StoredPlace: ILocationInfo[] = [
+  {
+    id: 1,
+    date: "2024.01.12",
+    image: "/images/image1.png",
+    title: "성산 일출봉",
+    category: "명소",
+    address: "인천시 미추홀구",
+    time: null,
+  },
+  {
+    id: 2,
+    date: "2024.01.12",
+    image: "/images/image1.png",
+    title: "성산 이출봉",
+    category: "명소",
+    address: "인천시 미추홀구",
+    time: null,
+  },
+  {
+    id: 3,
+    date: "2024.01.12",
+    image: "/images/image1.png",
+    title: "성산 삼출봉",
+    category: "명소",
+    address: "인천시 미추홀구",
+    time: null,
+  },
+];
