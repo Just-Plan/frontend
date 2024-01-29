@@ -19,7 +19,11 @@ import {
 } from "../../mocks/Main";
 import { HomePageConfig, MBTI } from "@/constants";
 import { getCities } from "./_lib/getCities";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { getPlanList } from "./_lib/getPlanList";
+import { IPlan } from "@/types/plan.types";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
 
 const Home = () => {
   const router = useRouter();
@@ -40,13 +44,60 @@ const Home = () => {
     gcTime: 300 * 1000,
   });
 
-  if (isLoading) {
+  const {
+    data: popularPlanList,
+    error: popularPlanError,
+    isLoading: popularPlanisLoading,
+  } = useQuery({
+    queryKey: ["planList", 3],
+    queryFn: () => getPlanList(0, 3),
+    staleTime: 60 * 1000,
+    gcTime: 300 * 1000,
+  });
+
+  const {
+    data: planList,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+  } = useInfiniteQuery({
+    queryKey: ["infinitePlan"],
+    queryFn: ({ pageParam }) => getPlanList(pageParam, 6),
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage.data?.currentPage < lastPage.data?.totalPages) {
+        return lastPage.data.currentPage + 1;
+      }
+      return undefined; // false 로 반환하면 true가 된다! undefined를 반환해줘야 false로 인식한다! 뭔 이런 경우가!
+    },
+    initialPageParam: 0,
+  });
+
+  const { ref, inView } = useInView({
+    threshold: 0,
+    delay: 500,
+  });
+  console.log("hasNextPage", hasNextPage);
+
+  useEffect(() => {
+    console.log("hasNextPage", hasNextPage);
+
+    if (inView) {
+      !isFetching && hasNextPage && fetchNextPage();
+    }
+  }, [inView, isFetching, fetchNextPage, hasNextPage]);
+
+  if (isLoading || popularPlanisLoading) {
     return <div>로딩중</div>;
   }
 
-  if (error) {
+  if (error || popularPlanError) {
     return <div>에러</div>;
   }
+
+  console.log("popularPlanList", popularPlanList);
+
+  console.log("일정 리스트: ", planList);
+  console.log("일정 리스트: ", planList?.pages);
 
   return (
     <div className="py-10 px-5 sm:px-60 sm:py-32">
@@ -115,8 +166,8 @@ const Home = () => {
           {PopularPlanDescription}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
-          {PopularCardContent.map((item) => (
-            <PlanCard item={item} key={item.id} />
+          {popularPlanList.data.plans.map((item: IPlan) => (
+            <PlanCard item={item} key={item.planId} />
           ))}
         </div>
         <div className="text-3xl font-bold mt-12">{MBTIPlan}</div>
@@ -149,10 +200,13 @@ const Home = () => {
         </Carousel>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-y-16">
-          {MbtiCardContent.map((item) => (
-            <PlanCard item={item} key={item.id} />
-          ))}
+          {planList?.pages.map((itemList) =>
+            itemList.data.plans.map((item: IPlan) => (
+              <PlanCard item={item} key={item.planId} />
+            )),
+          )}
         </div>
+        <div ref={ref} style={{ height: 50 }} />
       </div>
     </div>
   );
