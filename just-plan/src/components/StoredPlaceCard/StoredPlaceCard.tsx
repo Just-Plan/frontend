@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
-import { Dialog, DialogTrigger } from "../ui/dialog";
+import { Dialog, DialogTrigger } from "../dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
 import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
 import { IProps } from "./StoredPlaceCard.types";
-import { Button } from "../ui/Button";
+import { Button } from "../Button";
 
 export const StoredPlaceCard = ({ item }: IProps) => {
   const { id, date, image, title, category, address, time } = item;
