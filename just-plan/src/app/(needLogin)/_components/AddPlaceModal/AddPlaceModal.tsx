@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/Button";
 import {
   DialogClose,
   DialogContent,
@@ -8,11 +8,11 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-} from "@/components/ui/dialog";
+} from "@/components/dialog";
 import Image from "next/image";
 import { useState } from "react";
 import { StoredPlaceMiniCard } from "..";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/Input";
 import { StoredPlaceCard } from "@/components";
 import { StoredPlace } from "@/mocks";
 

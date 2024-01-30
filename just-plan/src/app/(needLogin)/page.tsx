@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import React from "react";
 import { ScrollArea } from "@/components/ScrollArea";
 import PlanCard from "@/components/PlanCard/PlanCard";
 import { Badge } from "@/components/Badge";
@@ -19,6 +18,8 @@ import {
   SearchResult,
 } from "../../mocks/Main";
 import { HomePageConfig, MBTI } from "@/constants";
+import { getCities } from "./_lib/getCities";
+import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
   const router = useRouter();
@@ -27,6 +28,26 @@ const Home = () => {
   };
   const { PopularPlan, PopularPlanDescription, MBTIPlan, MBTIPlanDescription } =
     HomePageConfig;
+
+  const {
+    data: searchResult,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["cities"],
+    queryFn: getCities,
+    staleTime: 60 * 1000,
+    gcTime: 300 * 1000,
+  });
+
+  if (isLoading) {
+    return <div>로딩중</div>;
+  }
+
+  if (error) {
+    return <div>에러</div>;
+  }
+
   return (
     <div className="py-10 px-5 sm:px-60 sm:py-32">
       <div className="flex flex-col justify-around sm:flex-row ">
@@ -65,15 +86,17 @@ const Home = () => {
           </div>
           <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
             <div className="py-4 px-8">
-              {SearchResult.map((item) => (
+              {searchResult.data.cities.map((item: any) => (
                 <div
                   key={item.id}
                   className="flex justify-between p-1 items-end"
                 >
                   <div className="font-bold text-neutral-600 text-2xl">
-                    {item.name}
+                    {item.koreanName}
                   </div>
-                  <div className="text-neutral-400">{item.country}</div>
+                  <div className="text-neutral-400">
+                    {item.countryKoreanName}
+                  </div>
                 </div>
               ))}
             </div>
