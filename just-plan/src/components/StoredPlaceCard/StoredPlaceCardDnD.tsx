@@ -3,13 +3,32 @@ import Image from "next/image";
 import { Dialog, DialogTrigger } from "../dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
 import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
-import { IProps } from "./StoredPlaceCard.types";
+// import { IProps } from "./StoredPlaceCard.types";
 import { Button } from "../Button";
+import { ILocationInfo } from "@/types/plan.types";
+import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
+import { cn } from "@/lib/utils";
 
-export const StoredPlaceCard = ({ item }: IProps) => {
+export interface IProps {
+  item: ILocationInfo;
+  provided: DraggableProvided,
+  snapshot: DraggableStateSnapshot
+}
+
+export const StoredPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
   const { id, date, image, title, category, address, time } = item;
 
   return (
+    <div
+    ref={provided.innerRef}
+    {...provided.draggableProps}
+    {...provided.dragHandleProps}
+    className={cn(
+      snapshot.isDragging
+        ? "bg-opacity-90 shadow-2xl shadow-gray-400"
+        : ""
+    )}
+  >
     <Dialog>
       <DialogTrigger asChild className="hover:cursor-pointer">
         <div className="flex relative flex-col w-full hover:cursor-pointer">
@@ -41,5 +60,6 @@ export const StoredPlaceCard = ({ item }: IProps) => {
       </DialogTrigger>
       <DetailPlace />
     </Dialog>
+    </div>
   );
 };

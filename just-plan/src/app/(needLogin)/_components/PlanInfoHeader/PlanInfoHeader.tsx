@@ -1,9 +1,9 @@
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/dialog";
 import { PlanInfo } from "@/mocks";
 import Image from "next/image";
 import React, { useState } from "react";
 import EditPlanInfoModal from "../EditPlanInfoModal/EditPlanInfoModal";
-import { Button } from "@/components/ui/Button";
+import { Button } from "@/components/Button";
 import ShowMoney from "../ShowMoney/ShowMoney";
 import { IPlanInfo } from "@/types/plan.types";
 import { useRouter, useSearchParams } from "next/navigation";
