@@ -39,6 +39,7 @@ export interface IPlan {
 }
 
 export interface IPlanInfoDetail {
+  planId: string;
   budget: { card: number; cash: number };
   endDate: string;
   expense: {
@@ -68,4 +69,25 @@ export interface IPlanInfoDetail {
     name: string;
     owner: boolean;
   }[];
+}
+
+export interface IModifyPlanInfo {
+  planId: string;
+  title: string;
+  tags: string[];
+  startDate: string;
+  endDate: string;
+  published: boolean;
+  budget: {
+    cash: number;
+    card: number;
+  };
+  useExpense: boolean;
+  expense: {
+    food: number;
+    transportation: number;
+    loadging: number;
+    shopping: number;
+    etc: number;
+  };
 }

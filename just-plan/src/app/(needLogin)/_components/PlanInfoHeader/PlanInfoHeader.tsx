@@ -5,13 +5,27 @@ import React, { useState } from "react";
 import EditPlanInfoModal from "../EditPlanInfoModal/EditPlanInfoModal";
 import { Button } from "@/components/Button";
 import ShowMoney from "../ShowMoney/ShowMoney";
-import { IPlanInfo, IPlanInfoDetail } from "@/types/plan.types";
+import {
+  IModifyPlanInfo,
+  IPlanInfo,
+  IPlanInfoDetail,
+} from "@/types/plan.types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IPlanInfoHeader } from "./PlanInfoHeader.types";
 
 export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
-  const { region, startDate, endDate, title, tags, budget } = planInfo;
-  const [info, setInfo] = useState<IPlanInfoDetail>(planInfo);
+  // const { region, startDate, endDate, title, tags, budget } = planInfo;
+  const [info, setInfo] = useState<IModifyPlanInfo>({
+    planId: planInfo.planId,
+    title: planInfo.title,
+    tags: planInfo.tags,
+    startDate: planInfo.startDate,
+    endDate: planInfo.endDate,
+    published: planInfo.published,
+    budget: planInfo.budget,
+    useExpense: planInfo.useExpense,
+    expense: planInfo.expense,
+  });
   const router = useRouter();
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
@@ -23,6 +37,12 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
   const handleSave = () => {
     router.push(`/detail-plan?planId=${planId}&day=`);
   };
+
+  const onSubmitModify = (modifyInfo: IModifyPlanInfo) => {
+    console.log("우왕 업데이트!", modifyInfo);
+    setInfo(modifyInfo);
+  };
+
   return (
     <div className="">
       <div className="flex items-center">
@@ -32,15 +52,15 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
           height={25}
           alt="비행기 아이콘"
         />
-        <div className="ml-2">{region.koreanName}</div>
+        <div className="ml-2">{planInfo.region.koreanName}</div>
         <div className="text-xs ml-28">
-          {startDate}~{endDate}
+          {info.startDate}~{info.endDate}
         </div>
       </div>
       <div className="flex">
         <div className="flex items-center flex-1">
           <div className="font-bold text-2xl sm:text-3xl my-2 sm:my-3 mr-5">
-            {title}
+            {info.title}
           </div>
           {isModify && (
             <Dialog>
@@ -52,7 +72,7 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
                   height={27}
                 />
               </DialogTrigger>
-              <EditPlanInfoModal info={info} setInfo={setInfo} />
+              <EditPlanInfoModal info={info} onSubmitModify={onSubmitModify} />
             </Dialog>
           )}
         </div>
@@ -64,7 +84,7 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
 
       <div className="flex">
         <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
-          {tags.map((tag) => (
+          {info.tags.map((tag) => (
             <div key={tag}># {tag}</div>
           ))}
         </div>
@@ -86,7 +106,7 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
           </Button>
         )}
       </div>
-      <ShowMoney cash={budget.cash} card={budget.card} />
+      <ShowMoney cash={info.budget.cash} card={info.budget.card} />
     </div>
   );
 };
