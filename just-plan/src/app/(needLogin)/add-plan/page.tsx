@@ -1,14 +1,14 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Card";
 import { Progress } from "@/components/progress";
-import { useAtomValue } from "jotai";
-import { addPlanSetpAtom, mbtiStepAtom } from "@/store/mbti-test.atoms";
-import { fake_mock } from "@/mocks";
 import { SetStateAction, useEffect, useState } from "react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
+import { DateRange } from "react-day-picker";
+import { addDays } from "date-fns";
+
 const NameInput = ({ onNextStep }: any) => {
   const [name, setName] = useState("");
 
@@ -43,7 +43,6 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
   };
 
   const handleResultClick = (result: any) => {
-    // 사용자가 리스트 항목을 클릭하면 해당 항목을 부모 컴포넌트로 전달합니다.
     onResultSelect(result);
   };
   const handleSearch = () => {
@@ -75,19 +74,37 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
   );
 };
 
-const DatePicker = ({ selectedDate, onPreviousStep, onSelectDate }: any) => {
-  const [dateRange, setDateRange] = useState(selectedDate);
+const DatePicker = ({
+  planName,
+  searchResults,
+  onPreviousStep,
+  onSelectDate,
+  onSelectExpenses,
+}: any) => {
+  const [expectedExpenses, setExpectedExpenses] = useState("");
+
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
+  });
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = event.target.value;
+    setExpectedExpenses(inputValue);
+  };
 
   const handleNextStep = () => {
-    //DateRangePicker에서 데이터 연동해야함
-    onSelectDate(dateRange);
+    onSelectDate(date);
+    onSelectExpenses(expectedExpenses);
+
+    //생성 api 연동 부분
   };
+
   return (
     <div className="flex flex-col gap-5">
       <Label>여행 기간은 어떻게 되시나요?</Label>
-      <DateRangePicker />
+      <DateRangePicker date={date} setDate={setDate} />
       <Label>예상 여행 경비는?</Label>
-      <Input />
+      <Input type="text" onChange={handleInputChange} />
       <Button onClick={onPreviousStep}>이전</Button>
       <Button onClick={handleNextStep}>다음</Button>
     </div>
@@ -98,8 +115,8 @@ const Page = () => {
   const [name, setName] = useState("");
   const [searchResults, setSearchResults] = useState([]);
   const [selectedDate, setSelectedDate] = useState("");
+  const [expectedExpenses, setExpectedExpenses] = useState("");
   const progressValue = (step / 3) * 100;
-  console.log(selectedDate);
   const handleNextStep = (data: any) => {
     if (step === 1) {
       setName(data);
@@ -111,9 +128,8 @@ const Page = () => {
     setStep(step - 1);
   };
   const handleResultSelect = (selectedResult: SetStateAction<never[]>) => {
-    // 사용자가 리스트 항목을 선택하면 해당 항목을 searchResult 값으로 설정합니다.
     setSearchResults(selectedResult);
-    setStep(step + 1); // 다음 단계로 진행합니다.
+    setStep(step + 1);
   };
   return (
     <div className=" flex justify-center items-center">
@@ -133,9 +149,14 @@ const Page = () => {
             )}
             {step === 3 && (
               <DatePicker
+                planName={name}
+                searchResults={searchResults}
                 selectedDate={selectedDate}
                 onPreviousStep={handlePreviousStep}
                 onSelectDate={(date: any) => setSelectedDate(date)}
+                onSelectExpenses={(expenses: any) =>
+                  setExpectedExpenses(expenses)
+                }
               />
             )}
           </CardContent>
