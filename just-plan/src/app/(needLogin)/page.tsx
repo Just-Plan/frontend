@@ -12,11 +12,6 @@ import {
   CarouselPrevious,
 } from "@/components/Carousel";
 import { useRouter } from "next/navigation";
-import {
-  MbtiCardContent,
-  PopularCardContent,
-  SearchResult,
-} from "../../mocks/Main";
 import { HomePageConfig, MBTI } from "@/constants";
 import { getCities } from "./_lib/getCities";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
@@ -63,28 +58,26 @@ const Home = () => {
   } = useInfiniteQuery({
     queryKey: ["infinitePlan"],
     queryFn: ({ pageParam }) => getPlanList(pageParam, 6),
-    getNextPageParam: (lastPage, allPages) => {
+    getNextPageParam: (lastPage) => {
       if (lastPage.data?.currentPage < lastPage.data?.totalPages) {
         return lastPage.data.currentPage + 1;
       }
-      return undefined; // false 로 반환하면 true가 된다! undefined를 반환해줘야 false로 인식한다! 뭔 이런 경우가!
+      return undefined;
     },
     initialPageParam: 0,
   });
 
   const { ref, inView } = useInView({
-    threshold: 0,
-    delay: 500,
+    threshold: 0.4,
+    delay: 0,
   });
   console.log("hasNextPage", hasNextPage);
 
   useEffect(() => {
-    console.log("hasNextPage", hasNextPage);
-
-    if (inView) {
-      !isFetching && hasNextPage && fetchNextPage();
+    if (inView && !isFetching && hasNextPage) {
+      fetchNextPage();
     }
-  }, [inView, isFetching, fetchNextPage, hasNextPage]);
+  }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
   if (isLoading || popularPlanisLoading) {
     return <div>로딩중</div>;
@@ -93,11 +86,6 @@ const Home = () => {
   if (error || popularPlanError) {
     return <div>에러</div>;
   }
-
-  console.log("popularPlanList", popularPlanList);
-
-  console.log("일정 리스트: ", planList);
-  console.log("일정 리스트: ", planList?.pages);
 
   return (
     <div className="py-10 px-5 sm:px-60 sm:py-32">
@@ -206,7 +194,7 @@ const Home = () => {
             )),
           )}
         </div>
-        <div ref={ref} style={{ height: 50 }} />
+        <div ref={ref} className="h-10 bg-red-200" />
       </div>
     </div>
   );
