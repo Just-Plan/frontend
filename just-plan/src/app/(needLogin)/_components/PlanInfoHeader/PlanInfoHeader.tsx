@@ -54,7 +54,7 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
         />
         <div className="ml-2">{planInfo.region.koreanName}</div>
         <div className="text-xs ml-28">
-          {info.startDate}~{info.endDate}
+          {info.startDate.split("T")[0]}~{info.endDate.split("T")[0]}
         </div>
       </div>
       <div className="flex">
