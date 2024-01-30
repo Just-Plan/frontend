@@ -1,6 +1,6 @@
 "use client";
-import { Card, CardHeader, CardTitle } from "@/components/ui/Card";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardHeader, CardTitle } from "@/components/Card";
+import { Progress } from "@/components/progress";
 import { MbtiSelectSection } from "./components";
 import { useAtomValue } from "jotai";
 import { mbtiStepAtom } from "@/store/mbti-test.atoms";

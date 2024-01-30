@@ -21,7 +21,8 @@ import HouseholdContent from "./_components/HouseholdContent/HouseholdContent";
 const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
   const [addHashTag, setAddHashTag] = useState<string>("");
   const [isCheckedHousehold, setIsCheckedHousehold] = useState(false);
-  const { date, title, hashTags, cache, card } = info;
+  // const { date, title, hashTags, cache, card } = info;
+  const { startDate, endDate, title, tags, budget } = info;
 
   const onChangeMoney = (e: ChangeEvent<HTMLInputElement>) => {
     const [name, value] = [e.target.name, e.target.value];
@@ -33,20 +34,20 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
   };
 
   const handleAddHashTag = (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
   ) => {
     setInfo({
       ...info,
-      hashTags: [...info.hashTags, addHashTag],
+      tags: [...info.tags, addHashTag],
     });
     setAddHashTag("");
   };
 
   const handleDeleteHashTag = (tag: string) => {
-    const newHashTagList = info.hashTags.filter((item) => item !== tag);
+    const newHashTagList = info.tags.filter((item) => item !== tag);
     setInfo({
       ...info,
-      hashTags: newHashTagList,
+      tags: newHashTagList,
     });
   };
 
@@ -78,7 +79,7 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
             <Button onClick={handleAddHashTag}>추가</Button>
           </div>
           <div className="flex gap-5 -mt-2 mb-4 ml-2">
-            {hashTags.map((tag) => (
+            {tags.map((tag) => (
               <div key={tag} className="flex gap-0.5">
                 <div className="text-blue-500">#{tag}</div>
                 <div
@@ -110,8 +111,8 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
                 />
                 <Input
                   variant={"showMoney"}
-                  name="cache"
-                  value={cache}
+                  name="cash"
+                  value={budget.cash}
                   onChange={onChangeMoney}
                 />
               </div>
@@ -126,7 +127,7 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
                 <Input
                   variant={"showMoney"}
                   name="card"
-                  value={card}
+                  value={budget.card}
                   onChange={onChangeMoney}
                 />
               </div>
@@ -136,7 +137,7 @@ const EditPlanInfoModal = ({ info, setInfo }: PropsWithChildren<IProps>) => {
                 </div>
                 <Input
                   variant={"totalMoney"}
-                  value={Number(cache) + Number(card)}
+                  value={Number(budget.cash) + Number(budget.card)}
                   readOnly
                 />
               </div>

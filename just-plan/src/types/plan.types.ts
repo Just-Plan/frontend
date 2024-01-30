@@ -37,3 +37,35 @@ export interface IPlan {
   count: number;
   date: string;
 }
+
+export interface IPlanInfoDetail {
+  budget: { card: number; cash: number };
+  endDate: string;
+  expense: {
+    food: number;
+    transportation: number;
+    loadging: number;
+    shopping: number;
+    etc: number;
+  };
+  originPlan: any;
+  published: boolean;
+  region: {
+    countryEnglishName: string;
+    countryKoreanName: string;
+    englishName: string;
+    id: number;
+    introduction: string;
+    koreanName: string;
+  };
+  startDate: string;
+  tags: string[];
+  title: string;
+  useExpense: boolean;
+  users: {
+    email: string;
+    mbti: string;
+    name: string;
+    owner: boolean;
+  }[];
+}

@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/Button";
-import { CardContent, CardFooter } from "@/components/ui/Card";
+import { Button } from "@/components/Button";
+import { CardContent, CardFooter } from "@/components/Card";
 import Image from "next/image";
 import { useAtom } from "jotai";
 import { mbtiStepAtom } from "@/store/mbti-test.atoms";

@@ -5,12 +5,13 @@ import React, { useState } from "react";
 import EditPlanInfoModal from "../EditPlanInfoModal/EditPlanInfoModal";
 import { Button } from "@/components/Button";
 import ShowMoney from "../ShowMoney/ShowMoney";
-import { IPlanInfo } from "@/types/plan.types";
+import { IPlanInfo, IPlanInfoDetail } from "@/types/plan.types";
 import { useRouter, useSearchParams } from "next/navigation";
+import { IPlanInfoHeader } from "./PlanInfoHeader.types";
 
-export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
-  const { location, date, title, hashTags, cache, card } = PlanInfo;
-  const [info, setInfo] = useState<IPlanInfo>(PlanInfo);
+export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
+  const { region, startDate, endDate, title, tags, budget } = planInfo;
+  const [info, setInfo] = useState<IPlanInfoDetail>(planInfo);
   const router = useRouter();
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
@@ -31,8 +32,10 @@ export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
           height={25}
           alt="비행기 아이콘"
         />
-        <div className="ml-2">{location}</div>
-        <div className="text-xs ml-28">{date}</div>
+        <div className="ml-2">{region.koreanName}</div>
+        <div className="text-xs ml-28">
+          {startDate}~{endDate}
+        </div>
       </div>
       <div className="flex">
         <div className="flex items-center flex-1">
@@ -61,7 +64,7 @@ export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
 
       <div className="flex">
         <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
-          {hashTags.map((tag) => (
+          {tags.map((tag) => (
             <div key={tag}># {tag}</div>
           ))}
         </div>
@@ -83,7 +86,7 @@ export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
           </Button>
         )}
       </div>
-      <ShowMoney cache={cache} card={card} />
+      <ShowMoney cash={budget.cash} card={budget.card} />
     </div>
   );
 };
