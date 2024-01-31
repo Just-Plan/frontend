@@ -83,6 +83,13 @@ const EditPlanInfoModal = ({
 
   console.log(isCheckedHousehold);
 
+  const onChangeCheck = () => {
+    setModifyInfo({
+      ...modifyInfo,
+      useExpense: !modifyInfo.useExpense
+    })
+  }
+
   return (
     <DialogContent className="w-90 sm:w-[450px] max-h-[40rem] overflow-y-auto overflow-x-hidden">
       <form onSubmit={handleSubmit} className="flex flex-col">
@@ -190,13 +197,13 @@ const EditPlanInfoModal = ({
                 여행 가계부 작성하기
               </Label>
               <Switch
-                checked={isCheckedHousehold}
-                onCheckedChange={setIsCheckedHousehold}
+                checked={modifyInfo.useExpense}
+                onCheckedChange={onChangeCheck}
                 id="household"
               />
             </div>
           </div>
-          {isCheckedHousehold && <HouseholdContent />}
+          {modifyInfo.useExpense && <HouseholdContent />}
         </DialogHeader>
         <DialogFooter className="m-auto mt-5">
           <DialogClose asChild>

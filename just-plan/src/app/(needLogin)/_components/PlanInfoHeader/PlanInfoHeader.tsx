@@ -12,9 +12,9 @@ import {
 } from "@/types/plan.types";
 import { useRouter, useSearchParams } from "next/navigation";
 import { IPlanInfoHeader } from "./PlanInfoHeader.types";
+import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
 
 export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
-  // const { region, startDate, endDate, title, tags, budget } = planInfo;
   const [info, setInfo] = useState<IModifyPlanInfo>({
     planId: planInfo.planId,
     title: planInfo.title,
@@ -29,6 +29,8 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
+  
+  const { mutate } = usePatchPlanInfo();
 
   const handleEdit = () => {
     router.push(`/modify?planId=${planId}&day=`);
@@ -41,6 +43,7 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
   const onSubmitModify = (modifyInfo: IModifyPlanInfo) => {
     console.log("우왕 업데이트!", modifyInfo);
     setInfo(modifyInfo);
+    mutate(modifyInfo);
   };
 
   return (
