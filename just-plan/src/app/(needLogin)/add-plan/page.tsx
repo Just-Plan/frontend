@@ -17,7 +17,6 @@ const NameInput = ({ onNextStep }: any) => {
   };
 
   const handleNextStep = () => {
-    // 이름 입력 후 다음 단계로 진행합니다.
     onNextStep(name);
   };
 
@@ -38,11 +37,11 @@ const NameInput = ({ onNextStep }: any) => {
 const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
-  const handleSearchInputChange = (e: any) => {
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleResultClick = (result: any) => {
+  const handleResultClick = (result: string) => {
     onResultSelect(result);
   };
   const handleSearch = () => {
@@ -77,10 +76,18 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
 const DatePicker = ({
   planName,
   searchResults,
+  selectedDate,
   onPreviousStep,
   onSelectDate,
   onSelectExpenses,
-}: any) => {
+}: {
+  planName: string;
+  searchResults: string[];
+  selectedDate: string;
+  onPreviousStep: () => void;
+  onSelectDate: (date: DateRange | undefined) => void;
+  onSelectExpenses: (expenses: string) => void;
+}) => {
   const [expectedExpenses, setExpectedExpenses] = useState("");
 
   const [date, setDate] = useState<DateRange | undefined>({
