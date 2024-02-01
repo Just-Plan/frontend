@@ -18,6 +18,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { ILocationInfo } from "@/types/plan.types";
 import { useSearchPlace } from "@/hooks/useSearchPlace";
 import { IPlace } from "@/types/place.types";
+import { useDebounde } from "@/hooks";
 
 export const AddPlaceModal = () => {
   const [storedPlace, setStoredPlace] = useState<ILocationInfo[]>([]);
@@ -27,14 +28,10 @@ export const AddPlaceModal = () => {
   const cityId = 1; // 제주도. 임시!
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-    console.log(e.target.value);
   }
 
-  // 검색 api 구현
-
-  // 디바운스 구현하자!
-  const {searchResultData, error, isLoading} = useSearchPlace(cityId, search);
-  console.log('검색 결과 출력!', searchResultData);
+  const debouncedValue = useDebounde(search, 400);
+  const {searchResultData, error, isLoading} = useSearchPlace(cityId, debouncedValue);
 
   if (error) return <div>에러</div>
   if (isLoading) return <div>로딩중</div>
