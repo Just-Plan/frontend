@@ -16,6 +16,7 @@ import { Spinner } from "@/components/Spinner";
 import { useEffect, useState } from "react";
 import { fetchComposed } from "@/lib/returnFetch";
 import { useForm } from "react-hook-form";
+import Link from "next/link";
 export const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [authId, setAuthId] = useState("");
@@ -134,9 +135,15 @@ export const SignUpForm = () => {
               회원가입하기
             </Button>
             <div className="flex justify-center ">
-              <Button type="button" variant={"link"} className="text-slate-500">
-                로그인
-              </Button>
+              <Link href={"/signin"}>
+                <Button
+                  type="button"
+                  variant={"link"}
+                  className="text-slate-500"
+                >
+                  로그인
+                </Button>
+              </Link>
             </div>
           </div>
           <Button
