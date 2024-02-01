@@ -7,14 +7,14 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { fetchComposed } from "@/lib/returnFetch";
-import { atom, useAtom } from "jotai";
+import { atom, useAtom, useSetAtom } from "jotai";
 import { loggedInAtom } from "@/store/auth.atom";
 interface FormData {
   email: string;
   password: string;
 }
 export const SignInForm = () => {
-  const [, setLoggedIn] = useAtom(loggedInAtom);
+  const setLoggedIn = useSetAtom(loggedInAtom);
   const {
     register,
     handleSubmit,
