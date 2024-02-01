@@ -82,14 +82,8 @@ export const SignUpForm = () => {
         <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label variant={"subTitle"} htmlFor="name">
-                이름
-              </Label>
-              <Input
-                id="name"
-                placeholder="이름을 입력해주세요"
-                {...register("name")}
-              />
+              <Label htmlFor="email">이름</Label>
+              <Input id="email" placeholder="이름을 입력해주세요" />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label variant={"subTitle"} htmlFor="email">
@@ -113,26 +107,8 @@ export const SignUpForm = () => {
               </div>
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label variant={"subTitle"} htmlFor="password">
-                비밀번호
-              </Label>
-              <Input
-                id="password"
-                placeholder="비밀번호를 입력해주세요"
-                type="password"
-                {...register("password", {
-                  required: "비밀번호를 입력하세요",
-                  minLength: {
-                    value: 8,
-                    message: "비밀번호는 최소 8자 이상이어야 합니다",
-                  },
-                  pattern: {
-                    value: /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
-                    message:
-                      "비밀번호는 최소 8자 이상이어야 하며, 특수 문자를 포함해야 합니다",
-                  },
-                })}
-              />
+              <Label htmlFor="password">비밀번호</Label>
+              <Input id="password" placeholder="비밀번호를 입력해주세요" />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label variant={"subTitle"} htmlFor="passwordConfirm">
