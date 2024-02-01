@@ -1,20 +1,21 @@
 import { Dialog, DialogTrigger } from "@/components/dialog";
-import { PlanInfo } from "@/mocks";
 import Image from "next/image";
 import React, { useState } from "react";
 import EditPlanInfoModal from "../EditPlanInfoModal/EditPlanInfoModal";
 import { Button } from "@/components/Button";
 import ShowMoney from "../ShowMoney/ShowMoney";
-import {
+import type {
   IModifyPlanInfo,
-  IPlanInfo,
-  IPlanInfoDetail,
 } from "@/types/plan.types";
 import { useRouter, useSearchParams } from "next/navigation";
-import { IPlanInfoHeader } from "./PlanInfoHeader.types";
+import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
 import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
+import {format} from "date-fns";
 
 export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const planId = searchParams.get("planId");
   const [info, setInfo] = useState<IModifyPlanInfo>({
     planId: planInfo.planId,
     title: planInfo.title,
@@ -26,22 +27,18 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
     useExpense: planInfo.useExpense,
     expense: planInfo.expense,
   });
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const planId = searchParams.get("planId");
   
   const { mutate } = usePatchPlanInfo();
 
-  const handleEdit = () => {
+  const onMoveToEdit = () => {
     router.push(`/modify?planId=${planId}&day=`);
   };
 
-  const handleSave = () => {
+  const onMoveToSave = () => {
     router.push(`/detail-plan?planId=${planId}&day=`);
   };
 
   const onSubmitModify = (modifyInfo: IModifyPlanInfo) => {
-    console.log("우왕 업데이트!", modifyInfo);
     setInfo(modifyInfo);
     mutate(modifyInfo);
   };
@@ -57,7 +54,7 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
         />
         <div className="ml-2">{planInfo.region.koreanName}</div>
         <div className="text-xs ml-28">
-          {info.startDate.split("T")[0]}~{info.endDate.split("T")[0]}
+          {format(info.startDate, "yyyy-MM-dd")} ~ {format(info.endDate, "yyyy-MM-dd")}
         </div>
       </div>
       <div className="flex">
@@ -95,7 +92,7 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
           <Button
             variant="outline"
             className="w-12 sm:w-28"
-            onClick={handleSave}
+            onClick={onMoveToSave}
           >
             저장
           </Button>
@@ -103,7 +100,7 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
           <Button
             variant="outline"
             className="w-12 sm:w-28"
-            onClick={handleEdit}
+            onClick={onMoveToEdit}
           >
             편집하기
           </Button>

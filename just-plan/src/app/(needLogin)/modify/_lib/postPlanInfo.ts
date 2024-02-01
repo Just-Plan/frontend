@@ -1,4 +1,4 @@
-import { IModifyPlanInfo } from "@/types/plan.types";
+import type { IModifyPlanInfo } from "@/types/plan.types";
 import { useMutation } from "@tanstack/react-query";
 
 const patchPlanInfo = async (info: IModifyPlanInfo) => {
@@ -6,7 +6,7 @@ const patchPlanInfo = async (info: IModifyPlanInfo) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      'authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG5hdmVyLmNvbSIsImlhdCI6MTcwNjY5MjM5NywiZXhwIjoxNzA2Njk5NTk3fQ.M27ZH-A5TL7EXmtVlQf6u7lFQbwyAepYYbKaFRFrtNA`,
+      'authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG5hdmVyLmNvbSIsImlhdCI6MTcwNjc1MDYzNiwiZXhwIjoxNzA2NzU3ODM2fQ.ezPrg-hBm284pOcUR8yZ6Ib9NmtMz-bLFicLaDnCidU`,
     },
     body: JSON.stringify({
       ...info

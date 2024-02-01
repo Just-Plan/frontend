@@ -41,7 +41,7 @@ export interface IPlan {
 export interface IPlanInfoDetail {
   planId: string;
   budget: { card: number; cash: number };
-  endDate: string;
+  endDate: Date;
   expense: {
     food: number;
     transportation: number;
@@ -59,7 +59,7 @@ export interface IPlanInfoDetail {
     introduction: string;
     koreanName: string;
   };
-  startDate: string;
+  startDate: Date;
   tags: string[];
   title: string;
   useExpense: boolean;
@@ -75,8 +75,8 @@ export interface IModifyPlanInfo {
   planId: string;
   title: string;
   tags: string[];
-  startDate: string;
-  endDate: string;
+  startDate: Date;
+  endDate: Date;
   published: boolean;
   budget: {
     cash: number;

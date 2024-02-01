@@ -18,20 +18,23 @@ import {
   ChangeEvent,
   FormEvent,
   MouseEvent,
-  PropsWithChildren,
   useState,
 } from "react";
 import type { IProps } from "./EditPlanInfoModal.types";
 import HouseholdContent from "./_components/HouseholdContent/HouseholdContent";
+import { DateRange } from "react-day-picker";
+import { add } from "date-fns";
 
 const EditPlanInfoModal = ({
   info,
   onSubmitModify,
-}: PropsWithChildren<IProps>) => {
+}: IProps) => {
   const [addHashTag, setAddHashTag] = useState<string>("");
-  const [isCheckedHousehold, setIsCheckedHousehold] = useState(false);
   const [modifyInfo, setModifyInfo] = useState(info);
-  // const { startDate, endDate, title, tags, budget } = info;
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: modifyInfo.startDate,
+    to: modifyInfo.endDate,
+  });
 
   const onChangeMoney = (e: ChangeEvent<HTMLInputElement>) => {
     const [name, value] = [e.target.name, e.target.value];
@@ -52,10 +55,9 @@ const EditPlanInfoModal = ({
     });
   };
 
-  const handleAddHashTag = (
-    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+  const onAddHashTag = (
+    e: MouseEvent<HTMLButtonElement>,
   ) => {
-    console.log("원래:", info);
     if (addHashTag === "") return;
     setModifyInfo({
       ...modifyInfo,
@@ -64,24 +66,13 @@ const EditPlanInfoModal = ({
     setAddHashTag("");
   };
 
-  const handleDeleteHashTag = (tag: string) => {
+  const onDeleteHashTag = (tag: string) => {
     const newHashTagList = info.tags.filter((item) => item !== tag);
     setModifyInfo({
       ...modifyInfo,
       tags: newHashTagList,
     });
   };
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("아니 이거 좀 확인해보자", modifyInfo);
-    // 돈은 저장될 때 앞부분의 0 빼기
-    onSubmitModify(modifyInfo);
-    // api 요청 보내기
-    // setInfo 반영?
-  };
-
-  console.log(isCheckedHousehold);
 
   const onChangeCheck = () => {
     setModifyInfo({
@@ -90,9 +81,22 @@ const EditPlanInfoModal = ({
     })
   }
 
+  const onSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const newModifyInfo = {
+      ...modifyInfo,
+      startDate: add(date?.from as Date, {hours: 9}),
+      endDate: add(date?.to as Date, {hours: 9})
+    }
+    
+    // api 요청 보내기
+    onSubmitModify(newModifyInfo);
+  };
+
   return (
     <DialogContent className="w-90 sm:w-[450px] max-h-[40rem] overflow-y-auto overflow-x-hidden">
-      <form onSubmit={handleSubmit} className="flex flex-col">
+      <form onSubmit={onSubmit} className="flex flex-col">
         <DialogHeader>
           <DialogTitle className="mb-3">여행 정보 수정</DialogTitle>
           <div className="m-1 sm:m-2">
@@ -117,7 +121,7 @@ const EditPlanInfoModal = ({
                 value={addHashTag}
                 onChange={(e) => setAddHashTag(e.target.value)}
               />
-              <Button type="button" onClick={handleAddHashTag}>
+              <Button type="button" onClick={onAddHashTag}>
                 추가
               </Button>
             </div>
@@ -127,7 +131,7 @@ const EditPlanInfoModal = ({
                   <div className="text-blue-500">#{tag}</div>
                   <div
                     className="hover:cursor-pointer hover:bg-gray-200 w-5 h-5 flex justify-center rounded-full"
-                    onClick={() => handleDeleteHashTag(tag)}
+                    onClick={() => onDeleteHashTag(tag)}
                   >
                     x
                   </div>
@@ -138,7 +142,10 @@ const EditPlanInfoModal = ({
               여행 날짜
             </Label>
             <DateRangePicker
-              className={"bg-ourGreen/80 rounded-3xl mb-3 mt-1"}
+              // startDate={modifyInfo.startDate}
+              // endDate={modifyInfo.endDate}
+              date={date}
+              setDate={setDate}
             />
             <Label htmlFor="hashtag" variant="subTitle">
               여행 예산
