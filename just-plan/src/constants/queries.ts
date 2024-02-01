@@ -15,7 +15,7 @@ export const placeKeys = {
   all: ['places'] as const,
   place: (id: number) => [...placeKeys.all, 'place', id] as const, // 단일 장소 조회
   lists: (id: number) => [...placeKeys.all, 'lists', id] as const, // planId의 전체 장소 조회
-  search: (filters: string) => [...placeKeys.all, 'search', filters] as const, // 장소 검색
+  search: (cityId: number, filters: string) => [...placeKeys.all, 'search', cityId, filters] as const, // 장소 검색
 }
 
 // mbti

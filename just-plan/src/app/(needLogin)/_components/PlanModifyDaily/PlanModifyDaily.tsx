@@ -22,6 +22,10 @@ const PlanModifyDaily = ({items, setItems}:{
   setItems: (items: ITems) => void;
 } ) => {
 
+
+  // 장소 보관함 변수
+  const [storedPlace, setStoredPlace] = useState<ILocationInfo[]>([]);
+
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
 
@@ -82,7 +86,6 @@ const PlanModifyDaily = ({items, setItems}:{
           {StoredPlace.map((item) => (
             <StoredPlaceMiniCard key={item.id} place={item} />
           ))}
-
         </div>
         <div className="flex gap-5">
           <DayPlanCardDnD item={Plan[0]} items={items} setItems={setItems} />

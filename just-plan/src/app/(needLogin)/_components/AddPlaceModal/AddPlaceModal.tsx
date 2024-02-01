@@ -10,14 +10,34 @@ import {
   DialogTitle,
 } from "@/components/dialog";
 import Image from "next/image";
-import { useState } from "react";
 import { StoredPlaceMiniCard } from "..";
 import { Input } from "@/components/Input";
 import { StoredPlaceCard } from "@/components";
 import { StoredPlace } from "@/mocks";
+import { ChangeEvent, useEffect, useState } from "react";
+import { ILocationInfo } from "@/types/plan.types";
+import { useSearchPlace } from "@/hooks/useSearchPlace";
+import { IPlace } from "@/types/place.types";
 
 export const AddPlaceModal = () => {
-  const [bg, setBG] = useState("bg-white");
+  const [storedPlace, setStoredPlace] = useState<ILocationInfo[]>([]);
+  const [searchResult, setSearchResult] = useState([]);
+  const [search, setSearch] = useState("");
+
+  const cityId = 1; // 제주도. 임시!
+  const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+    console.log(e.target.value);
+  }
+
+  // 검색 api 구현
+
+  // 디바운스 구현하자!
+  const {searchResultData, error, isLoading} = useSearchPlace(cityId, search);
+  console.log('검색 결과 출력!', searchResultData);
+
+  if (error) return <div>에러</div>
+  if (isLoading) return <div>로딩중</div>
 
   return (
     <DialogContent className="max-w-md sm:max-w-7xl max-h-[45rem] sm:max-h-[50rem] bg-ourGreen flex flex-col items-center">
@@ -42,22 +62,16 @@ export const AddPlaceModal = () => {
             {StoredPlace.map((item) => (
               <StoredPlaceMiniCard key={item.id} place={item} />
             ))}
-            {StoredPlace.map((item) => (
-              <StoredPlaceMiniCard key={item.id} place={item} />
-            ))}
           </div>
         </div>
 
         <div className="flex gap-5 flex-col">
           <div>
-            <Input placeholder="떠나고 싶은 장소를 입력해주세요" />
+            <Input placeholder="떠나고 싶은 장소를 입력해주세요" value={search} onChange={onChangeSearch} />
           </div>
           <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto">
-            {StoredPlace.map((item) => (
-              <StoredPlaceCard key={item.id} item={item} />
-            ))}
-            {StoredPlace.map((item) => (
-              <StoredPlaceCard key={item.id} item={item} />
+            {searchResultData.data.map((item: IPlace) => (
+              <StoredPlaceCard key={item.name} item={item} />
             ))}
           </div>
         </div>
