@@ -1,8 +1,12 @@
 import returnFetch, { ReturnFetch } from "return-fetch";
 
+const accessToken = localStorage.getItem("accessToken");
 const fetchExtended = returnFetch({
   baseUrl: "http://13.125.188.226:8080",
-  headers: { Accept: "application/json" },
+  headers: {
+    Accept: "application/json",
+    Authorization: `Bearer ${accessToken}`,
+  },
   interceptors: {
     request: async (args) => {
       console.log("before sending request");
