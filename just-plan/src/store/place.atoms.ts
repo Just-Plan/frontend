@@ -14,11 +14,10 @@ export const storedPlace = atom<IPlace[]>([
   },
 ]);
 
-// day1, day2.... -> 어떻게 관리해야하지?
-interface IDayPlan {
-  1: IPlace[],
-  2: IPlace[]
+export interface IDayPlan {
+  [key: string]: IPlace[]
 }
+
 export const addedPlace = atom<IDayPlan>({
   1: [
     {

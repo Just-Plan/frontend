@@ -11,7 +11,7 @@ export interface IPlan {
 }
 
 export interface IProps {
-  item: IPlan;
+  day: string;
 }
 
 export interface IDnDProps {

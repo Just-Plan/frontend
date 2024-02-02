@@ -11,12 +11,14 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
 import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
 import {format} from "date-fns";
+import { planInfoAtom } from "@/store";
+import { useAtomValue } from "jotai";
 
-export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
+export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
-  // const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
+  const planInfo = useAtomValue(planInfoAtom);
 
   const [info, setInfo] = useState<IModifyPlanInfo>({
     planId: planInfo.planId,

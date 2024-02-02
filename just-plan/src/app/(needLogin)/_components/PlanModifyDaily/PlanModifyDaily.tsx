@@ -1,6 +1,5 @@
 import { Dialog, DialogTrigger } from "@/components/dialog";
 import { AddPlaceModal, StoredPlaceMiniCard } from "..";
-import { Plan } from "@/mocks";
 import { PlanDayHeader } from "../PlanDayHeader/PlanDayHeader";
 import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
@@ -13,10 +12,6 @@ const PlanModifyDaily = ({day}: {day: string}) => {
 
   const [stored, setStored] = useAtom(storedPlace);
   const [added, setAdded] = useAtom(addedPlace);
-  // 해당하는 날짜만 added에서 관리하기
-  const day2 = "1";
-
-  if (day!=="1" && day!=="2") return;
   
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
@@ -77,7 +72,6 @@ const PlanModifyDaily = ({day}: {day: string}) => {
                 )}
               </Draggable>
               ))}
-
               {provided.placeholder}
             </div>
             )}
@@ -85,21 +79,19 @@ const PlanModifyDaily = ({day}: {day: string}) => {
 
       </div>
       <div className="flex flex-col w-full">
-        {/* // days 변경 필요 */}
-        <PlanDayHeader days={Plan} isModify />
+        <PlanDayHeader isModify />
         <div className="flex bg-white mb-3 p-2 gap-3 rounded-xl overflow-x-auto sm:hidden">
           {stored.map((item) => (
             <StoredPlaceMiniCard key={item.name} place={item} />
           ))}
         </div>
         <div className="flex gap-5">
-          <DayPlanCardDnD dayPlan={added[day2]} day={day2} />
+          <DayPlanCardDnD dayPlan={added[day]} day={day} />
           <div className="bg-white w-full hidden sm:block">지도</div>
         </div>
       </div>
     </div>
     </DragDropContext>
-
   );
 };
 
