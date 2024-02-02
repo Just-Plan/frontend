@@ -6,4 +6,9 @@ export interface IPlace {
   latitude: number,
   longitude: number,
   photoReference: string,
+  order?: number,
+  memo?: {
+    color: string,
+    text: string,
+  }
 }

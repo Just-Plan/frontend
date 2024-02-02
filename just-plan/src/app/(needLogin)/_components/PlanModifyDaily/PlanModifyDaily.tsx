@@ -1,41 +1,45 @@
 import { Dialog, DialogTrigger } from "@/components/dialog";
-import React, { useState } from "react";
 import { AddPlaceModal, StoredPlaceMiniCard } from "..";
-import { Plan, StoredPlace } from "@/mocks";
-import { StoredPlaceCard } from "@/components";
+import { Plan } from "@/mocks";
 import { PlanDayHeader } from "../PlanDayHeader/PlanDayHeader";
-import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
 import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
-import { ILocationInfo } from "@/types/plan.types";
 import { cn } from "@/lib/utils";
 import { StoredPlaceCardDnD } from "@/components/StoredPlaceCard/StoredPlaceCardDnD";
 import DayPlanCardDnD from "@/components/DayPlanCard/DayPlanCardDnD";
+import { useAtom } from "jotai";
+import { addedPlace, storedPlace } from "@/store/place.atoms";
 
-type TItemStatus = "stored" | "added";
+const PlanModifyDaily = ({day}: {day: string}) => {
 
-export type ITems = {
-  [key in TItemStatus]: ILocationInfo[];
-}
+  const [stored, setStored] = useAtom(storedPlace);
+  const [added, setAdded] = useAtom(addedPlace);
+  // 해당하는 날짜만 added에서 관리하기
+  const day2 = "1";
 
-const PlanModifyDaily = ({items, setItems}:{
-  items: ITems;
-  setItems: (items: ITems) => void;
-} ) => {
-
-
-  // 장소 보관함 변수
-  const [storedPlace, setStoredPlace] = useState<ILocationInfo[]>([]);
-
+  if (day!=="1" && day!=="2") return;
+  
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
 
-    const scourceKey = source.droppableId as TItemStatus;
-    const destinationKey = destination.droppableId as TItemStatus;
+    const sourceKey = source.droppableId;
+    const destinationKey = destination.droppableId;
 
-    const _items = JSON.parse(JSON.stringify(items)) as typeof items;
-    const [targetItem] = _items[scourceKey].splice(source.index, 1);
-    _items[destinationKey].splice(destination.index, 0, targetItem);
-    setItems(_items);
+    // 드래그 된 아이템 제거 및 저장
+    const itemToMove = sourceKey === "stored" ? stored.splice(source.index, 1)[0] : added[day].splice(source.index, 1)[0]
+
+    // 아이템을 새 위치에 삽입 
+    if (destinationKey === "stored") {
+      const newStored = [...stored];
+      newStored.splice(destination.index, 0, itemToMove)
+      setStored(newStored);
+    } else {
+      const newAdded = [...added[day]];
+      newAdded.splice(destination.index, 0, itemToMove);
+      setAdded({
+        ...added,
+        [day]: newAdded
+      })
+    }
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -62,14 +66,14 @@ const PlanModifyDaily = ({items, setItems}:{
               snapshot.isDraggingOver ? "shadow-lg" : ""
             )}
           >
-              {items["stored" as TItemStatus].map((item, index) => (
+              {stored.map((item, index) => (
                 <Draggable
-                key={item.id}
-                draggableId={item.id.toString()}
+                key={item.name} // id
+                draggableId={item.name.toString()} // id
                 index={index}
               >
                 {(provided, snapshot) => (
-                    <StoredPlaceCardDnD key={item.id} item={item} provided={provided} snapshot={snapshot} />
+                    <StoredPlaceCardDnD key={item.name} item={item} provided={provided} snapshot={snapshot} />
                 )}
               </Draggable>
               ))}
@@ -81,14 +85,15 @@ const PlanModifyDaily = ({items, setItems}:{
 
       </div>
       <div className="flex flex-col w-full">
+        {/* // days 변경 필요 */}
         <PlanDayHeader days={Plan} isModify />
         <div className="flex bg-white mb-3 p-2 gap-3 rounded-xl overflow-x-auto sm:hidden">
-          {StoredPlace.map((item) => (
-            <StoredPlaceMiniCard key={item.id} place={item} />
+          {stored.map((item) => (
+            <StoredPlaceMiniCard key={item.name} place={item} />
           ))}
         </div>
         <div className="flex gap-5">
-          <DayPlanCardDnD item={Plan[0]} items={items} setItems={setItems} />
+          <DayPlanCardDnD dayPlan={added[day2]} day={day2} />
           <div className="bg-white w-full hidden sm:block">지도</div>
         </div>
       </div>

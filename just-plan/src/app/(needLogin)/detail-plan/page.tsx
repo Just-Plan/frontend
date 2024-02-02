@@ -13,7 +13,6 @@ const Page = () => {
   const planId = searchParams.get("planId") as string;
   const day = searchParams.get("day");
 
-  // planId를 가져와서, api 요청을 받기!
   const {
     data: planInfo,
     error,
@@ -27,7 +26,6 @@ const Page = () => {
 
   if (isLoading) return <div>로딩중</div>;
   if (error) return <div>에러</div>;
-  console.log("여행 정보", planInfo.data);
 
   return (
     <div className="m-5 sm:m-10">

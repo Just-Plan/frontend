@@ -1,6 +1,5 @@
 import {
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/dialog";
@@ -30,7 +29,7 @@ const DetailPlace = () => {
           <div className="font-bold text-3xl">{title}</div>
           <div className="text-gray-400 text-sm font-normal">{engTitle}</div>
         </DialogTitle>
-        <DialogDescription className="flex flex-col sm:flex-row justify-between gap-6">
+        <div className="flex flex-col sm:flex-row justify-between gap-6">
           <div className="flex flex-1 flex-col">
             <Image
               src={image}
@@ -76,7 +75,7 @@ const DetailPlace = () => {
               ))}
             </div>
           </div>
-        </DialogDescription>
+        </div>
       </DialogHeader>
     </DialogContent>
   );

@@ -1,21 +1,22 @@
 "use client";
 import Image from "next/image";
-import { PropsWithChildren, useState } from "react";
-// import type { IProps } from "./AddedPlaceCard.types";
 import { Dialog, DialogTrigger } from "../dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
 import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
-import { ILocationInfo } from "@/types/plan.types";
 import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
+import { IPlace } from "@/types/place.types";
 
 export interface IProps {
-  item: ILocationInfo;
+  item: IPlace;
   provided: DraggableProvided,
   snapshot: DraggableStateSnapshot
 }
 export const AddedPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
-  const { id, date, image, title, category, address, time } = item;
+  const {googlePlaceId, name, formattedAddress, types, latitude, longitude, photoReference} = item;
+
+  const time = 120;
+  const image = '/images/image1.png'; // 임시
 
   return (
     <div
@@ -39,10 +40,10 @@ export const AddedPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
             </div>
 
             <div className="flex flex-col flex-1 ml-3">
-              <div className="font-bold flex">{title}</div>
+              <div className="font-bold flex">{name}</div>
               <div className="flex">
-                <div className=" text-sky-600 font-bold mr-2">{category}</div>
-                <div className=" text-slate-400">{address}</div>
+                <div className=" text-sky-600 font-bold mr-2">{types}</div>
+                <div className=" text-slate-400">{formattedAddress}</div>
               </div>
               <Dialog>
                 <DialogTrigger className="flex hover:underline">

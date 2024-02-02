@@ -13,21 +13,26 @@ import Image from "next/image";
 import { StoredPlaceMiniCard } from "..";
 import { Input } from "@/components/Input";
 import { StoredPlaceCard } from "@/components";
-import { StoredPlace } from "@/mocks";
-import { ChangeEvent, useEffect, useState } from "react";
-import { ILocationInfo } from "@/types/plan.types";
+import { ChangeEvent, useState } from "react";
 import { useSearchPlace } from "@/hooks/useSearchPlace";
 import { IPlace } from "@/types/place.types";
 import { useDebounde } from "@/hooks";
+import { useAtom } from "jotai";
+import { storedPlace } from "@/store/place.atoms";
 
 export const AddPlaceModal = () => {
-  const [storedPlace, setStoredPlace] = useState<ILocationInfo[]>([]);
-  const [searchResult, setSearchResult] = useState([]);
   const [search, setSearch] = useState("");
+  const [stored, setStored] = useAtom(storedPlace);
 
   const cityId = 1; // 제주도. 임시!
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
+  }
+
+  const onClickAdd = (place: IPlace) => {
+    setStored([
+      ...stored, place
+    ])
   }
 
   const debouncedValue = useDebounde(search, 400);
@@ -56,8 +61,8 @@ export const AddPlaceModal = () => {
             <div className="text-xs font-semibold">장소 보관함</div>
           </div>
           <div className="bg-white p-4 rounded-xl gap-3 flex flex-col h-96 sm:h-[32rem] overflow-y-auto">
-            {StoredPlace.map((item) => (
-              <StoredPlaceMiniCard key={item.id} place={item} />
+            {stored.map((item) => (
+              <StoredPlaceMiniCard key={item.name} place={item} />
             ))}
           </div>
         </div>
@@ -68,7 +73,7 @@ export const AddPlaceModal = () => {
           </div>
           <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto">
             {searchResultData.data.map((item: IPlace) => (
-              <StoredPlaceCard key={item.name} item={item} />
+              <StoredPlaceCard key={item.name} item={item} onClickAdd={onClickAdd} />
             ))}
           </div>
         </div>

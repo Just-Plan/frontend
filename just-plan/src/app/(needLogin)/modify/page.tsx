@@ -1,28 +1,24 @@
 "use client";
 
 import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
-import { Plan, StoredPlace } from "@/mocks";
+import { Plan } from "@/mocks";
 import { PlanDayHeader } from "../_components/PlanDayHeader/PlanDayHeader";
 import { useSearchParams } from "next/navigation";
 import { PlanInfoHeader } from "../_components";
-import PlanModifyDaily, {
-  ITems,
-} from "../_components/PlanModifyDaily/PlanModifyDaily";
-import { useState } from "react";
+import PlanModifyDaily from "../_components/PlanModifyDaily/PlanModifyDaily";
 import { useQuery } from "@tanstack/react-query";
 import { getPlanInfo } from "../detail-plan/_lib/getPlanInfo";
+import { IPlace } from "@/types/place.types";
+
+export interface Iitem {
+  stored: IPlace[],
+  added: IPlace[]
+}
 
 const Page = () => {
   const searchParams = useSearchParams();
-  const [items, setItems] = useState<ITems>({
-    stored: StoredPlace,
-    added: Plan,
-  });
-
   const planId = searchParams.get("planId") as string;
   const day = searchParams.get("day");
-
-  console.log(items);
 
   const {
     data: planInfo,
@@ -37,7 +33,6 @@ const Page = () => {
 
   if (isLoading) return <div>로딩중</div>;
   if (error) return <div>에러</div>;
-  console.log("여행 정보", planInfo.data);
 
   return (
     <div className="m-5 sm:m-10">
@@ -53,7 +48,7 @@ const Page = () => {
           </div>
         </div>
       ) : (
-        <PlanModifyDaily items={items} setItems={setItems} />
+        <PlanModifyDaily day={day} />
       )}
     </div>
   );
