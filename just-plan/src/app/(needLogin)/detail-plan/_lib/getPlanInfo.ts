@@ -8,5 +8,6 @@ export async function getPlanInfo(planId: string) {
     throw new Error("Failed to fetch data");
   }
 
-  return res.json();
+  const result = await res.json();
+  return result.data;
 }

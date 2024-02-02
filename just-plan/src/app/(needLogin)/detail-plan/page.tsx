@@ -5,31 +5,31 @@ import { Plan } from "@/mocks";
 import { PlanDayHeader } from "../_components/PlanDayHeader/PlanDayHeader";
 import { useSearchParams } from "next/navigation";
 import { PlanInfoHeader } from "../_components";
-import { useQuery } from "@tanstack/react-query";
-import { getPlanInfo } from "./_lib/getPlanInfo";
+import { useGetPlanInfo } from "@/hooks";
+import { useEffect } from "react";
+import { planInfoAtom } from "@/store";
+import { useAtom } from "jotai";
+import { IPlanInfoDetail } from "@/types/plan.types";
 
 const Page = () => {
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId") as string;
   const day = searchParams.get("day");
+  const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
+  const {data, error, isLoading} = useGetPlanInfo(planId);
 
-  const {
-    data: planInfo,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["planInfo", planId],
-    queryFn: () => getPlanInfo(planId),
-    staleTime: 60 * 1000,
-    gcTime: 300 * 1000,
-  });
+  useEffect(() => {
+    if (data) {
+      setPlanInfo(data); // 데이터가 있을 경우 atom을 업데이트
+    }
+  }, [data]);
 
   if (isLoading) return <div>로딩중</div>;
   if (error) return <div>에러</div>;
 
   return (
     <div className="m-5 sm:m-10">
-      <PlanInfoHeader planInfo={planInfo.data} />
+      {planInfo && <PlanInfoHeader planInfo={planInfo} />}
       <div className="bg-ourGreen flex flex-col p-3 sm:p-5 rounded-2xl">
         <PlanDayHeader days={Plan} />
         {!day ? (

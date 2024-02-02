@@ -16,6 +16,8 @@ export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
+  // const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
+
   const [info, setInfo] = useState<IModifyPlanInfo>({
     planId: planInfo.planId,
     title: planInfo.title,
