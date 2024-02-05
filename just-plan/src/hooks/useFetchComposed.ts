@@ -1,44 +1,51 @@
 import { fetchComposed } from "@/lib/returnFetch";
 import { useState, useEffect } from "react";
 
-interface FetchOptions {}
+type MutationMethod = "POST" | "PUT" | "PATCH" | "DELETE";
 
-interface FetchData<T> {
-  data: T | null;
-  isLoading: boolean;
-  error: Error | null;
+interface UseMutationProps<T> {
+  loading: boolean;
+  data?: T;
+  error?: string;
+  reset: () => void;
 }
+
+type UseFetchComposedResult<T> = [(data: any) => void, UseMutationProps<T>];
 
 const useFetchComposed = <T>(
   url: string,
-  options?: FetchOptions,
-): FetchData<T> => {
-  const [data, setData] = useState<T | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<Error | null>(null);
+  method: MutationMethod = "POST",
+): UseFetchComposedResult<T> => {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState<undefined | T>(undefined);
+  const [error, setError] = useState<undefined | any>(undefined);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true);
-
-      try {
-        const response = await fetchComposed(url, options);
-        if (!response.ok) {
-          throw new Error(`HTTP Error! Status: ${response.status}`);
+  const fetchData = async (data: any) => {
+    setLoading(true);
+    fetchComposed(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => {
+        console.log(response);
+        if (response.status === 500) {
+          throw new Error("Internal Server Error");
         }
-        const jsonData = await response.json();
-        setData(jsonData);
-      } catch (err) {
-        setError(err as Error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [url, options]);
-
-  return { data, isLoading, error };
+        return response.json();
+      })
+      .then(setData)
+      .catch(setError)
+      .finally(() => setLoading(false));
+  };
+  function reset() {
+    setData(undefined);
+    setLoading(false);
+    setError(undefined);
+  }
+  return [fetchData, { loading, data, error, reset }];
 };
 
 export default useFetchComposed;

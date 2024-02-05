@@ -8,7 +8,10 @@ import { Button } from "@/components/Button";
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
-
+import useFetchComposed from "@/hooks/useFetchComposed";
+import { useMutation } from "@tanstack/react-query";
+import { fetchComposed } from "@/lib/returnFetch";
+import { convertDateFormat } from "@/lib/convertDateFormat";
 const NameInput = ({ onNextStep }: any) => {
   const [name, setName] = useState("");
 
@@ -36,7 +39,9 @@ const NameInput = ({ onNextStep }: any) => {
 
 const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
   const [searchTerm, setSearchTerm] = useState("");
+
   const [searchResults, setSearchResults] = useState<string[]>([]);
+
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
@@ -45,8 +50,24 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
     onResultSelect(result);
   };
   const handleSearch = () => {
-    // 수정 필요
-    setSearchResults(["뉴욕", "파리", "제주도"]);
+    fetchComposed("/api/cities/search?cityName=%EC%84%9C%EC%9A%B8", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        setSearchResults(data.data.cities);
+      })
+      .catch((error) => {
+        console.error("오류 발생:", error);
+      });
   };
   return (
     <div className="flex flex-col gap-5">
@@ -60,9 +81,9 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
       {/* 삭제예정 */}
       <Button onClick={handleSearch}>검색</Button>
       <ul>
-        {searchResults.map((result, index) => (
-          <li key={index} onClick={() => handleResultClick(result)}>
-            {result}
+        {searchResults.map((result: any) => (
+          <li key={result.id} onClick={() => handleResultClick(result.id)}>
+            {result.koreanName}
           </li>
         ))}
       </ul>
@@ -88,22 +109,39 @@ const DatePicker = ({
   onSelectDate: (date: DateRange | undefined) => void;
   onSelectExpenses: (expenses: string) => void;
 }) => {
-  const [expectedExpenses, setExpectedExpenses] = useState("");
+  const [hashTags, setHashTags] = useState<string[]>([]); // Change the initialization to an empty array
 
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(2022, 0, 20),
     to: addDays(new Date(2022, 0, 20), 20),
   });
+  const [fetchData, { loading, data, error, reset }] = useFetchComposed(
+    "/api/plan",
+    "POST",
+  );
+  console.log(data);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
-    setExpectedExpenses(inputValue);
+    const hashtags = inputValue.split(" ");
+    setHashTags(hashtags);
   };
 
   const handleNextStep = () => {
     onSelectDate(date);
-    onSelectExpenses(expectedExpenses);
-
-    //생성 api 연동 부분
+    fetchData({
+      title: planName,
+      tags: hashTags,
+      startDate: convertDateFormat(date?.from),
+      endDate: convertDateFormat(date?.to),
+      regionId: searchResults,
+    });
+    console.log(
+      planName,
+      searchResults,
+      hashTags,
+      convertDateFormat(date?.from),
+      convertDateFormat(date?.to),
+    );
   };
 
   return (
