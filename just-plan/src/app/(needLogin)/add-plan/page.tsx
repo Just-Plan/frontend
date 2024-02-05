@@ -11,7 +11,7 @@ import { addDays } from "date-fns";
 import useFetchComposed from "@/hooks/useFetchComposed";
 import { useMutation } from "@tanstack/react-query";
 import { fetchComposed } from "@/lib/returnFetch";
-import { convertDateFormat } from "@/lib/convertDateFormat";
+import { convertDateFormat } from "@/utils/convertDateFormat";
 const NameInput = ({ onNextStep }: any) => {
   const [name, setName] = useState("");
 
@@ -139,6 +139,7 @@ const DatePicker = ({
       planName,
       searchResults,
       hashTags,
+      date?.from,
       convertDateFormat(date?.from),
       convertDateFormat(date?.to),
     );
