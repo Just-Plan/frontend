@@ -11,8 +11,15 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
 import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
 import {format} from "date-fns";
-import { planInfoAtom } from "@/store";
-import { useAtomValue } from "jotai";
+import { IDayPlan, addedPlace, planInfoAtom, storedPlace } from "@/store";
+import { useAtom, useAtomValue } from "jotai";
+import { usePatchPlaceInfo } from "@/hooks/usePostPlanMutation";
+import { IDayUpdates, IPlaceRequestBody } from "@/types/place.types";
+
+interface IBody {
+  dayUpdates: IDayPlan,
+  placeDeleteIds: number[],
+}
 
 export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
   const router = useRouter();
@@ -31,20 +38,61 @@ export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
     useExpense: planInfo.useExpense,
     expense: planInfo.expense,
   });
-  
-  const { mutate } = usePatchPlanInfo();
+
+  const [added, setAdded] = useAtom(addedPlace);
+  const [stored, setStored] = useAtom(storedPlace);
+
+  const { mutate: planMutate } = usePatchPlanInfo();
+  const { mutate: placeMutate} = usePatchPlaceInfo();
 
   const onMoveToEdit = () => {
     router.push(`/modify?planId=${planId}&day=`);
   };
 
   const onMoveToSave = () => {
+    const newStored = [...stored];
+    const resultStored = newStored.map((v, index) => {return {...v, orderNum: index+1}})
+    setStored(resultStored);
+
+    const temp2 = {...added};
+    console.log(`Object.keys(added):`, Object.keys(added))
+    Object.keys(added).forEach((key) => {
+      const newAdded = [...added[key]];
+      console.log('new added:', newAdded)
+      const resultAdded = newAdded.map((v, index) => {return {...v, orderNum: index+1}})
+      temp2[`${key}`] = resultAdded
+      console.log('temp2 출력해보기! key=', key, 'temp2=', temp2)
+    })
+    console.log('temp2:', temp2);
+    setAdded(temp2);
+
+    // 두개 합치기
+    const newBody: IBody = {
+      dayUpdates: {
+        ...temp2,
+        "0": {...resultStored},
+      },
+      placeDeleteIds: []
+    }
+
+    let newDayUpdates: IDayUpdates = {}
+
+    Object.keys(newBody.dayUpdates).forEach(key =>{
+      const temp = Object.keys(newBody.dayUpdates[key]).map(item =>  { 
+        return {placeId: newBody.dayUpdates[key][Number(item)].placeId, orderNum: newBody.dayUpdates[key][Number(item)].orderNum, memo: newBody.dayUpdates[key][Number(item)].memo}
+      })
+      newDayUpdates[key] = temp;
+    })  
+
+    const temp: IPlaceRequestBody = {...newBody, dayUpdates: newDayUpdates}
+
+    placeMutate({planId: Number(planId), body: temp});
     router.push(`/detail-plan?planId=${planId}&day=`);
   };
 
   const onSubmitModify = (modifyInfo: IModifyPlanInfo) => {
     setInfo(modifyInfo);
-    mutate(modifyInfo);
+    planMutate(modifyInfo);
   };
 
   return (

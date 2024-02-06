@@ -6,10 +6,11 @@ import { useSearchParams } from "next/navigation";
 import { PlanInfoHeader } from "../_components";
 import PlanModifyDaily from "../_components/PlanModifyDaily/PlanModifyDaily";
 import { useAtom, useSetAtom } from "jotai";
-import { IDayPlan, addedPlace, planInfoAtom, storedPlace } from "@/store";
+import { addedPlace, planInfoAtom, storedPlace } from "@/store";
 import { useEffect } from "react";
 import { useGetPlanInfo } from "@/hooks";
 import { useGetPlaceInfo } from "@/hooks/useGetPlaceInfo";
+import { IDayPlan } from "@/types/place.types";
 
 const Page = () => {
   const searchParams = useSearchParams();

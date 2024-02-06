@@ -1,4 +1,4 @@
-import { IPlace } from "@/types/place.types";
+import { IDayPlan, IPlace } from "@/types/place.types";
 import { atom } from "jotai";
 
 // 장소 보관함
@@ -14,10 +14,6 @@ export const storedPlace = atom<IPlace[]>([
   },
 ]);
 
-export interface IDayPlan {
-  [key: string]: IPlace[]
-}
-
 export const addedPlace = atom<IDayPlan>({
   1: [
     {
@@ -28,7 +24,7 @@ export const addedPlace = atom<IDayPlan>({
       latitude: 33.4360741,
       longitude: 126.5538129,
       photoReference: "https://lh3.googleusercontent.com/p/AF1QipPgjnSs7v28R0lxK-E5PUbL2SFtBkAQNoeakQNN=w400",
-		  order: 1,  
+		  orderNum: 1,  
 			memo: {
 				color: "string",
 				text: "string",
@@ -42,7 +38,7 @@ export const addedPlace = atom<IDayPlan>({
       latitude: 33.4360741,
       longitude: 126.5538129,
       photoReference: "https://lh3.googleusercontent.com/p/AF1QipPgjnSs7v28R0lxK-E5PUbL2SFtBkAQNoeakQNN=w400",
-		  order: 1,  
+		  orderNum: 1,  
 			memo: {
 				color: "string",
 				text: "string",
@@ -58,7 +54,7 @@ export const addedPlace = atom<IDayPlan>({
       latitude: 33.4360741,
       longitude: 126.5538129,
       photoReference: "https://lh3.googleusercontent.com/p/AF1QipPgjnSs7v28R0lxK-E5PUbL2SFtBkAQNoeakQNN=w400",
-		  order: 1,  
+		  orderNum: 1,  
 			memo: {
 				color: "string",
 				text: "string",
@@ -72,7 +68,7 @@ export const addedPlace = atom<IDayPlan>({
       latitude: 33.4360741,
       longitude: 126.5538129,
       photoReference: "https://lh3.googleusercontent.com/p/AF1QipPgjnSs7v28R0lxK-E5PUbL2SFtBkAQNoeakQNN=w400",
-		  order: 1,  
+		  orderNum: 1,  
 			memo: {
 				color: "string",
 				text: "string",
@@ -86,7 +82,7 @@ export const addedPlace = atom<IDayPlan>({
       latitude: 33.4360741,
       longitude: 126.5538129,
       photoReference: "https://lh3.googleusercontent.com/p/AF1QipPgjnSs7v28R0lxK-E5PUbL2SFtBkAQNoeakQNN=w400",
-		  order: 1,  
+		  orderNum: 1,  
 			memo: {
 				color: "string",
 				text: "string",
