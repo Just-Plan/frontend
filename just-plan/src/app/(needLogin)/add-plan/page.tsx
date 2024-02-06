@@ -12,14 +12,19 @@ import useFetchComposed from "@/hooks/useFetchComposed";
 import { useMutation } from "@tanstack/react-query";
 import { fetchComposed } from "@/lib/returnFetch";
 import { convertDateFormat } from "@/utils/convertDateFormat";
+import { useRouter } from "next/navigation";
 const NameInput = ({ onNextStep }: any) => {
   const [name, setName] = useState("");
-
+  const [error, setError] = useState("");
   const handleNameInputChange = (e: any) => {
     setName(e.target.value);
   };
 
   const handleNextStep = () => {
+    if (!name) {
+      setError("플랜 이름을 입력해주세요~");
+      return;
+    }
     onNextStep(name);
   };
 
@@ -32,6 +37,7 @@ const NameInput = ({ onNextStep }: any) => {
         value={name}
         onChange={handleNameInputChange}
       />
+      <span className="text-red-600">{error}</span>
       <button onClick={handleNextStep}>다음</button>
     </div>
   );
@@ -39,7 +45,6 @@ const NameInput = ({ onNextStep }: any) => {
 
 const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
   const [searchTerm, setSearchTerm] = useState("");
-
   const [searchResults, setSearchResults] = useState<string[]>([]);
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,7 +55,7 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
     onResultSelect(result);
   };
   const handleSearch = () => {
-    fetchComposed("/api/cities/search?cityName=%EC%84%9C%EC%9A%B8", {
+    fetchComposed(`/api/cities/search?cityName=${searchTerm}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -110,19 +115,24 @@ const DatePicker = ({
   onSelectExpenses: (expenses: string) => void;
 }) => {
   const [hashTags, setHashTags] = useState<string[]>([]); // Change the initialization to an empty array
+  const router = useRouter();
 
   const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: new Date(),
+    to: addDays(new Date(), 3),
   });
-  const [fetchData, { loading, data, error, reset }] = useFetchComposed(
+  const [fetchData, { loading, data, error, reset }] = useFetchComposed<any>(
     "/api/plan",
     "POST",
   );
-  console.log(data);
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
-    const hashtags = inputValue.split(" ");
+    const words = inputValue.split(/\s+/);
+
+    const hashtags = words
+      .filter((word) => word.length >= 1 && word.length <= 5)
+      .slice(0, 4);
+
     setHashTags(hashtags);
   };
 
@@ -135,22 +145,26 @@ const DatePicker = ({
       endDate: convertDateFormat(date?.to),
       regionId: searchResults,
     });
-    console.log(
-      planName,
-      searchResults,
-      hashTags,
-      date?.from,
-      convertDateFormat(date?.from),
-      convertDateFormat(date?.to),
-    );
+    if (data) {
+      router.push(`/detail-plan?planId=${data.data.planId}`);
+    } else {
+      console.log("Error: Data is undefined or does not contain planId.");
+    }
   };
 
   return (
     <div className="flex flex-col gap-5">
       <Label>여행 기간은 어떻게 되시나요?</Label>
       <DateRangePicker date={date} setDate={setDate} />
-      <Label>예상 여행 경비는?</Label>
+      <Label>해쉬태그를 입력해주세요</Label>
       <Input type="text" onChange={handleInputChange} />
+      <div className="flex gap-2">
+        {hashTags.map((tag, index) => (
+          <div key={index} className="bg-white p-1 rounded-lg">
+            {tag}
+          </div>
+        ))}
+      </div>
       <Button onClick={onPreviousStep}>이전</Button>
       <Button onClick={handleNextStep}>다음</Button>
     </div>

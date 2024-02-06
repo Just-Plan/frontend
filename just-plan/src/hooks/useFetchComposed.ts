@@ -26,6 +26,7 @@ const useFetchComposed = <T>(
       method,
       headers: {
         "Content-Type": "application/json",
+        authorization: `Bearer ${localStorage.getItem("access-token")}` || "",
       },
       body: JSON.stringify(data),
     })

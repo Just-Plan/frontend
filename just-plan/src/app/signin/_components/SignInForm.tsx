@@ -9,11 +9,13 @@ import { Label } from "@/components/Label";
 import { fetchComposed } from "@/lib/returnFetch";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { loggedInAtom } from "@/store/auth.atom";
+import { useRouter } from "next/navigation";
 interface FormData {
   email: string;
   password: string;
 }
 export const SignInForm = () => {
+  const router = useRouter();
   const setLoggedIn = useSetAtom(loggedInAtom);
   const {
     register,
@@ -42,6 +44,7 @@ export const SignInForm = () => {
             name,
             isLoggedIn: true,
           }));
+          router.push("/");
         } else {
           console.error("Sign-in failed:", result.error);
         }
