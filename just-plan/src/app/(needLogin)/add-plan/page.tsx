@@ -13,7 +13,15 @@ import { useMutation } from "@tanstack/react-query";
 import { fetchComposed } from "@/lib/returnFetch";
 import { convertDateFormat } from "@/utils/convertDateFormat";
 import { useRouter } from "next/navigation";
-const NameInput = ({ onNextStep }: any) => {
+import { getCities } from "../_lib/getCities";
+import { getSearchCities } from "../_lib/getSearchCities";
+import type {
+  DatePickerProps,
+  NameInputProps,
+  SearchResultsProps,
+} from "./AddPlan.types";
+
+const NameInput: React.FC<NameInputProps> = ({ onNextStep }) => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const handleNameInputChange = (e: any) => {
@@ -43,7 +51,11 @@ const NameInput = ({ onNextStep }: any) => {
   );
 };
 
-const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
+const SearchResults: React.FC<SearchResultsProps> = ({
+  onPreviousStep,
+  onNextStep,
+  onResultSelect,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
 
@@ -51,28 +63,16 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleResultClick = (result: string) => {
+  const handleResultClick = (result: any) => {
     onResultSelect(result);
   };
-  const handleSearch = () => {
-    fetchComposed(`/api/cities/search?cityName=${searchTerm}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setSearchResults(data.data.cities);
-      })
-      .catch((error) => {
-        console.error("오류 발생:", error);
-      });
+  const handleSearch = async () => {
+    try {
+      const results: any = await getSearchCities(searchTerm);
+      setSearchResults(results.data.cities);
+    } catch (error) {
+      console.error("An error occurred during search:", error);
+    }
   };
   return (
     <div className="flex flex-col gap-5">
@@ -99,20 +99,13 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
   );
 };
 
-const DatePicker = ({
+const DatePicker: React.FC<DatePickerProps> = ({
   planName,
   searchResults,
   selectedDate,
   onPreviousStep,
   onSelectDate,
   onSelectExpenses,
-}: {
-  planName: string;
-  searchResults: string[];
-  selectedDate: string;
-  onPreviousStep: () => void;
-  onSelectDate: (date: DateRange | undefined) => void;
-  onSelectExpenses: (expenses: string) => void;
 }) => {
   const [hashTags, setHashTags] = useState<string[]>([]); // Change the initialization to an empty array
   const router = useRouter();
