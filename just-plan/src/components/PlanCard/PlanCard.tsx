@@ -1,10 +1,14 @@
+"use client";
+
 import Image from "next/image";
 import React, { PropsWithChildren } from "react";
 import { Card, CardContent, CardHeader } from "../Card";
 import type { Props } from "./PlanCard.types";
+import { redirect, useRouter } from "next/navigation";
 
 const PlanCard = ({ item }: Props) => {
   const {
+    planId,
     image = "/images/image1.png",
     profile = "/images/image1.png",
     name = "강윤지",
@@ -15,8 +19,13 @@ const PlanCard = ({ item }: Props) => {
     mbti = "INFJ",
     tags,
   } = item;
+  const router = useRouter();
+  const handleToDetail = () => {
+    console.log("리다이렉트!!!");
+    router.push(`detail-plan?planId=${planId}&day=`);
+  };
   return (
-    <Card className="w-[350px]">
+    <Card className="w-[350px]" onClick={handleToDetail}>
       <CardHeader className="p-0">
         <Image
           src={image}

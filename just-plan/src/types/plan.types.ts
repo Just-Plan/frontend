@@ -37,3 +37,57 @@ export interface IPlan {
   count: number;
   date: string;
 }
+
+export interface IPlanInfoDetail {
+  planId: string;
+  budget: { card: number; cash: number };
+  endDate: Date;
+  expense: {
+    food: number;
+    transportation: number;
+    loadging: number;
+    shopping: number;
+    etc: number;
+  };
+  originPlan: any;
+  published: boolean;
+  region: {
+    countryEnglishName: string;
+    countryKoreanName: string;
+    englishName: string;
+    id: number;
+    introduction: string;
+    koreanName: string;
+  };
+  startDate: Date;
+  tags: string[];
+  title: string;
+  useExpense: boolean;
+  users: {
+    email: string;
+    mbti: string;
+    name: string;
+    owner: boolean;
+  }[];
+}
+
+export interface IModifyPlanInfo {
+  planId: string;
+  title: string;
+  tags: string[];
+  startDate: Date;
+  endDate: Date;
+  published: boolean;
+  budget: {
+    cash: number;
+    card: number;
+  };
+  useExpense: boolean;
+  expense: {
+    food: number;
+    transportation: number;
+    loadging: number;
+    shopping: number;
+    etc: number;
+  };
+}

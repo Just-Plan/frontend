@@ -193,8 +193,8 @@ const Home = () => {
               <PlanCard item={item} key={item.planId} />
             )),
           )}
+          <div ref={ref} className="h-10 bg-red-200" />
         </div>
-        <div ref={ref} className="h-10 bg-red-200" />
       </div>
     </div>
   );

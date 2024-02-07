@@ -5,8 +5,12 @@ import { Plan, StoredPlace } from "@/mocks";
 import { PlanDayHeader } from "../_components/PlanDayHeader/PlanDayHeader";
 import { useSearchParams } from "next/navigation";
 import { PlanInfoHeader } from "../_components";
-import PlanModifyDaily, { ITems } from "../_components/PlanModifyDaily/PlanModifyDaily";
+import PlanModifyDaily, {
+  ITems,
+} from "../_components/PlanModifyDaily/PlanModifyDaily";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { getPlanInfo } from "../detail-plan/_lib/getPlanInfo";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -14,14 +18,30 @@ const Page = () => {
     stored: StoredPlace,
     added: Plan,
   });
-  
-  const planId = searchParams.get("planId");
+
+  const planId = searchParams.get("planId") as string;
   const day = searchParams.get("day");
 
   console.log(items);
+
+  const {
+    data: planInfo,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["planInfo", planId],
+    queryFn: () => getPlanInfo(planId),
+    staleTime: 60 * 1000,
+    gcTime: 300 * 1000,
+  });
+
+  if (isLoading) return <div>로딩중</div>;
+  if (error) return <div>에러</div>;
+  console.log("여행 정보", planInfo.data);
+
   return (
     <div className="m-5 sm:m-10">
-      <PlanInfoHeader isModify />
+      <PlanInfoHeader isModify planInfo={planInfo.data} />
 
       {!day ? (
         <div className="bg-ourGreen flex flex-col p-3 sm:p-5 rounded-2xl">

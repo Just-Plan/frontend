@@ -1,27 +1,48 @@
 import { Dialog, DialogTrigger } from "@/components/dialog";
-import { PlanInfo } from "@/mocks";
 import Image from "next/image";
 import React, { useState } from "react";
 import EditPlanInfoModal from "../EditPlanInfoModal/EditPlanInfoModal";
 import { Button } from "@/components/Button";
 import ShowMoney from "../ShowMoney/ShowMoney";
-import { IPlanInfo } from "@/types/plan.types";
+import type {
+  IModifyPlanInfo,
+} from "@/types/plan.types";
 import { useRouter, useSearchParams } from "next/navigation";
+import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
+import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
+import {format} from "date-fns";
 
-export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
-  const { location, date, title, hashTags, cache, card } = PlanInfo;
-  const [info, setInfo] = useState<IPlanInfo>(PlanInfo);
+export const PlanInfoHeader = ({ isModify, planInfo }: IPlanInfoHeader) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
+  const [info, setInfo] = useState<IModifyPlanInfo>({
+    planId: planInfo.planId,
+    title: planInfo.title,
+    tags: planInfo.tags,
+    startDate: planInfo.startDate,
+    endDate: planInfo.endDate,
+    published: planInfo.published,
+    budget: planInfo.budget,
+    useExpense: planInfo.useExpense,
+    expense: planInfo.expense,
+  });
+  
+  const { mutate } = usePatchPlanInfo();
 
-  const handleEdit = () => {
+  const onMoveToEdit = () => {
     router.push(`/modify?planId=${planId}&day=`);
   };
 
-  const handleSave = () => {
+  const onMoveToSave = () => {
     router.push(`/detail-plan?planId=${planId}&day=`);
   };
+
+  const onSubmitModify = (modifyInfo: IModifyPlanInfo) => {
+    setInfo(modifyInfo);
+    mutate(modifyInfo);
+  };
+
   return (
     <div className="">
       <div className="flex items-center">
@@ -31,13 +52,15 @@ export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
           height={25}
           alt="비행기 아이콘"
         />
-        <div className="ml-2">{location}</div>
-        <div className="text-xs ml-28">{date}</div>
+        <div className="ml-2">{planInfo.region.koreanName}</div>
+        <div className="text-xs ml-28">
+          {format(info.startDate, "yyyy-MM-dd")} ~ {format(info.endDate, "yyyy-MM-dd")}
+        </div>
       </div>
       <div className="flex">
         <div className="flex items-center flex-1">
           <div className="font-bold text-2xl sm:text-3xl my-2 sm:my-3 mr-5">
-            {title}
+            {info.title}
           </div>
           {isModify && (
             <Dialog>
@@ -49,7 +72,7 @@ export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
                   height={27}
                 />
               </DialogTrigger>
-              <EditPlanInfoModal info={info} setInfo={setInfo} />
+              <EditPlanInfoModal info={info} onSubmitModify={onSubmitModify} />
             </Dialog>
           )}
         </div>
@@ -61,7 +84,7 @@ export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
 
       <div className="flex">
         <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
-          {hashTags.map((tag) => (
+          {info.tags.map((tag) => (
             <div key={tag}># {tag}</div>
           ))}
         </div>
@@ -69,7 +92,7 @@ export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
           <Button
             variant="outline"
             className="w-12 sm:w-28"
-            onClick={handleSave}
+            onClick={onMoveToSave}
           >
             저장
           </Button>
@@ -77,13 +100,13 @@ export const PlanInfoHeader = ({ isModify }: { isModify?: boolean }) => {
           <Button
             variant="outline"
             className="w-12 sm:w-28"
-            onClick={handleEdit}
+            onClick={onMoveToEdit}
           >
             편집하기
           </Button>
         )}
       </div>
-      <ShowMoney cache={cache} card={card} />
+      <ShowMoney cash={info.budget.cash} card={info.budget.card} />
     </div>
   );
 };
