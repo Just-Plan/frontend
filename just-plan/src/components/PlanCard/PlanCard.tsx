@@ -3,8 +3,18 @@ import React, { PropsWithChildren } from "react";
 import { Card, CardContent, CardHeader } from "../Card";
 import type { Props } from "./PlanCard.types";
 
-const PlanCard = ({ item }: PropsWithChildren<Props>) => {
-  const { id, image, profile, name, date, money, count, mbti, hashTags } = item;
+const PlanCard = ({ item }: Props) => {
+  const {
+    image = "/images/image1.png",
+    profile = "/images/image1.png",
+    name = "강윤지",
+    title,
+    date = "4박 5일",
+    money = 100000,
+    count = 10,
+    mbti = "INFJ",
+    tags,
+  } = item;
   return (
     <Card className="w-[350px]">
       <CardHeader className="p-0">
@@ -28,7 +38,8 @@ const PlanCard = ({ item }: PropsWithChildren<Props>) => {
           </div>
           <div className=" w-60">
             <div className="text-base flex">
-              <b>{name}님</b>의 오사카 뿌수기
+              {/* <b>{name}님</b>의 오사카 뿌수기 */}
+              <b>{name}님</b>의 {title}
             </div>
             <div className="flex justify-between">
               <div className="text-sm">{date}</div>
@@ -55,9 +66,9 @@ const PlanCard = ({ item }: PropsWithChildren<Props>) => {
         </div>
         <div className=" flex justify-between p-3">
           <div className="ml-3 font-bold text-stone-700">{mbti}</div>
-          <div className="text-sky-600 font-bold">
-            {hashTags.map((tag) => (
-              <div key={tag}>{tag}</div>
+          <div className="text-sky-600 font-bold flex">
+            {tags?.map((tag) => (
+              <div key={tag}>{tag} </div>
             ))}
           </div>
         </div>
