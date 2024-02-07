@@ -8,13 +8,17 @@ import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { fetchComposed } from "@/lib/returnFetch";
 import { atom, useAtom, useSetAtom } from "jotai";
-import { loggedInAtom } from "@/store/auth.atom";
+import { useRouter } from "next/navigation";
+import { UserInfo, localStorageUserInfoAtom } from "@/store/auth.atom";
 interface FormData {
   email: string;
   password: string;
 }
 export const SignInForm = () => {
-  const setLoggedIn = useSetAtom(loggedInAtom);
+  const [userInfo, setUserInfo] = useAtom(localStorageUserInfoAtom);
+
+  const router = useRouter();
+  userInfo.isLoggedIn && router.push("/");
   const {
     register,
     handleSubmit,
@@ -35,13 +39,14 @@ export const SignInForm = () => {
           console.log("Sign-in successful");
           console.log(result.data.accessToken);
           localStorage.setItem("access-token", result.data.accessToken);
-          const { email, id, name } = result.data;
-          setLoggedIn(() => ({
-            email,
-            id,
-            name,
+          const userInfo: UserInfo = {
+            email: data.email,
+            id: result.data.id,
+            name: result.data.name,
             isLoggedIn: true,
-          }));
+          };
+          setUserInfo(userInfo);
+          router.push("/");
         } else {
           console.error("Sign-in failed:", result.error);
         }

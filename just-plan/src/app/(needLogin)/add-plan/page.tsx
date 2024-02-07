@@ -8,15 +8,31 @@ import { Button } from "@/components/Button";
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
 import { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
+import useFetchComposed from "@/hooks/useFetchComposed";
+import { useMutation } from "@tanstack/react-query";
+import { fetchComposed } from "@/lib/returnFetch";
+import { convertDateFormat } from "@/utils/convertDateFormat";
+import { useRouter } from "next/navigation";
+import { getCities } from "../_lib/getCities";
+import { getSearchCities } from "../_lib/getSearchCities";
+import type {
+  DatePickerProps,
+  NameInputProps,
+  SearchResultsProps,
+} from "./AddPlan.types";
 
-const NameInput = ({ onNextStep }: any) => {
+const NameInput: React.FC<NameInputProps> = ({ onNextStep }) => {
   const [name, setName] = useState("");
-
+  const [error, setError] = useState("");
   const handleNameInputChange = (e: any) => {
     setName(e.target.value);
   };
 
   const handleNextStep = () => {
+    if (!name) {
+      setError("플랜 이름을 입력해주세요~");
+      return;
+    }
     onNextStep(name);
   };
 
@@ -29,24 +45,34 @@ const NameInput = ({ onNextStep }: any) => {
         value={name}
         onChange={handleNameInputChange}
       />
+      <span className="text-red-600">{error}</span>
       <button onClick={handleNextStep}>다음</button>
     </div>
   );
 };
 
-const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
+const SearchResults: React.FC<SearchResultsProps> = ({
+  onPreviousStep,
+  onNextStep,
+  onResultSelect,
+}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<string[]>([]);
+
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
   };
 
-  const handleResultClick = (result: string) => {
+  const handleResultClick = (result: any) => {
     onResultSelect(result);
   };
-  const handleSearch = () => {
-    // 수정 필요
-    setSearchResults(["뉴욕", "파리", "제주도"]);
+  const handleSearch = async () => {
+    try {
+      const results: any = await getSearchCities(searchTerm);
+      setSearchResults(results.data.cities);
+    } catch (error) {
+      console.error("An error occurred during search:", error);
+    }
   };
   return (
     <div className="flex flex-col gap-5">
@@ -60,9 +86,9 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
       {/* 삭제예정 */}
       <Button onClick={handleSearch}>검색</Button>
       <ul>
-        {searchResults.map((result, index) => (
-          <li key={index} onClick={() => handleResultClick(result)}>
-            {result}
+        {searchResults.map((result: any) => (
+          <li key={result.id} onClick={() => handleResultClick(result.id)}>
+            {result.koreanName}
           </li>
         ))}
       </ul>
@@ -73,45 +99,65 @@ const SearchResults = ({ onPreviousStep, onNextStep, onResultSelect }: any) => {
   );
 };
 
-const DatePicker = ({
+const DatePicker: React.FC<DatePickerProps> = ({
   planName,
   searchResults,
   selectedDate,
   onPreviousStep,
   onSelectDate,
   onSelectExpenses,
-}: {
-  planName: string;
-  searchResults: string[];
-  selectedDate: string;
-  onPreviousStep: () => void;
-  onSelectDate: (date: DateRange | undefined) => void;
-  onSelectExpenses: (expenses: string) => void;
 }) => {
-  const [expectedExpenses, setExpectedExpenses] = useState("");
+  const [hashTags, setHashTags] = useState<string[]>([]); // Change the initialization to an empty array
+  const router = useRouter();
 
   const [date, setDate] = useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: new Date(),
+    to: addDays(new Date(), 3),
   });
+  const [fetchData, { loading, data, error, reset }] = useFetchComposed<any>(
+    "/api/plan",
+    "POST",
+  );
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
-    setExpectedExpenses(inputValue);
+    const words = inputValue.split(/\s+/);
+
+    const hashtags = words
+      .filter((word) => word.length >= 1 && word.length <= 5)
+      .slice(0, 4);
+
+    setHashTags(hashtags);
   };
 
   const handleNextStep = () => {
     onSelectDate(date);
-    onSelectExpenses(expectedExpenses);
-
-    //생성 api 연동 부분
+    fetchData({
+      title: planName,
+      tags: hashTags,
+      startDate: convertDateFormat(date?.from),
+      endDate: convertDateFormat(date?.to),
+      regionId: searchResults,
+    });
+    if (data) {
+      router.push(`/detail-plan?planId=${data.data.planId}`);
+    } else {
+      console.log("Error: Data is undefined or does not contain planId.");
+    }
   };
 
   return (
     <div className="flex flex-col gap-5">
       <Label>여행 기간은 어떻게 되시나요?</Label>
       <DateRangePicker date={date} setDate={setDate} />
-      <Label>예상 여행 경비는?</Label>
+      <Label>해쉬태그를 입력해주세요</Label>
       <Input type="text" onChange={handleInputChange} />
+      <div className="flex gap-2">
+        {hashTags.map((tag, index) => (
+          <div key={index} className="bg-white p-1 rounded-lg">
+            {tag}
+          </div>
+        ))}
+      </div>
       <Button onClick={onPreviousStep}>이전</Button>
       <Button onClick={handleNextStep}>다음</Button>
     </div>
