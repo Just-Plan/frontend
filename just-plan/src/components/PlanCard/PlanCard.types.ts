@@ -1,3 +1,6 @@
+import { IPlan } from "@/types/plan.types";
+
+// 이거 안쓰이나?
 export interface ICardUserData {
   id: number;
   image: string;
@@ -11,5 +14,5 @@ export interface ICardUserData {
 }
 
 export interface Props {
-  item: ICardUserData;
+  item: IPlan;
 }
