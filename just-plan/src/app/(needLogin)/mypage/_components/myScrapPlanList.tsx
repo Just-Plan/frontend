@@ -1,5 +1,5 @@
-import PlanCard from "@/components/PlanCard/PlanCard";
 import { MbtiCardContent } from "@/mocks";
+import PlanCard from "@/components/PlanCard/PlanCard";
 
 const MyScrapPlanList = () => {
   return (
