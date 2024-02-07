@@ -1,23 +1,14 @@
 "use client";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/popover";
 import { cn } from "@/lib/utils";
-import { HTMLAttributes, useState } from "react";
-import { DateRange } from "react-day-picker";
+import { format } from "date-fns";
 import { Calendar } from "@/components/calendar";
 import { CalendarIcon } from "lucide-react";
 import { Button } from "../Button";
-import { addDays, format } from "date-fns";
+import type { IProps } from "./DateRangePicker.types";
 
-interface DateRangePickerProps extends HTMLAttributes<HTMLDivElement> {
-  date: DateRange | undefined;
-  setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
-}
+const DateRangePicker = ({ setDate, date }: IProps) => {
 
-const DateRangePicker = ({
-  className,
-  date,
-  setDate,
-}: DateRangePickerProps) => {
   return (
     <div className={cn("grid gap-2")}>
       <Popover>
@@ -26,9 +17,8 @@ const DateRangePicker = ({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-norma",
+              "w-[300px] justify-start text-left font-norma bg-ourGreen/80 rounded-3xl mb-3 mt-1",
               !date && "text-muted-foreground",
-              className,
             )}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
