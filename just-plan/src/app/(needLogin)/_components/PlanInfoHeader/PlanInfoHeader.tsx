@@ -11,10 +11,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
 import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
 import {format} from "date-fns";
-import { IDayPlan, addedPlace, planInfoAtom, storedPlace } from "@/store";
+import { addedPlace, planInfoAtom, storedPlace } from "@/store";
 import { useAtom, useAtomValue } from "jotai";
 import { usePatchPlaceInfo } from "@/hooks/usePostPlanMutation";
-import { IDayUpdates, IPlaceRequestBody } from "@/types/place.types";
+import { IDayPlan, IDayUpdates, IPlaceRequestBody } from "@/types/place.types";
 
 interface IBody {
   dayUpdates: IDayPlan,

@@ -1,14 +1,14 @@
 "use client";
 import Image from "next/image";
 import { Dialog, DialogTrigger } from "../dialog";
-import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
+import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
 import type { IProps } from "./StoredPlaceCard.types";
 import { Button } from "../Button";
 
 export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
   const {googlePlaceId, name, formattedAddress, types, latitude, longitude, photoReference} = item;
   const image = '/images/image1.png'; // 임시
-  
+
   return (
     <Dialog>
       <DialogTrigger asChild className="hover:cursor-pointer">
@@ -39,7 +39,7 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
           </div>
         </div>
       </DialogTrigger>
-      <DetailPlace />
+      <DetailPlaceModal />
     </Dialog>
   );
 };

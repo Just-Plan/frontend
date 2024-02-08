@@ -10,7 +10,6 @@ const DayPlanCard = ({ day }: IProps) => {
   const planInfo = useAtomValue(planInfoAtom);
   const added = useAtomValue(addedPlace);
 
-  console.log('planInfo,', planInfo);
   return (
     <div className="bg-white flex flex-col w-fit p-6  rounded-3xl">
       <div className="flex justify-between">

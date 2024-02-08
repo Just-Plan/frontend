@@ -9,7 +9,7 @@ import Comments from "../Comments/Comments";
 import { PlaceDetailInfo } from "@/mocks";
 import { Button } from "@/components/Button";
 
-const DetailPlace = () => {
+const DetailPlaceModal = () => {
   const {
     category,
     title,
@@ -81,4 +81,4 @@ const DetailPlace = () => {
   );
 };
 
-export default DetailPlace;
+export default DetailPlaceModal;

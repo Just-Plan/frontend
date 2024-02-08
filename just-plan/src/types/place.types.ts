@@ -10,7 +10,7 @@ export interface IPlace {
   orderNum?: number,
   memo?: {
     color: string,
-    text: string,
+    content: string,
   }
 }
 
@@ -19,7 +19,7 @@ interface IPlaceRequestInner {
   orderNum?: number,
   memo?: {
     color: string,
-    text: string,
+    content: string,
   }  
 }
 
@@ -35,4 +35,9 @@ export interface IPlaceRequestBody {
 
 export interface IDayPlan {
   [key: string]: IPlace[]
+}
+
+export interface IMemo {
+  color: string,
+  content: string,
 }

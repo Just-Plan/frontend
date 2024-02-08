@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { Dialog, DialogTrigger } from "../dialog";
-import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
+import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
 import { Button } from "../Button";
 import { cn } from "@/lib/utils";
 import type { IDnDProps } from "./StoredPlaceCard.types";
@@ -50,7 +50,7 @@ export const StoredPlaceCardDnD = ({ item, provided, snapshot }: IDnDProps) => {
           </div>
         </div>
       </DialogTrigger>
-      <DetailPlace />
+      <DetailPlaceModal />
     </Dialog>
     </div>
   );

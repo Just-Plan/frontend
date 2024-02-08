@@ -6,7 +6,7 @@ export const patchPlaceInfo = async (planId: number, body:IPlaceRequestBody) => 
     method: "PATCH",
     headers: {
       'Content-Type': 'application/json',
-      'authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG5hdmVyLmNvbSIsImlhdCI6MTcwNzIyNTg3MSwiZXhwIjoxNzA3MjMzMDcxfQ.5s6cr37bedvDXx6pzjDRTlMZtV3ANRUPjEG1bmNNbq4`,
+      'authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG5hdmVyLmNvbSIsImlhdCI6MTcwNzM1NzQ5NSwiZXhwIjoxNzA3MzY0Njk1fQ.EYDngcVnIHuQdsT29toUEWxnrTQopKu5GwDMr54e7XY`,
     },
     // body: JSON.stringify({...newBody, dayUpdates: newDayUpdates})
     body: JSON.stringify(body)
