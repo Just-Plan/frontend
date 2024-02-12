@@ -19,7 +19,7 @@ const MyPage = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [url, seturl] = useState("");
 
-  const selectMenuHandler = (index: any) => {
+  const onSelectMenuHandler = (index: any) => {
     setCurrentTab(index);
   };
   return (
@@ -41,7 +41,7 @@ const MyPage = () => {
                 "rounded-3xl py-8 md:w-32 w-24",
                 index === currentTab ? "bg-ourGreen hover:bg-ourGreen" : ""
               )}
-              onClick={() => selectMenuHandler(index)}
+              onClick={() => onSelectMenuHandler(index)}
               key={index}
               size={"lg"}
               variant={"secondary"}
