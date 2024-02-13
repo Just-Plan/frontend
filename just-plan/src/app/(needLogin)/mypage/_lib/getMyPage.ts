@@ -1,7 +1,7 @@
 import { nextFetch } from "@/lib/returnFetch"
 
-export const getMyPage = async (page: number, size: number) => {
-  const res = await nextFetch(`/api/plan/my?page=${page}0&size=${size}&sort=createdAt`);
+export const getMyPage = async (page: string | undefined, size: number) => {
+  const res = await nextFetch(`/api/plan/my?page=${page}&size=${size}&sort=createdAt`);
 
   if (!res.ok) {
     throw new Error("Failed to fetch data");
