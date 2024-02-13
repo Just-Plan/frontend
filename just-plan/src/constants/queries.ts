@@ -8,6 +8,8 @@ export const userKeys = {
 export const planKeys = {
   all: ['plans'] as const,
   detail: (id: number) => [...planKeys.all, id] as const,
+  myPlan: () => [...planKeys.all, 'my'] as const, // 내 일정 조회
+	scrap: () => [...planKeys.all, 'scrap'] as const, // 스크랩 일정 조회
 }
 
 // 장소

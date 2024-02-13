@@ -18,10 +18,11 @@ const menuArr = [
 const MyPage = () => {
   const [currentTab, setCurrentTab] = useState(0);
   const [url, seturl] = useState("");
-
+  
   const onSelectMenuHandler = (index: any) => {
     setCurrentTab(index);
   };
+  
   return (
     <div className="md:w-4/5">
       <div className="flex flex-col bg-white gap-5">
