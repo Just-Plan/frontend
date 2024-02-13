@@ -1,6 +1,5 @@
 "use client";
-import { useEffect } from "react";
-import returnFetch, { ReturnFetch } from "return-fetch";
+import returnFetch from "return-fetch";
 
 const fetchExtended = returnFetch({
   baseUrl: "http://13.125.188.226:8080",
@@ -32,6 +31,30 @@ export const fetchComposed = returnFetch({
 
     response: async (response, requestArgs) => {
       console.log("second response interceptor requestArgs", requestArgs);
+
+      return response;
+    },
+  },
+});
+
+const basicHeaders = {
+  'Content-Type': 'application/json',
+};
+
+export const nextFetch = returnFetch({
+  fetch: fetchExtended,
+  headers: { 
+    Accept: 'application/json',
+    authorization: `Bearer ${localStorage.getItem("access-token")}` || "",
+  },
+  interceptors: {
+    request: async (args) => {
+      console.log("request interceptor args", args);
+
+      return args;
+    },
+    response: async (response, requestArgs) => {
+      console.log("response interceptor requestArgs", requestArgs);
 
       return response;
     },
