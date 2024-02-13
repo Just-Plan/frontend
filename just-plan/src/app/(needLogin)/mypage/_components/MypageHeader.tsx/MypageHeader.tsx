@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils";
 import Link from "next/link";
 
 const menuArr = [
-  { name: "나의 여행 일정", content: './myPlanList' },
-  { name: "스크럼 여행 일정", content: './myScrapPlanList' },
+  { name: "나의 여행 일정", content: './myPlanList?page=1' },
+  { name: "스크럼 여행 일정", content: './myScrapPlanList?page=1' },
   { name: "가계부", content: './myAccountBook' },
   { name: "회원 정보 수정", content: './editMemberInfo' },
 ];
