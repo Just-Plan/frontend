@@ -1,10 +1,12 @@
 import { nextFetch } from "@/lib/returnFetch"
 
-export const getMyPage = async () => {
-  const resposne = await nextFetch('/api/plan/my?page=0&size=6&sort=createdAt');
+export const getMyPage = async (page: number, size: number) => {
+  const res = await nextFetch(`/api/plan/my?page=${page}0&size=${size}&sort=createdAt`);
 
-  const result = await resposne.json();
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
 
-  return result.data;
+  return res.json();
 
 }

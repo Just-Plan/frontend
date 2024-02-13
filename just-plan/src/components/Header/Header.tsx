@@ -46,7 +46,7 @@ export const Header = () => {
             <div onClick={onLogout}>logout</div>
             <div
               className="hover:cursor-pointer"
-              onClick={() => onMoveToOtherPage("/mypage")}
+              onClick={() => onMoveToOtherPage("/mypage/myplan")}
             >
               최민우
             </div>

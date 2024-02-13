@@ -9,7 +9,6 @@ import { useAtomValue } from "jotai";
 import { localStorageUserInfoAtom } from "@/store/auth.atom";
 
 const PlanCard = ({ item }: Props) => {
-  console.log('데이터를 보자:', item);
   const image = "/images/image1.png";
   const userInfo = useAtomValue(localStorageUserInfoAtom);
   const profile = "/images/image1.png";
