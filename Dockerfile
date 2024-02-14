@@ -1,9 +1,9 @@
 FROM node:16
 
-WORKDIR /usr/src/app
+WORKDIR /frontend
 COPY just-plan/ ./
 
-RUN npm ci
+RUN npm install
 
 RUN npm run build
 
