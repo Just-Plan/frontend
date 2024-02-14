@@ -38,6 +38,50 @@ export interface IPlan {
   date: string;
 }
 
+interface IUser {
+  email: string;
+  mbti: {id: number, type: string};
+  name: string;
+  owner: boolean;
+}
+
+export interface IPlan2 {
+  budget: {card: number, cash: number};
+  days: number;
+  endDate: Date;
+  nights: number;
+  planId: number;
+  published: boolean;
+  region: {
+    id: number; 
+    koreanName: string;
+    englishName: string;
+    introduction: string;
+    countryKoreanName: string;
+    countryEnglishName: string;
+  }
+  scrapCount: number;
+  startDate: Date;
+  tags: string[];
+  title: string;
+  users: IUser[];
+
+  // planId: number;
+  // title: string;
+  // region: string;
+  // startDate: string;
+  // endDate: string;
+  // published: boolean;
+  // tags: string[];
+  // image: string;
+  // profile: string;
+  // name: string;
+  // mbti: string;
+  // money: number;
+  // count: number;
+  // date: string;
+}
+
 export interface IPlanInfoDetail {
   planId: string;
   budget: { card: number; cash: number };
