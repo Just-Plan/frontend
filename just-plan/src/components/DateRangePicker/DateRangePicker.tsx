@@ -1,9 +1,5 @@
 "use client";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/popover";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { Calendar } from "@/components/calendar";
@@ -12,6 +8,7 @@ import { Button } from "../Button";
 import type { IProps } from "./DateRangePicker.types";
 
 const DateRangePicker = ({ setDate, date }: IProps) => {
+
   return (
     <div className={cn("grid gap-2")}>
       <Popover>
