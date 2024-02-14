@@ -1,7 +1,7 @@
 FROM node:16
 
 WORKDIR /usr/src/app
-COPY krampoline/ ./
+COPY just-plan/ ./
 
 RUN npm ci
 
