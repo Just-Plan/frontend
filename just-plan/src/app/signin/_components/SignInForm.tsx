@@ -9,7 +9,8 @@ import { Label } from "@/components/Label";
 import { fetchComposed } from "@/lib/returnFetch";
 import { atom, useAtom, useSetAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { UserInfo, localStorageUserInfoAtom } from "@/store/auth.atom";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
+import { UserInfo } from "@/store/auth.atom.type";
 interface FormData {
   email: string;
   password: string;
@@ -44,6 +45,7 @@ export const SignInForm = () => {
             id: result.data.id,
             name: result.data.name,
             isLoggedIn: true,
+            mbtiName: result.data.mbtiName,
           };
           setUserInfo(userInfo);
           router.push("/");

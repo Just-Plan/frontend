@@ -3,10 +3,6 @@ export interface UserInfo {
   id: number | null;
   name: string;
   isLoggedIn: boolean;
+  mbtiName: string;
 }
-export const initialUserInfo: UserInfo = {
-  email: "",
-  id: null,
-  name: "",
-  isLoggedIn: false,
-};
+

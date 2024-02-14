@@ -47,6 +47,7 @@ export const nextFetch = returnFetch({
   fetch: fetchExtended,
   headers: { 
     Accept: 'application/json',
+    'Content-Type': 'application/json',
     authorization: `Bearer ${accessToken}` || "",
   },
   interceptors: {

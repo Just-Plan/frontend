@@ -6,7 +6,7 @@ import PlanCard from '@/components/PlanCard/PlanCard';
 import { IPlan2 } from '@/types/plan.types';
 import Pagination from '../_components/Pagination.tsx/Pagination';
 import { useEffect } from 'react';
-import { useGetScrapList } from '@/hooks/usegetScrapList';
+import { useGetScrapList } from '@/hooks/useGetScrapList';
 
 const Page = ({
   searchParams,
