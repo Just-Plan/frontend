@@ -25,7 +25,6 @@ const PlanCard = ({ item }: Props) => {
     users,
   } = item;
 
-  // plan owner 찾기
   const owner = users.find((user) => user.owner === true);
   console.log('owner:', owner);
 
@@ -57,7 +56,6 @@ const PlanCard = ({ item }: Props) => {
           </div>
           <div className=" w-60">
             <div className="text-base flex">
-              {/* <b>{name}님</b>의 오사카 뿌수기 */}
               <b>{owner?.name}님</b>의 {title}
             </div>
             <div className="flex justify-between">

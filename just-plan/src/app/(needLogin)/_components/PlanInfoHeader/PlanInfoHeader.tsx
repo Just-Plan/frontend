@@ -1,11 +1,13 @@
+"use client";
+
 import { Dialog, DialogTrigger } from "@/components/dialog";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import EditPlanInfoModal from "../EditPlanInfoModal/EditPlanInfoModal";
 import { Button } from "@/components/Button";
 import ShowMoney from "../ShowMoney/ShowMoney";
 import type {
-  IModifyPlanInfo,
+  IModifyPlanInfo, IOwner,
 } from "@/types/plan.types";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
@@ -26,24 +28,67 @@ export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
   const planInfo = useAtomValue(planInfoAtom);
+  const [isCloned, setIsCloned] = useState(false);
 
   const [info, setInfo] = useState<IModifyPlanInfo>({
-    planId: planInfo.planId,
-    title: planInfo.title,
-    tags: planInfo.tags,
-    startDate: planInfo.startDate,
-    endDate: planInfo.endDate,
-    published: planInfo.published,
-    budget: planInfo.budget,
-    useExpense: planInfo.useExpense,
-    expense: planInfo.expense,
+    planId: '',
+    title: '',
+    tags: [],
+    startDate: new Date(),
+    endDate: new Date(),
+    published: false,
+    budget: {cash: 0, card: 0},
+    useExpense: false,
+    expense: {
+      food: 0,
+      transportation: 0,
+      loadging: 0,
+      shopping: 0,
+      etc: 0,
+    },
   });
+
+  useEffect(() => {
+    setInfo({
+      planId: planInfo.planId,
+      title: planInfo.title,
+      tags: planInfo.tags,
+      startDate: planInfo.startDate,
+      endDate: planInfo.endDate,
+      published: planInfo.published,
+      budget: planInfo.budget,
+      useExpense: planInfo.useExpense,
+      expense: planInfo.expense,
+    })
+    const cloneCheck = !!planInfo.originPlan !== false;
+    console.log('cloneCheck', cloneCheck, 'planInfo.originPlan', !!planInfo.originPlan);
+    setIsCloned(cloneCheck);
+
+    if (cloneCheck) {
+      // 유저 찾기
+      console.log('info', planInfo);
+      console.log('users', planInfo.originPlan.users)
+      const owner = planInfo.originPlan.users !== undefined && planInfo.originPlan?.users.find((user: IOwner) => user.owner === true)!;
+  
+      console.log('onwer', owner);
+      owner && userCloneInfo(owner);
+    }
+
+  }, [planInfo])
 
   const [added, setAdded] = useAtom(addedPlace);
   const [stored, setStored] = useAtom(storedPlace);
 
   const { mutate: planMutate } = usePatchPlanInfo();
   const { mutate: placeMutate} = usePatchPlaceInfo();
+
+  // clone 한 일정인지 여부
+  const [cloneInfo, userCloneInfo] = useState<IOwner>({
+    email: '',
+    mbti: '',
+    name: '',
+    owner: false,
+  });
 
   const onMoveToEdit = () => {
     router.push(`/modify?planId=${planId}&day=`);
@@ -128,6 +173,9 @@ export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
             </Dialog>
           )}
         </div>
+        {isCloned && (
+          <div>cloned by {cloneInfo.name}님의 {planInfo.originPlan.title}</div>
+        )}
 
         <div className="hidden sm:flex items-center hover:cursor-pointer rounded-full p-1 w-10 h-10 hover:bg-gray-200">
           <Image src="/images/map.png" alt="지도" width={40} height={40} />
