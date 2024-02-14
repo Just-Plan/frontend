@@ -15,6 +15,9 @@ import { addedPlace, planInfoAtom, storedPlace } from "@/store";
 import { useAtom, useAtomValue } from "jotai";
 import { usePatchPlaceInfo } from "@/hooks/usePostPlanMutation";
 import { IDayPlan, IDayUpdates, IPlaceRequestBody } from "@/types/place.types";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
+import { usePostPlanCopy } from "@/hooks/usePostPlanCopy";
+import { usePostPlaceCopy } from "@/hooks/usePostPlaceCopy";
 
 interface IBody {
   dayUpdates: IDayPlan;
@@ -46,7 +49,6 @@ export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
     },
   });
 
-  console.log("리렌더링");
   useEffect(() => {
     setInfo({
       planId: planInfo.planId,
@@ -60,12 +62,6 @@ export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
       expense: planInfo.expense,
     });
     const cloneCheck = !!planInfo.originPlan;
-    console.log(
-      "cloneCheck",
-      cloneCheck,
-      "planInfo.originPlan",
-      !!planInfo.originPlan,
-    );
     setIsCloned(cloneCheck);
 
     if (cloneCheck) {
@@ -152,6 +148,28 @@ export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
   const onMoveToOrigin = () => {
     router.push(`/detail-plan?planId=${planInfo.originPlan?.planId}&day=`);
   };
+
+  const { data: planCopyData, mutate: planCopyMutation } = usePostPlanCopy(
+    Number(planId),
+  );
+
+  // 가져오기 -> 내가 Users에 포함되지 x
+  const onBringPlan = () => {
+    planCopyMutation();
+  };
+
+  useEffect(() => {
+    if (planCopyData) {
+      router.push(`/detail-plan?planId=${planCopyData.planId}&day=`);
+    }
+  }, [planCopyData]);
+
+  // 내가 user에 포함되는지 확인
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
+  const isContributor = !!planInfo.users.find(
+    (user) => user.email === userInfo.email,
+  );
+
   return (
     <div className="">
       <div className="flex items-center">
@@ -211,13 +229,21 @@ export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
           >
             저장
           </Button>
-        ) : (
+        ) : isContributor ? (
           <Button
             variant="outline"
             className="w-12 sm:w-28"
             onClick={onMoveToEdit}
           >
             편집하기
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            className="w-12 sm:w-28"
+            onClick={onBringPlan}
+          >
+            가져오기
           </Button>
         )}
       </div>
