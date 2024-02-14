@@ -1,27 +1,29 @@
 import { Button } from "@/components/Button";
 import { CardContent, CardFooter } from "@/components/Card";
 import Image from "next/image";
-import { useAtom } from "jotai";
-import { mbtiStepAtom } from "@/store/mbti-test.atoms";
+
 import fake_mbtitest from "/public/images/mbti_title_image.png";
 
-import { TravelData, TravelQuestion } from "./MbtiSelectSection.types";
+import type { TravelQuestion } from "./MbtiSelectSection.types";
+import { useState } from "react";
 
 export const MbtiSelectSection = ({
   questions,
   onSelectAnswer,
+  setMbtiStep,
 }: {
   questions: TravelQuestion[];
-  onSelectAnswer: (answer: string) => void;
+  onSelectAnswer: (answer: number) => void;
+  setMbtiStep: () => void;
 }) => {
-  const [mbtiStep, setMbtiStep] = useAtom(mbtiStepAtom);
+  const [currentStepIndex, setCurrentStepIndex] = useState<number>(0);
 
   const handleNextMbtiStep = () => {
-    setMbtiStep((prev) => (prev < questions.length ? prev + 1 : prev));
+    setMbtiStep();
+    setCurrentStepIndex((prevIndex) => prevIndex + 1);
   };
-  const currentStepIndex = mbtiStep;
 
-  const selectAnswer = (answer: string) => {
+  const selectAnswer = (answer: number) => {
     onSelectAnswer(answer);
     handleNextMbtiStep();
   };
@@ -42,7 +44,7 @@ export const MbtiSelectSection = ({
         <CardFooter className="flex flex-col">
           <Button
             onClick={() =>
-              selectAnswer(questions[currentStepIndex]?.answers[0]?.answer)
+              selectAnswer(questions[currentStepIndex]?.answers[0]?.answerId)
             }
             variant="secondary"
             className="text-[1.3rem] w-80 h-auto hover:bg-white text-wrap"
@@ -51,7 +53,7 @@ export const MbtiSelectSection = ({
           </Button>
           <Button
             onClick={() =>
-              selectAnswer(questions[currentStepIndex]?.answers[1]?.answer)
+              selectAnswer(questions[currentStepIndex]?.answers[1]?.answerId)
             }
             variant="secondary"
             className="mt-5 text-[1.3rem] w-80  h-auto hover:bg-white text-wrap"

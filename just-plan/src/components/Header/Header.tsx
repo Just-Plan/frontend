@@ -1,22 +1,24 @@
 "use client";
 
-import {
-  initialUserInfo,
-  localStorageUserInfoAtom,
-  logout,
-} from "@/store/auth.atom";
-import { useAtom, useAtomValue } from "jotai";
+import { localStorageUserInfoAtom, useLogout } from "@/store/auth.atom";
+import { initialUserInfo } from "@/store/auth.atom.type";
+import { useAtom } from "jotai";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export const Header = () => {
+  const logout = useLogout();
+
   const router = useRouter();
   const [userInfo, setUserInfo] = useAtom(localStorageUserInfoAtom);
+  console.log(userInfo);
   const onMoveToOtherPage = (path: string) => {
     router.push(path);
   };
   const onLogout = () => {
-    setUserInfo(initialUserInfo);
+    console.log(userInfo);
+    logout();
+    console.log(userInfo);
   };
   return (
     <div className="justify-between	px-8 size-full h-14 flex items-center shadow-lg">

@@ -7,9 +7,10 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import { fetchComposed } from "@/lib/returnFetch";
-import { atom, useAtom, useSetAtom } from "jotai";
+import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
-import { UserInfo, localStorageUserInfoAtom } from "@/store/auth.atom";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
+import type { UserInfo } from "@/store/auth.atom.type";
 interface FormData {
   email: string;
   password: string;

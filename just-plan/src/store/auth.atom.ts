@@ -1,17 +1,30 @@
-import { atom, useAtom } from "jotai";
+import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { UserInfo, initialUserInfo } from "./auth.atom.type";
+import { initialUserInfo } from "./auth.atom.type";
+import type { UserInfo } from "./auth.atom.type";
 
 export const localStorageUserInfoAtom = atomWithStorage<UserInfo>(
   "userInfo",
   initialUserInfo,
 );
-export function login(userInfo: UserInfo) {
+
+export function useLogin() {
   const [, setLocalStorageUserInfo] = useAtom(localStorageUserInfoAtom);
-  setLocalStorageUserInfo({ ...userInfo, isLoggedIn: true });
+
+  function login(userInfo: UserInfo) {
+    setLocalStorageUserInfo({ ...userInfo, isLoggedIn: true });
+  }
+
+  return login;
 }
-// 로그아웃 함수
-export function logout() {
+
+export function useLogout() {
   const [, setLocalStorageUserInfo] = useAtom(localStorageUserInfoAtom);
-  setLocalStorageUserInfo(initialUserInfo);
+
+  function logout() {
+    localStorage.removeItem("access-token");
+    setLocalStorageUserInfo(initialUserInfo);
+  }
+
+  return logout;
 }

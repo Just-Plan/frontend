@@ -16,7 +16,7 @@ import { HomePageConfig, MBTI } from "@/constants";
 import { getCities } from "./_lib/getCities";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getPlanList } from "./_lib/getPlanList";
-import { IPlan } from "@/types/plan.types";
+import type { IPlan } from "@/types/plan.types";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
