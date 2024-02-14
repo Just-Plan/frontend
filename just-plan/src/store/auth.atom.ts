@@ -13,6 +13,9 @@ export const localStorageUserInfoAtom = atomWithStorage<UserInfo>(
   "userInfo",
   initialUserInfo,
 );
+
+export const accessTokenAtom = atomWithStorage("accessToken", "");
+
 export function login(userInfo: UserInfo) {
   const [, setLocalStorageUserInfo] = useAtom(localStorageUserInfoAtom);
   setLocalStorageUserInfo({ ...userInfo, isLoggedIn: true });
