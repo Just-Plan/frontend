@@ -8,7 +8,11 @@ export async function getPlanList(
   mbtiList?: string[],
 ): Promise<IPlanListResBody> {
   const res = await nextFetch(
-    `/api/plan?regionId=${regionId}&page=${page}&size=${size}&sort=scrapCnt`,
+    `/api/plan/plans?regionId=${regionId}&page=${page}&size=${size}&sort=scrapCnt`,
+    {
+      method: "POST",
+      body: JSON.stringify({ mbti: mbtiList }),
+    },
   );
 
   return res as unknown as IPlanListResBody;
