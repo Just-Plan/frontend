@@ -23,7 +23,7 @@ import { useGetInfinitePlanList } from "@/hooks/useGetInfinitePlanList";
 const Home = () => {
   const router = useRouter();
   const [selectMBTI, setSelectMBTI] = useState<string[]>([]);
-
+  const regionId = 0;
   const onMoveToAddPlan = () => {
     router.push("/add-plan");
   };
@@ -41,10 +41,10 @@ const Home = () => {
     data: popularPlanList,
     error: popularPlanError,
     isLoading: popularPlanisLoading,
-  } = useGetPlanList();
+  } = useGetPlanList(regionId);
 
-  const { planList, fetchNextPage, hasNextPage, isFetching } =
-    useGetInfinitePlanList();
+  const { planList, fetchNextPage, hasNextPage, isFetching, refetch } =
+    useGetInfinitePlanList(regionId, selectMBTI);
 
   const { ref, inView } = useInView({
     threshold: 0.4,
@@ -66,6 +66,8 @@ const Home = () => {
       const newMBTIList = selectMBTI.filter((item) => item !== mbti);
       setSelectMBTI(newMBTIList);
     }
+    // mbti 선택할 때 마다 api 요청 다시 보내기
+    refetch();
   };
 
   if (isLoading || popularPlanisLoading) {
