@@ -1,5 +1,5 @@
-import { SetStateAction } from "jotai";
-import { DateRange } from "react-day-picker";
+import type { SetStateAction } from "jotai";
+import type { DateRange } from "react-day-picker";
 
 export interface NameInputProps {
   onNextStep: (name: string) => void;
