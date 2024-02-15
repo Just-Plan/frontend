@@ -16,7 +16,7 @@ import { HomePageConfig, MBTI } from "@/constants";
 import { getCities } from "./_lib/getCities";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { getPlanList } from "./_lib/getPlanList";
-import type { IPlan } from "@/types/plan.types";
+import { IPlan, IPlan2 } from "@/types/plan.types";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -154,7 +154,7 @@ const Home = () => {
           {PopularPlanDescription}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
-          {popularPlanList.data.plans.map((item: IPlan) => (
+          {popularPlanList.data.plans.map((item: IPlan2) => (
             <PlanCard item={item} key={item.planId} />
           ))}
         </div>
@@ -189,7 +189,7 @@ const Home = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-y-16">
           {planList?.pages.map((itemList) =>
-            itemList.data.plans.map((item: IPlan) => (
+            itemList.data.plans.map((item: IPlan2) => (
               <PlanCard item={item} key={item.planId} />
             )),
           )}

@@ -44,3 +44,27 @@ export const fetchComposed = returnFetch({
     },
   },
 });
+
+const basicHeaders = {
+  'Content-Type': 'application/json',
+};
+
+const accessToken = localStorage.getItem("access-token");
+
+export const nextFetch = returnFetch({
+  fetch: fetchExtended,
+  headers: { 
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
+    authorization: `Bearer ${accessToken}` || "",
+  },
+  interceptors: {
+    request: async (args) => {
+      console.log("request interceptor args", args);
+      return args;
+    },
+    response: async (response, requestArgs) => {
+      return response;
+    },
+  },
+});

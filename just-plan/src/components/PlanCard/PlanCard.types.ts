@@ -1,4 +1,4 @@
-import { IPlan } from "@/types/plan.types";
+import { IPlan, IPlan2 } from "@/types/plan.types";
 
 // 이거 안쓰이나?
 export interface ICardUserData {
@@ -14,5 +14,6 @@ export interface ICardUserData {
 }
 
 export interface Props {
-  item: IPlan;
+  // item: IPlan;
+  item: IPlan2;
 }

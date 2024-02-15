@@ -45,6 +45,7 @@ export const SignInForm = () => {
             id: result.data.id,
             name: result.data.name,
             isLoggedIn: true,
+            mbtiName: result.data.mbtiName,
           };
           setUserInfo(userInfo);
           router.push("/");

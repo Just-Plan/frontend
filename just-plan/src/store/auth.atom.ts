@@ -1,8 +1,14 @@
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
-import { initialUserInfo } from "./auth.atom.type";
 import type { UserInfo } from "./auth.atom.type";
 
+export const initialUserInfo: UserInfo = {
+  email: "",
+  id: null,
+  name: "",
+  isLoggedIn: false,
+  mbtiName: "",
+};
 export const localStorageUserInfoAtom = atomWithStorage<UserInfo>(
   "userInfo",
   initialUserInfo,
