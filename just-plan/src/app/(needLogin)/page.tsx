@@ -21,6 +21,10 @@ import { useGetPlanList } from "@/hooks/useGetPlanList";
 import { useGetInfinitePlanList } from "@/hooks/useGetInfinitePlanList";
 import { useDebounde } from "@/hooks";
 import { useSearchRegion } from "@/hooks/useSearchRegion";
+import { useAtomValue } from "jotai";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import BeforeCreatePlanModal from "./_components/BeforeCreatePlanModal/BeforeCreatePlanModal";
 
 const Home = () => {
   const router = useRouter();
@@ -34,9 +38,13 @@ const Home = () => {
     countryEnglishName: "",
   });
   const [searchRegion, setSearchRegion] = useState("");
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
 
   const onMoveToAddPlan = () => {
-    router.push("/add-plan");
+    // 만약 내 mbti 정보가 없다면 경고 후 mbti-test로 이동
+    if (userInfo.mbtiName !== "") {
+      router.push("/add-plan");
+    }
   };
   const {
     PopularPlan,
@@ -204,12 +212,15 @@ const Home = () => {
         </div>
       </div>
       <div className=" text-center mt-20">
-        <button
-          className="bg-white text-cyan-600 border-cyan-600 border-4 rounded-2xl w-80 h-14 hover:bg-cyan-600/20"
-          onClick={onMoveToAddPlan}
-        >
-          내 일정 작성하러 가기!
-        </button>
+        <Dialog>
+          <DialogTrigger
+            className="bg-white text-cyan-600 border-cyan-600 border-4 rounded-2xl w-80 h-14 hover:bg-cyan-600/20"
+            onClick={onMoveToAddPlan}
+          >
+            내 일정 작성하러 가기!
+          </DialogTrigger>
+          {userInfo.mbtiName === "" ? <BeforeCreatePlanModal /> : ""}
+        </Dialog>
         <div className="text-3xl font-bold mt-12">{PopularPlan}</div>
         <div className="text-xl text-zinc-600 mt-2">
           {region.id === 0 ? (
@@ -279,7 +290,6 @@ const Home = () => {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-y-16">
           {planList?.pages.map((itemList) =>
             itemList.plans.map((item: IPlan2) => (

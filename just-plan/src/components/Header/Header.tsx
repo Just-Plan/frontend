@@ -1,7 +1,9 @@
 "use client";
 
+import BeforeCreatePlanModal from "@/app/(needLogin)/_components/BeforeCreatePlanModal/BeforeCreatePlanModal";
 import { localStorageUserInfoAtom, useLogout } from "@/store/auth.atom";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import { useAtom } from "jotai";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -14,6 +16,13 @@ export const Header = () => {
   console.log(userInfo);
   const onMoveToOtherPage = (path: string) => {
     router.push(path);
+  };
+  const onMoveToAddPlan = () => {
+    // 만약 내 mbti 정보가 없다면 경고 후 mbti-test로 이동
+    console.log("내 mbti 정보:", userInfo.mbtiName);
+    if (userInfo.mbtiName !== "") {
+      router.push("/add-plan");
+    }
   };
   const onLogout = () => {
     console.log(userInfo);
@@ -30,12 +39,15 @@ export const Header = () => {
       </div>
       <div className="flex justify-between gap-4 font-bold items-center">
         {userInfo.isLoggedIn && (
-          <div
-            className="hover:cursor-pointer "
-            onClick={() => onMoveToOtherPage("/add-plan")}
-          >
-            Create Plan
-          </div>
+          <Dialog>
+            <DialogTrigger
+              className="hover:cursor-pointer "
+              onClick={onMoveToAddPlan}
+            >
+              Create Plan
+            </DialogTrigger>
+            {userInfo.mbtiName === "" ? <BeforeCreatePlanModal /> : ""}
+          </Dialog>
         )}
         <div
           className="hover:cursor-pointer"

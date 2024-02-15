@@ -18,8 +18,7 @@ const MBTIPage = () => {
   useEffect(() => {
     // 수정 필요
     nextFetch("api/mbti/questions")
-      .then((response) => response.json())
-      .then((data) => setQuestions(data.data))
+      .then((data) => setQuestions(data))
       .catch((error) => console.error("Error fetching data:", error));
   }, []);
   console.log(mbtiStep);
