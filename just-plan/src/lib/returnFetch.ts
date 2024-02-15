@@ -4,6 +4,7 @@ import returnFetch from "return-fetch";
 const fetchExtended = returnFetch({
   baseUrl: "http://13.125.188.226:8080",
   headers: {
+    "Content-Type": "application/json",
     Accept: "application/json",
   },
   interceptors: {
@@ -20,8 +21,14 @@ const fetchExtended = returnFetch({
     },
   },
 });
+const accessToken = localStorage.getItem("access-token") || "";
+
 export const fetchComposed = returnFetch({
   fetch: fetchExtended,
+  headers: {
+    "Content-Type": "application/json",
+    // authorization: `Bearer ${accessToken || ""}`,
+  },
   interceptors: {
     request: async (args) => {
       console.log("second request interceptor args", args);
@@ -31,6 +38,7 @@ export const fetchComposed = returnFetch({
 
     response: async (response, requestArgs) => {
       console.log("second response interceptor requestArgs", requestArgs);
+      console.log(response);
 
       return response;
     },

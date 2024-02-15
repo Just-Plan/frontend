@@ -1,19 +1,16 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/Card";
 import { Progress } from "@/components/progress";
-import { SetStateAction, useEffect, useState } from "react";
+import { useState, type SetStateAction } from "react";
 import { Label } from "@radix-ui/react-label";
 import { Input } from "@/components/Input";
 import { Button } from "@/components/Button";
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import { addDays } from "date-fns";
 import useFetchComposed from "@/hooks/useFetchComposed";
-import { useMutation } from "@tanstack/react-query";
-import { fetchComposed } from "@/lib/returnFetch";
 import { convertDateFormat } from "@/utils/convertDateFormat";
 import { useRouter } from "next/navigation";
-import { getCities } from "../_lib/getCities";
 import { getSearchCities } from "../_lib/getSearchCities";
 import type {
   DatePickerProps,
@@ -53,7 +50,7 @@ const NameInput: React.FC<NameInputProps> = ({ onNextStep }) => {
 
 const SearchResults: React.FC<SearchResultsProps> = ({
   onPreviousStep,
-  onNextStep,
+
   onResultSelect,
 }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -102,10 +99,9 @@ const SearchResults: React.FC<SearchResultsProps> = ({
 const DatePicker: React.FC<DatePickerProps> = ({
   planName,
   searchResults,
-  selectedDate,
+
   onPreviousStep,
   onSelectDate,
-  onSelectExpenses,
 }) => {
   const [hashTags, setHashTags] = useState<string[]>([]); // Change the initialization to an empty array
   const router = useRouter();
@@ -114,10 +110,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
     from: new Date(),
     to: addDays(new Date(), 3),
   });
-  const [fetchData, { loading, data, error, reset }] = useFetchComposed<any>(
-    "/api/plan",
-    "POST",
-  );
+  const [fetchData, { data }] = useFetchComposed<any>("/api/plan", "POST");
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = event.target.value;
     const words = inputValue.split(/\s+/);
@@ -131,18 +124,20 @@ const DatePicker: React.FC<DatePickerProps> = ({
 
   const handleNextStep = () => {
     onSelectDate(date);
+
     fetchData({
       title: planName,
       tags: hashTags,
       startDate: convertDateFormat(date?.from),
       endDate: convertDateFormat(date?.to),
       regionId: searchResults,
-    });
-    if (data) {
-      router.push(`/detail-plan?planId=${data.data.planId}`);
-    } else {
-      console.log("Error: Data is undefined or does not contain planId.");
-    }
+    })
+      .then(() => {
+        router.push(`/detail-plan?planId=${data.data.planId}`);
+      })
+      .catch((error) => {
+        console.error("Error occurred while fetching data:", error);
+      });
   };
 
   return (

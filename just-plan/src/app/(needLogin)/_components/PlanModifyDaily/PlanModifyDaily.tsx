@@ -38,18 +38,17 @@ const PlanModifyDaily = ({day}: {day: string}) => {
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-
-    <div className="bg-ourGreen flex flex-row p-3 sm:p-5 rounded-2xl gap-5">
-      <div className="bg-white rounded-2xl p-5 hidden sm:block">
-        <div className="mb-5 flex justify-between">
-          <div className="text-2xl font-bold ">장소 보관함</div>
-          <Dialog>
-            <DialogTrigger className="flex h-full bg-indigo-400 rounded-none text-white p-2">
-              장소 추가
-            </DialogTrigger>
-            <AddPlaceModal />
-          </Dialog>
-        </div>
+      <div className="bg-ourGreen flex flex-row p-3 sm:p-5 rounded-2xl gap-5">
+        <div className="bg-white rounded-2xl p-5 hidden sm:block">
+          <div className="mb-5 flex justify-between">
+            <div className="text-2xl font-bold ">장소 보관함</div>
+            <Dialog>
+              <DialogTrigger className="flex h-full bg-indigo-400 rounded-none text-white p-2">
+                장소 추가
+              </DialogTrigger>
+              <AddPlaceModal />
+            </Dialog>
+          </div>
 
           <Droppable droppableId={"stored"}>
           {(provided, snapshot) => (
@@ -90,7 +89,6 @@ const PlanModifyDaily = ({day}: {day: string}) => {
           <div className="bg-white w-full hidden sm:block">지도</div>
         </div>
       </div>
-    </div>
     </DragDropContext>
   );
 };
