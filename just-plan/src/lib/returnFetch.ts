@@ -77,7 +77,7 @@ export const nextFetch = returnFetch({
         // 3. 해당 요청 다시 보내기
         return fetch(...requestArgs);
       }
-      return response;
+      return res.data;
     },
   },
 });

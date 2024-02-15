@@ -50,6 +50,13 @@ const Home = () => {
     gcTime: 300 * 1000,
   });
 
+  console.log(
+    "아니 여기서 왜 에러가?222 data:",
+    popularPlanList,
+    "error: ",
+    popularPlanError,
+  );
+
   const {
     data: planList,
     fetchNextPage,
@@ -59,8 +66,8 @@ const Home = () => {
     queryKey: ["infinitePlan"],
     queryFn: ({ pageParam }) => getPlanList(pageParam, 6),
     getNextPageParam: (lastPage) => {
-      if (lastPage.data?.currentPage < lastPage.data?.totalPages) {
-        return lastPage.data.currentPage + 1;
+      if (lastPage?.currentPage < lastPage?.totalPages) {
+        return lastPage.currentPage + 1;
       }
       return undefined;
     },
@@ -154,7 +161,7 @@ const Home = () => {
           {PopularPlanDescription}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
-          {popularPlanList.data.plans.map((item: IPlan2) => (
+          {popularPlanList?.plans.map((item: IPlan2) => (
             <PlanCard item={item} key={item.planId} />
           ))}
         </div>
@@ -189,7 +196,7 @@ const Home = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-y-16">
           {planList?.pages.map((itemList) =>
-            itemList.data.plans.map((item: IPlan2) => (
+            itemList.plans.map((item: IPlan2) => (
               <PlanCard item={item} key={item.planId} />
             )),
           )}
