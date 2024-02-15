@@ -4,13 +4,10 @@ import Image from "next/image";
 import React, { PropsWithChildren } from "react";
 import { Card, CardContent, CardHeader } from "../Card";
 import type { Props } from "./PlanCard.types";
-import { redirect, useRouter } from "next/navigation";
-import { useAtomValue } from "jotai";
-import { localStorageUserInfoAtom } from "@/store/auth.atom";
+import { useRouter } from "next/navigation";
 
 const PlanCard = ({ item }: Props) => {
   const image = "/images/image1.png";
-  const userInfo = useAtomValue(localStorageUserInfoAtom);
   const profile = "/images/image1.png";
 
   const {
@@ -27,6 +24,9 @@ const PlanCard = ({ item }: Props) => {
     title,
     users,
   } = item;
+
+  const owner = users.find((user) => user.owner === true);
+  console.log('owner:', owner);
 
   const router = useRouter();
   const handleToDetail = () => {
@@ -56,8 +56,7 @@ const PlanCard = ({ item }: Props) => {
           </div>
           <div className=" w-60">
             <div className="text-base flex">
-              {/* <b>{name}님</b>의 오사카 뿌수기 */}
-              <b>{userInfo.name}님</b>의 {title}
+              <b>{owner?.name}님</b>의 {title}
             </div>
             <div className="flex justify-between">
               <div className="text-sm">{days}박 {nights}일</div>
@@ -83,7 +82,7 @@ const PlanCard = ({ item }: Props) => {
           </div>
         </div>
         <div className=" flex justify-between p-3">
-          <div className="ml-3 font-bold text-stone-700">{users[0].mbti.type}</div>
+          <div className="ml-3 font-bold text-stone-700">{owner?.mbti.type}</div>
           <div className="text-sky-600 font-bold flex">
             {tags?.map((tag) => (
               <div key={tag}>{tag} </div>

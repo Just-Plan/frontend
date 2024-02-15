@@ -6,7 +6,7 @@ const patchPlanInfo = async (info: IModifyPlanInfo) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      'authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG5hdmVyLmNvbSIsImlhdCI6MTcwNjc1MDYzNiwiZXhwIjoxNzA2NzU3ODM2fQ.ezPrg-hBm284pOcUR8yZ6Ib9NmtMz-bLFicLaDnCidU`,
+      'authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0QG5hdmVyLmNvbSIsImlhdCI6MTcwNzQ4OTIyOSwiZXhwIjoxNzA3NDk2NDI5fQ.2RxG0621hkoSAvWDtUx9WaHopy0N6rH-nlHMMFwKNLo`,
     },
     body: JSON.stringify({
       ...info

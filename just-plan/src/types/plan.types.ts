@@ -115,6 +115,14 @@ export interface IPlanInfoDetail {
   }[];
 }
 
+
+export interface IOwner {
+  email: string;
+  mbti: string;
+  name: string;
+  owner: boolean;
+}
+
 export interface IModifyPlanInfo {
   planId: string;
   title: string;

@@ -1,44 +1,40 @@
 import { Dialog, DialogTrigger } from "@/components/dialog";
-import React, { useState } from "react";
 import { AddPlaceModal, StoredPlaceMiniCard } from "..";
-import { Plan, StoredPlace } from "@/mocks";
-import { StoredPlaceCard } from "@/components";
 import { PlanDayHeader } from "../PlanDayHeader/PlanDayHeader";
-import DayPlanCard from "@/components/DayPlanCard/DayPlanCard";
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from "@hello-pangea/dnd";
-import { ILocationInfo } from "@/types/plan.types";
+import { DragDropContext, Draggable, DropResult, Droppable } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import { StoredPlaceCardDnD } from "@/components/StoredPlaceCard/StoredPlaceCardDnD";
 import DayPlanCardDnD from "@/components/DayPlanCard/DayPlanCardDnD";
+import { useAtom } from "jotai";
+import { addedPlace, storedPlace } from "@/store/place.atoms";
 
-type TItemStatus = "stored" | "added";
+const PlanModifyDaily = ({day}: {day: string}) => {
 
-export type ITems = {
-  [key in TItemStatus]: ILocationInfo[];
-};
-
-const PlanModifyDaily = ({
-  items,
-  setItems,
-}: {
-  items: ITems;
-  setItems: (items: ITems) => void;
-}) => {
+  const [stored, setStored] = useAtom(storedPlace);
+  const [added, setAdded] = useAtom(addedPlace);
+  
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
 
-    const scourceKey = source.droppableId as TItemStatus;
-    const destinationKey = destination.droppableId as TItemStatus;
+    const sourceKey = source.droppableId;
+    const destinationKey = destination.droppableId;
 
-    const _items = JSON.parse(JSON.stringify(items)) as typeof items;
-    const [targetItem] = _items[scourceKey].splice(source.index, 1);
-    _items[destinationKey].splice(destination.index, 0, targetItem);
-    setItems(_items);
+    // 드래그 된 아이템 제거 및 저장
+    const itemToMove = sourceKey === "stored" ? stored.splice(source.index, 1)[0] : added[day].splice(source.index, 1)[0]
+
+    // 아이템을 새 위치에 삽입 
+    if (destinationKey === "stored") {
+      const newStored = [...stored];
+      newStored.splice(destination.index, 0, itemToMove)
+      setStored(newStored);
+    } else {
+      const newAdded = [...added[day]];
+      newAdded.splice(destination.index, 0, itemToMove);
+      setAdded({
+        ...added,
+        [day]: newAdded
+      })
+    }
   };
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -55,48 +51,42 @@ const PlanModifyDaily = ({
           </div>
 
           <Droppable droppableId={"stored"}>
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className={cn(
-                  "flex flex-col gap-5",
-                  snapshot.isDraggingOver ? "shadow-lg" : "",
-                )}
+          {(provided, snapshot) => (
+            <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={cn(
+              "flex flex-col gap-5",
+              snapshot.isDraggingOver ? "shadow-lg" : ""
+            )}
+          >
+              {stored.map((item, index) => (
+                <Draggable
+                key={item.name} // id
+                draggableId={item.name.toString()} // id
+                index={index}
               >
-                {items["stored" as TItemStatus].map((item, index) => (
-                  <Draggable
-                    key={item.id}
-                    draggableId={item.id.toString()}
-                    index={index}
-                  >
-                    {(provided, snapshot) => (
-                      <StoredPlaceCardDnD
-                        key={item.id}
-                        item={item}
-                        provided={provided}
-                        snapshot={snapshot}
-                      />
-                    )}
-                  </Draggable>
-                ))}
-
-                {provided.placeholder}
-              </div>
+                {(provided, snapshot) => (
+                    <StoredPlaceCardDnD key={item.name} item={item} provided={provided} snapshot={snapshot} />
+                )}
+              </Draggable>
+              ))}
+              {provided.placeholder}
+            </div>
             )}
           </Droppable>
+
+      </div>
+      <div className="flex flex-col w-full">
+        <PlanDayHeader isModify />
+        <div className="flex bg-white mb-3 p-2 gap-3 rounded-xl overflow-x-auto sm:hidden">
+          {stored.map((item) => (
+            <StoredPlaceMiniCard key={item.name} place={item} />
+          ))}
         </div>
-        <div className="flex flex-col w-full">
-          <PlanDayHeader days={Plan} isModify />
-          <div className="flex bg-white mb-3 p-2 gap-3 rounded-xl overflow-x-auto sm:hidden">
-            {StoredPlace.map((item) => (
-              <StoredPlaceMiniCard key={item.id} place={item} />
-            ))}
-          </div>
-          <div className="flex gap-5">
-            <DayPlanCardDnD item={Plan[0]} items={items} setItems={setItems} />
-            <div className="bg-white w-full hidden sm:block">지도</div>
-          </div>
+        <div className="flex gap-5">
+          <DayPlanCardDnD dayPlan={added[day]} day={day} />
+          <div className="bg-white w-full hidden sm:block">지도</div>
         </div>
       </div>
     </DragDropContext>

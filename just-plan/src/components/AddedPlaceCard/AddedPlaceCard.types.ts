@@ -1,5 +1,5 @@
-import { ILocationInfo } from "@/types/plan.types";
+import { IPlace } from "@/types/place.types";
 
 export interface IProps {
-  item: ILocationInfo;
+  item: IPlace;
 }
