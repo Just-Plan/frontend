@@ -19,6 +19,8 @@ import { useInView } from "react-intersection-observer";
 import { useGetCities } from "@/hooks/useGetCities";
 import { useGetPlanList } from "@/hooks/useGetPlanList";
 import { useGetInfinitePlanList } from "@/hooks/useGetInfinitePlanList";
+import { useDebounde } from "@/hooks";
+import { useSearchRegion } from "@/hooks/useSearchRegion";
 
 const Home = () => {
   const router = useRouter();
@@ -31,6 +33,7 @@ const Home = () => {
     countryKoreanName: "",
     countryEnglishName: "",
   });
+  const [searchRegion, setSearchRegion] = useState("");
 
   const onMoveToAddPlan = () => {
     router.push("/add-plan");
@@ -65,7 +68,7 @@ const Home = () => {
     threshold: 0.4,
     delay: 0,
   });
-  console.log("hasNextPage", hasNextPage);
+  // console.log("hasNextPage", hasNextPage);
 
   useEffect(() => {
     if (inView && !isFetching && hasNextPage) {
@@ -73,7 +76,7 @@ const Home = () => {
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
-  // 지역 검색 시
+  // 지역 선택 시
   const onClickRegion = (regionInfo: any) => {
     console.log("regionInfo:", regionInfo);
     setRegion(regionInfo);
@@ -99,13 +102,26 @@ const Home = () => {
     }
   };
 
-  if (isLoading || popularPlanisLoading) {
+  const debouncedValue = useDebounde(searchRegion, 400);
+  const {
+    data: searchRegionData,
+    error: searchRegionError,
+    isLoading: searchRegionIsLoading,
+    refetch: searchRegonRefetch,
+  } = useSearchRegion(debouncedValue);
+
+  useEffect(() => {
+    searchRegonRefetch();
+  }, [debouncedValue]);
+  if (isLoading || popularPlanisLoading || searchRegionIsLoading) {
     return <div>로딩중</div>;
   }
 
-  if (error || popularPlanError) {
+  if (error || popularPlanError || searchRegionError) {
     return <div>에러</div>;
   }
+  console.log("searchRegionData:", searchRegionData);
+  // 검색 결과 없는데 왜 기본값이 오는거지?
 
   return (
     <div className="py-10 px-5 sm:px-60 sm:py-32">
@@ -136,6 +152,8 @@ const Home = () => {
             <input
               className="outline-none bg-transparent"
               placeholder="어디로 떠나고 싶으신가요?"
+              value={searchRegion}
+              onChange={(e) => setSearchRegion(e.target.value)}
             />
             <svg width={20} viewBox="0 0 24 24" aria-hidden="true" fill="gray">
               <g>
@@ -143,24 +161,46 @@ const Home = () => {
               </g>
             </svg>
           </div>
-          <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
-            <div className="py-4 px-4">
-              {searchResult.data.cities.map((item: any) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
-                  onClick={() => onClickRegion(item)}
-                >
-                  <div className="font-bold text-neutral-600 text-2xl">
-                    {item.koreanName}
+          {/* 만약, 지역 검색 결과가 없다면 */}
+          {searchRegion === "" ? (
+            <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
+              <div className="py-4 px-4">
+                {searchResult.data.cities.map((item: any) => (
+                  <div
+                    key={item.id}
+                    className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
+                    onClick={() => onClickRegion(item)}
+                  >
+                    <div className="font-bold text-neutral-600 text-2xl">
+                      {item.koreanName}
+                    </div>
+                    <div className="text-neutral-400">
+                      {item.countryKoreanName}
+                    </div>
                   </div>
-                  <div className="text-neutral-400">
-                    {item.countryKoreanName}
+                ))}
+              </div>
+            </ScrollArea>
+          ) : (
+            <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
+              <div className="py-4 px-4">
+                {searchRegionData?.cities.map((item: any) => (
+                  <div
+                    key={item.id}
+                    className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
+                    onClick={() => onClickRegion(item)}
+                  >
+                    <div className="font-bold text-neutral-600 text-2xl">
+                      {item.koreanName}
+                    </div>
+                    <div className="text-neutral-400">
+                      {item.countryKoreanName}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
+                ))}
+              </div>
+            </ScrollArea>
+          )}
         </div>
       </div>
       <div className=" text-center mt-20">
@@ -180,11 +220,6 @@ const Home = () => {
               {PopularPlanDescription}
             </>
           )}
-          {/* {PopularPlanDefaultDescription}
-          <div>
-            {region.koreanName}
-            {PopularPlanDescription}
-          </div> */}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
           {popularPlanList?.plans.map((item: IPlan2) => (
