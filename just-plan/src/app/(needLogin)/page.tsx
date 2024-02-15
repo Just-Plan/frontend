@@ -13,66 +13,38 @@ import {
 } from "@/components/Carousel";
 import { useRouter } from "next/navigation";
 import { HomePageConfig, MBTI } from "@/constants";
-import { getCities } from "./_lib/getCities";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getPlanList } from "./_lib/getPlanList";
-import { IPlan, IPlan2 } from "@/types/plan.types";
-import { useEffect } from "react";
+import { IPlan2 } from "@/types/plan.types";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { useGetCities } from "@/hooks/useGetCities";
+import { useGetPlanList } from "@/hooks/useGetPlanList";
+import { useGetInfinitePlanList } from "@/hooks/useGetInfinitePlanList";
 
 const Home = () => {
   const router = useRouter();
+  const [selectMBTI, setSelectMBTI] = useState<string[]>([]);
+
   const onMoveToAddPlan = () => {
     router.push("/add-plan");
   };
-  const { PopularPlan, PopularPlanDescription, MBTIPlan, MBTIPlanDescription } =
-    HomePageConfig;
-
   const {
-    data: searchResult,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["cities"],
-    queryFn: getCities,
-    staleTime: 60 * 1000,
-    gcTime: 300 * 1000,
-  });
+    PopularPlan,
+    PopularPlanDescription,
+    MBTIPlan,
+    MBTIPlanDescription,
+    MBTIPlanDefaultDescription,
+  } = HomePageConfig;
+
+  const { data: searchResult, error, isLoading } = useGetCities();
 
   const {
     data: popularPlanList,
     error: popularPlanError,
     isLoading: popularPlanisLoading,
-  } = useQuery({
-    queryKey: ["planList", 3],
-    queryFn: () => getPlanList(0, 3),
-    staleTime: 60 * 1000,
-    gcTime: 300 * 1000,
-  });
+  } = useGetPlanList();
 
-  console.log(
-    "아니 여기서 왜 에러가?222 data:",
-    popularPlanList,
-    "error: ",
-    popularPlanError,
-  );
-
-  const {
-    data: planList,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  } = useInfiniteQuery({
-    queryKey: ["infinitePlan"],
-    queryFn: ({ pageParam }) => getPlanList(pageParam, 6),
-    getNextPageParam: (lastPage) => {
-      if (lastPage?.currentPage < lastPage?.totalPages) {
-        return lastPage.currentPage + 1;
-      }
-      return undefined;
-    },
-    initialPageParam: 0,
-  });
+  const { planList, fetchNextPage, hasNextPage, isFetching } =
+    useGetInfinitePlanList();
 
   const { ref, inView } = useInView({
     threshold: 0.4,
@@ -85,6 +57,16 @@ const Home = () => {
       fetchNextPage();
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
+
+  const onClickMBTI = (mbti: string) => {
+    const isContain = selectMBTI.indexOf(mbti);
+    if (isContain < 0) {
+      setSelectMBTI([...selectMBTI, mbti]);
+    } else {
+      const newMBTIList = selectMBTI.filter((item) => item !== mbti);
+      setSelectMBTI(newMBTIList);
+    }
+  };
 
   if (isLoading || popularPlanisLoading) {
     return <div>로딩중</div>;
@@ -166,15 +148,34 @@ const Home = () => {
           ))}
         </div>
         <div className="text-3xl font-bold mt-12">{MBTIPlan}</div>
-        <div className="text-xl text-zinc-600 mt-2">
-          ENFP, INFJ{MBTIPlanDescription}
+        <div className="text-xl text-zinc-600 mt-2 flex justify-center">
+          {selectMBTI.length !== 0 ? (
+            <>
+              {selectMBTI.map((mbti, index) => {
+                if (index === 0) {
+                  return <div key={mbti}>{mbti}</div>;
+                } else {
+                  return <div key={mbti}>, {mbti}</div>;
+                }
+              })}
+              {MBTIPlanDescription}
+            </>
+          ) : (
+            <div>{MBTIPlanDefaultDescription}</div>
+          )}
         </div>
         <Carousel className="my-5 mx-12 sm:mx-40">
           <CarouselContent>
             <CarouselItem>
               <div className="flex w-full justify-center gap-1 sm:gap-5">
                 {MBTI.slice(0, 8).map((item) => (
-                  <Badge key={item} variant="unselected">
+                  <Badge
+                    key={item}
+                    variant={
+                      selectMBTI.indexOf(item) < 0 ? "unselected" : "selected"
+                    }
+                    onClick={() => onClickMBTI(item)}
+                  >
                     {item}
                   </Badge>
                 ))}
@@ -183,7 +184,13 @@ const Home = () => {
             <CarouselItem>
               <div className="flex w-full justify-center gap-1 sm:gap-5">
                 {MBTI.slice(8).map((item) => (
-                  <Badge key={item} variant="unselected">
+                  <Badge
+                    key={item}
+                    variant={
+                      selectMBTI.indexOf(item) < 0 ? "unselected" : "selected"
+                    }
+                    onClick={() => onClickMBTI(item)}
+                  >
                     {item}
                   </Badge>
                 ))}

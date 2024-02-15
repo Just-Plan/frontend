@@ -26,7 +26,6 @@ const PlanCard = ({ item }: Props) => {
   } = item;
 
   const owner = users.find((user) => user.owner === true);
-  console.log('owner:', owner);
 
   const router = useRouter();
   const handleToDetail = () => {
@@ -59,7 +58,9 @@ const PlanCard = ({ item }: Props) => {
               <b>{owner?.name}님</b>의 {title}
             </div>
             <div className="flex justify-between">
-              <div className="text-sm">{days}박 {nights}일</div>
+              <div className="text-sm">
+                {days}박 {nights}일
+              </div>
               <div className="text-sm">{budget.card + budget.cash} 원</div>
             </div>
           </div>
@@ -82,11 +83,11 @@ const PlanCard = ({ item }: Props) => {
           </div>
         </div>
         <div className=" flex justify-between p-3">
-          <div className="ml-3 font-bold text-stone-700">{owner?.mbti.type}</div>
+          <div className="ml-3 font-bold text-stone-700">
+            {owner?.mbti.type}
+          </div>
           <div className="text-sky-600 font-bold flex">
-            {tags?.map((tag) => (
-              <div key={tag}>{tag} </div>
-            ))}
+            {tags?.map((tag) => <div key={tag}>{tag} </div>)}
           </div>
         </div>
       </CardContent>
