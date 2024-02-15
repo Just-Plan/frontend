@@ -131,3 +131,8 @@ export interface IPlanListResBody {
   size: number;
   plans: IPlan2[];
 }
+
+export interface IScrapRequstBody {
+  planId: number;
+  scrap: boolean;
+}

@@ -21,8 +21,6 @@ const fetchExtended = returnFetch({
     },
   },
 });
-const accessToken = localStorage.getItem("access-token") || "";
-
 export const fetchComposed = returnFetch({
   fetch: fetchExtended,
   headers: {
@@ -49,7 +47,7 @@ const basicHeaders = {
   "Content-Type": "application/json",
 };
 
-// const accessToken = localStorage.getItem("access-token");
+const accessToken = localStorage.getItem("access-token");
 
 export const nextFetch = returnFetch({
   fetch: fetchExtended,
