@@ -5,20 +5,29 @@ import React, { PropsWithChildren } from "react";
 import { Card, CardContent, CardHeader } from "../Card";
 import type { Props } from "./PlanCard.types";
 import { redirect, useRouter } from "next/navigation";
+import { useAtomValue } from "jotai";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
 
 const PlanCard = ({ item }: Props) => {
+  const image = "/images/image1.png";
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
+  const profile = "/images/image1.png";
+
   const {
+    budget,
+    days,
+    endDate,
+    nights,
     planId,
-    image = "/images/image1.png",
-    profile = "/images/image1.png",
-    name = "강윤지",
-    title,
-    date = "4박 5일",
-    money = 100000,
-    count = 10,
-    mbti = "INFJ",
+    published,
+    region,
+    scrapCount,
+    startDate,
     tags,
+    title,
+    users,
   } = item;
+
   const router = useRouter();
   const handleToDetail = () => {
     console.log("리다이렉트!!!");
@@ -48,11 +57,11 @@ const PlanCard = ({ item }: Props) => {
           <div className=" w-60">
             <div className="text-base flex">
               {/* <b>{name}님</b>의 오사카 뿌수기 */}
-              <b>{name}님</b>의 {title}
+              <b>{userInfo.name}님</b>의 {title}
             </div>
             <div className="flex justify-between">
-              <div className="text-sm">{date}</div>
-              <div className="text-sm">{money} 원</div>
+              <div className="text-sm">{days}박 {nights}일</div>
+              <div className="text-sm">{budget.card + budget.cash} 원</div>
             </div>
           </div>
           <div className="hover:bg-gray-300 w-10 h-10 rounded-full flex flex-col justify-center items-center">
@@ -70,11 +79,11 @@ const PlanCard = ({ item }: Props) => {
                 clipRule="evenodd"
               ></path>
             </svg>
-            <div className="text-xs">{count}</div>
+            <div className="text-xs">{scrapCount}</div>
           </div>
         </div>
         <div className=" flex justify-between p-3">
-          <div className="ml-3 font-bold text-stone-700">{mbti}</div>
+          <div className="ml-3 font-bold text-stone-700">{users[0].mbti.type}</div>
           <div className="text-sky-600 font-bold flex">
             {tags?.map((tag) => (
               <div key={tag}>{tag} </div>
