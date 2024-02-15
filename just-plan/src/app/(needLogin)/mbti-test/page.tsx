@@ -8,6 +8,7 @@ import type { TravelQuestion } from "./components/MbtiSelectSection/MbtiSelectSe
 import MbtiResult from "./components/MbtiResult";
 
 import { usePostMbtiResult } from "@/hooks/usePostMbtiResult";
+import { nextFetch } from "@/lib/returnFetch";
 
 const MBTIPage = () => {
   const [mbtiStep, setMbtiStep] = useState(0);
@@ -16,7 +17,7 @@ const MBTIPage = () => {
 
   useEffect(() => {
     // 수정 필요
-    fetch("http://13.125.188.226:8080/api/mbti/questions")
+    nextFetch("api/mbti/questions")
       .then((response) => response.json())
       .then((data) => setQuestions(data.data))
       .catch((error) => console.error("Error fetching data:", error));

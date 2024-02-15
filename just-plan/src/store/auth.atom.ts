@@ -1,4 +1,4 @@
-import { useAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import type { UserInfo } from "./auth.atom.type";
 
@@ -25,7 +25,7 @@ export function useLogin() {
 }
 
 export function useLogout() {
-  const [, setLocalStorageUserInfo] = useAtom(localStorageUserInfoAtom);
+  const setLocalStorageUserInfo = useSetAtom(localStorageUserInfoAtom);
 
   function logout() {
     localStorage.removeItem("access-token");
