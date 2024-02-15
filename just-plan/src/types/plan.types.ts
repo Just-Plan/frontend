@@ -12,6 +12,15 @@ export interface IProps {
   item: ILocationInfo;
 }
 
+export interface IRegion {
+  id: number;
+  koreanName: string;
+  englishName: string;
+  introduction: string;
+  countryKoreanName: string;
+  countryEnglishName: string;
+}
+
 export interface IPlanInfo {
   location: string;
   date: string;
@@ -52,14 +61,7 @@ export interface IPlan2 {
   nights: number;
   planId: number;
   published: boolean;
-  region: {
-    id: number;
-    koreanName: string;
-    englishName: string;
-    introduction: string;
-    countryKoreanName: string;
-    countryEnglishName: string;
-  };
+  region: IRegion;
   scrapCount: number;
   startDate: Date;
   tags: string[];
@@ -81,14 +83,7 @@ export interface IPlanInfoDetail {
   };
   originPlan: any;
   published: boolean;
-  region: {
-    countryEnglishName: string;
-    countryKoreanName: string;
-    englishName: string;
-    id: number;
-    introduction: string;
-    koreanName: string;
-  };
+  region: IRegion;
   startDate: Date;
   tags: string[];
   title: string;

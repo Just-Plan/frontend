@@ -13,7 +13,7 @@ import {
 } from "@/components/Carousel";
 import { useRouter } from "next/navigation";
 import { HomePageConfig, MBTI } from "@/constants";
-import { IPlan2 } from "@/types/plan.types";
+import { IPlan2, IRegion } from "@/types/plan.types";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useGetCities } from "@/hooks/useGetCities";
@@ -23,13 +23,22 @@ import { useGetInfinitePlanList } from "@/hooks/useGetInfinitePlanList";
 const Home = () => {
   const router = useRouter();
   const [selectMBTI, setSelectMBTI] = useState<string[]>([]);
-  const regionId = 0;
+  const [region, setRegion] = useState<IRegion>({
+    id: 0,
+    koreanName: "",
+    englishName: "",
+    introduction: "",
+    countryKoreanName: "",
+    countryEnglishName: "",
+  });
+
   const onMoveToAddPlan = () => {
     router.push("/add-plan");
   };
   const {
     PopularPlan,
     PopularPlanDescription,
+    PopularPlanDefaultDescription,
     MBTIPlan,
     MBTIPlanDescription,
     MBTIPlanDefaultDescription,
@@ -41,10 +50,16 @@ const Home = () => {
     data: popularPlanList,
     error: popularPlanError,
     isLoading: popularPlanisLoading,
-  } = useGetPlanList(regionId);
+    refetch: popularPlanRefetch,
+  } = useGetPlanList(region.id);
 
-  const { planList, fetchNextPage, hasNextPage, isFetching, refetch } =
-    useGetInfinitePlanList(regionId, selectMBTI);
+  const {
+    planList,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    refetch: planListRefetch,
+  } = useGetInfinitePlanList(region.id, selectMBTI);
 
   const { ref, inView } = useInView({
     threshold: 0.4,
@@ -58,6 +73,22 @@ const Home = () => {
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
+  // 지역 검색 시
+  const onClickRegion = (regionInfo: any) => {
+    console.log("regionInfo:", regionInfo);
+    setRegion(regionInfo);
+  };
+
+  useEffect(() => {
+    popularPlanRefetch();
+    planListRefetch();
+  }, [region]);
+
+  useEffect(() => {
+    // mbti 선택할 때 마다 api 요청 다시 보내기
+    planListRefetch();
+  }, [selectMBTI]);
+
   const onClickMBTI = (mbti: string) => {
     const isContain = selectMBTI.indexOf(mbti);
     if (isContain < 0) {
@@ -66,8 +97,6 @@ const Home = () => {
       const newMBTIList = selectMBTI.filter((item) => item !== mbti);
       setSelectMBTI(newMBTIList);
     }
-    // mbti 선택할 때 마다 api 요청 다시 보내기
-    refetch();
   };
 
   if (isLoading || popularPlanisLoading) {
@@ -115,11 +144,12 @@ const Home = () => {
             </svg>
           </div>
           <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
-            <div className="py-4 px-8">
+            <div className="py-4 px-4">
               {searchResult.data.cities.map((item: any) => (
                 <div
                   key={item.id}
-                  className="flex justify-between p-1 items-end"
+                  className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
+                  onClick={() => onClickRegion(item)}
                 >
                   <div className="font-bold text-neutral-600 text-2xl">
                     {item.koreanName}
@@ -142,7 +172,19 @@ const Home = () => {
         </button>
         <div className="text-3xl font-bold mt-12">{PopularPlan}</div>
         <div className="text-xl text-zinc-600 mt-2">
-          {PopularPlanDescription}
+          {region.id === 0 ? (
+            <>{PopularPlanDefaultDescription}</>
+          ) : (
+            <>
+              {region.koreanName}
+              {PopularPlanDescription}
+            </>
+          )}
+          {/* {PopularPlanDefaultDescription}
+          <div>
+            {region.koreanName}
+            {PopularPlanDescription}
+          </div> */}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
           {popularPlanList?.plans.map((item: IPlan2) => (
