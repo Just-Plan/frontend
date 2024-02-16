@@ -38,9 +38,12 @@ export const SignUpForm = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.code === 2000) {
+          console.log(data);
           setAuthId(data.data.auth_id);
         } else {
+          // 다른 상황에 대한 처리를 여기에 추가하세요.
           console.log(`Verification failed with code ${data.code}`);
+          // 다른 동작을 추가하세요.
         }
       })
       .catch((error) => {
