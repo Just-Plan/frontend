@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import bookMark from "@/../public/svg/bookMark.svg";
 import selectBookMark from "@/../public/svg/selectBookMark.svg";
 import { usePostPlanScrap } from "@/hooks/usePostPlanScrap";
+import { useAtomValue } from "jotai";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
 
 const PlanCard = ({ item }: Props) => {
   const image = "/images/image1.png";
@@ -31,6 +33,7 @@ const PlanCard = ({ item }: Props) => {
   const [isSelected, setIsSelected] = useState<boolean>(scrapped as boolean);
   const [scrapCountValue, setScrapCountValue] = useState(scrapCount);
   const owner = users.find((user) => user.owner === true);
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
 
   const router = useRouter();
   const handleToDetail = () => {
@@ -44,6 +47,12 @@ const PlanCard = ({ item }: Props) => {
     e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
   ) => {
     e.stopPropagation();
+    // 로그인 되어있는지 확인
+    if (userInfo.email === "") {
+      alert("로그인이 필요한 서비스입니다.");
+      return;
+    }
+
     // 스크랩 요청 보내기
     const body = {
       planId: planId,
