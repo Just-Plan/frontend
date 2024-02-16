@@ -12,13 +12,14 @@ import {
   CarouselPrevious,
 } from "@/components/Carousel";
 import { useRouter } from "next/navigation";
+import {
+  MbtiCardContent,
+  PopularCardContent,
+  SearchResult,
+} from "../../mocks/Main";
 import { HomePageConfig, MBTI } from "@/constants";
 import { getCities } from "./_lib/getCities";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getPlanList } from "./_lib/getPlanList";
-import { IPlan, IPlan2 } from "@/types/plan.types";
-import { useEffect } from "react";
-import { useInView } from "react-intersection-observer";
+import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
   const router = useRouter();
@@ -39,51 +40,11 @@ const Home = () => {
     gcTime: 300 * 1000,
   });
 
-  const {
-    data: popularPlanList,
-    error: popularPlanError,
-    isLoading: popularPlanisLoading,
-  } = useQuery({
-    queryKey: ["planList", 3],
-    queryFn: () => getPlanList(0, 3),
-    staleTime: 60 * 1000,
-    gcTime: 300 * 1000,
-  });
-
-  const {
-    data: planList,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-  } = useInfiniteQuery({
-    queryKey: ["infinitePlan"],
-    queryFn: ({ pageParam }) => getPlanList(pageParam, 6),
-    getNextPageParam: (lastPage) => {
-      if (lastPage.data?.currentPage < lastPage.data?.totalPages) {
-        return lastPage.data.currentPage + 1;
-      }
-      return undefined;
-    },
-    initialPageParam: 0,
-  });
-
-  const { ref, inView } = useInView({
-    threshold: 0.4,
-    delay: 0,
-  });
-  console.log("hasNextPage", hasNextPage);
-
-  useEffect(() => {
-    if (inView && !isFetching && hasNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, isFetching, hasNextPage, fetchNextPage]);
-
-  if (isLoading || popularPlanisLoading) {
+  if (isLoading) {
     return <div>로딩중</div>;
   }
 
-  if (error || popularPlanError) {
+  if (error) {
     return <div>에러</div>;
   }
 
@@ -154,8 +115,8 @@ const Home = () => {
           {PopularPlanDescription}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
-          {popularPlanList.data.plans.map((item: IPlan2) => (
-            <PlanCard item={item} key={item.planId} />
+          {PopularCardContent.map((item) => (
+            <PlanCard item={item} key={item.id} />
           ))}
         </div>
         <div className="text-3xl font-bold mt-12">{MBTIPlan}</div>
@@ -188,12 +149,9 @@ const Home = () => {
         </Carousel>
 
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-y-16">
-          {planList?.pages.map((itemList) =>
-            itemList.data.plans.map((item: IPlan2) => (
-              <PlanCard item={item} key={item.planId} />
-            )),
-          )}
-          <div ref={ref} className="h-10 bg-red-200" />
+          {MbtiCardContent.map((item) => (
+            <PlanCard item={item} key={item.id} />
+          ))}
         </div>
       </div>
     </div>

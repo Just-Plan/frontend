@@ -1,43 +1,21 @@
 "use client";
 import Image from "next/image";
+import { PropsWithChildren, useState } from "react";
+// import type { IProps } from "./AddedPlaceCard.types";
 import { Dialog, DialogTrigger } from "../dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
-import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
+import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
+import { ILocationInfo } from "@/types/plan.types";
 import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
-import { IMemo, IPlace } from "@/types/place.types";
-import { useAtom, useAtomValue } from "jotai";
-import { addedPlace } from "@/store";
 
 export interface IProps {
-  item: IPlace;
+  item: ILocationInfo;
   provided: DraggableProvided,
   snapshot: DraggableStateSnapshot
 }
-
 export const AddedPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
-  const {googlePlaceId, name, formattedAddress, types, latitude, memo, longitude, photoReference} = item;
-
-  const time = 120;
-  const image = '/images/image1.png'; // 임시
-
-
-  const [added, setAdded] = useAtom(addedPlace);
-  const day='1';
-
-  // memo 바꾸기
-  const onSubmitMemo = (editMemo: IMemo) => {
-    // 와 이거 어떻게 바꾸지???
-    console.log('editMemo:', editMemo)
-    console.log('added[1]', added[day])
-    const temp = added[day].map(item => {item.name === name ? {...item, memo: editMemo} : item.memo})
-    console.log('added[1] edit', temp)
-
-    setAdded({
-      ...added,
-      1: temp,
-    });
-  }
+  const { id, date, image, title, category, address, time } = item;
 
   return (
     <div
@@ -45,8 +23,8 @@ export const AddedPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
     {...provided.draggableProps}
     {...provided.dragHandleProps}
   >
-    <div>
-      <div className={cn("hover:cursor-pointer", snapshot.isDragging
+    <Dialog>
+      <DialogTrigger asChild className={cn("hover:cursor-pointer", snapshot.isDragging
         ? "bg-opacity-90 shadow-2xl shadow-gray-400"
         : "")}>
         <div className="flex relative flex-col w-full hover:cursor-pointer">
@@ -61,16 +39,10 @@ export const AddedPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
             </div>
 
             <div className="flex flex-col flex-1 ml-3">
-            <Dialog>
-              <DialogTrigger asChild className="hover:cursor-pointer">
-                <div className="font-bold flex">{name}</div>
-              </DialogTrigger>
-              <DetailPlaceModal />
-            </Dialog> 
-
+              <div className="font-bold flex">{title}</div>
               <div className="flex">
-                <div className=" text-sky-600 font-bold mr-2">{types}</div>
-                <div className=" text-slate-400">{formattedAddress}</div>
+                <div className=" text-sky-600 font-bold mr-2">{category}</div>
+                <div className=" text-slate-400">{address}</div>
               </div>
               <Dialog>
                 <DialogTrigger className="flex hover:underline">
@@ -82,9 +54,7 @@ export const AddedPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
                   />
                   <div className="text-slate-500">메모</div>
                 </DialogTrigger>
-                {memo && <MemoModal memo={memo} onSubmitMemo= {onSubmitMemo} />
-                }
-
+                <MemoModal />
               </Dialog>
             </div>
             <div className="float-right">x</div>
@@ -98,8 +68,9 @@ export const AddedPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </DialogTrigger>
+      <DetailPlace />
+    </Dialog>
     </div>
   );
 };

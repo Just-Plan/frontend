@@ -1,5 +1,6 @@
 import {
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/dialog";
@@ -9,7 +10,7 @@ import Comments from "../Comments/Comments";
 import { PlaceDetailInfo } from "@/mocks";
 import { Button } from "@/components/Button";
 
-const DetailPlaceModal = () => {
+const DetailPlace = () => {
   const {
     category,
     title,
@@ -29,7 +30,7 @@ const DetailPlaceModal = () => {
           <div className="font-bold text-3xl">{title}</div>
           <div className="text-gray-400 text-sm font-normal">{engTitle}</div>
         </DialogTitle>
-        <div className="flex flex-col sm:flex-row justify-between gap-6">
+        <DialogDescription className="flex flex-col sm:flex-row justify-between gap-6">
           <div className="flex flex-1 flex-col">
             <Image
               src={image}
@@ -75,10 +76,10 @@ const DetailPlaceModal = () => {
               ))}
             </div>
           </div>
-        </div>
+        </DialogDescription>
       </DialogHeader>
     </DialogContent>
   );
 };
 
-export default DetailPlaceModal;
+export default DetailPlace;

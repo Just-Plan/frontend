@@ -1,31 +1,39 @@
+import React, { PropsWithChildren, useState } from "react";
 import { Switch } from "../Switch";
-import { Draggable, Droppable } from "@hello-pangea/dnd";
+// import type { IProps } from "./DayPlanCard.types";
+import { Plan } from "@/mocks";
+import { AddedPlaceCard } from "..";
+import { DragDropContext, Draggable, DraggableProvided, DraggableStateSnapshot, DropResult, Droppable } from "@hello-pangea/dnd";
+import { ILocationInfo } from "@/types/plan.types";
 import { cn } from "@/lib/utils";
 import { AddedPlaceCardDnD } from "../AddedPlaceCard/AddedPlaceCardDnD";
-import { useAtom } from "jotai";
-import { addedPlace, storedPlace } from "@/store/place.atoms";
-import { IPlace } from "@/types/place.types";
-import { IDnDProps } from "./DayPlanCard.types";
+import { IPlan } from "./DayPlanCard.types";
 
+type TItemStatus = "stored" | "added";
 
-const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
+type ITems = {
+  [key in TItemStatus]: ILocationInfo[];
+}
+export interface IProps {
+  item: IPlan;
+  items: ITems;
+  setItems: (items: ITems) => void;
+}
 
-  const [added, setAdded] = useAtom(addedPlace);
-
-  const date = '2024-01-01'; // 임시
-  if (day!=="1" && day!=="2") return; // 임시
+const DayPlanCardDnD = ({ item, items, setItems }: PropsWithChildren<IProps>) => {
+  const { id, date, image, title, category, address } = item;
 
   return (
     <div className="bg-white flex flex-col w-fit p-6  rounded-3xl">
       <div className="flex justify-between">
         <div>
-          <div className="font-bold text-2xl text-slate-400">{day}일차</div>
+          <div className="font-bold text-2xl text-slate-400">{id}일차</div>
           <div className="text-slate-400 text-sm font-bold">{date}</div>
         </div>
 
         <div className="flex">
-          <Switch id={day} />
-          <label htmlFor={day} className="ml-3">
+          <Switch id={id.toString()} />
+          <label htmlFor={id.toString()} className="ml-3">
             대중교통
           </label>
         </div>
@@ -41,18 +49,21 @@ const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
             )}
           >
             <div className="flex flex-col items-center h-[600px] w-full overflow-y-scroll relative">
-            {added[day].map((item, index) => (
+            {items["added" as TItemStatus].map((item, index) => (
               <Draggable
-                key={item.name}
-                draggableId={item.name.toString()}
+                key={item.id}
+                draggableId={item.id.toString()}
                 index={index}
               >
                 {(provided, snapshot) => (
-                  <AddedPlaceCardDnD key={item.name} item={item} provided={provided} snapshot={snapshot} />
+                  <AddedPlaceCardDnD key={item.id} item={item} provided={provided} snapshot={snapshot} />
                 )}
               </Draggable>
             ))}
             {provided.placeholder}
+            {/* {Plan.map((item) => (
+              <AddedPlaceCard key={item.id} item={item} />
+            ))} */}
             </div>
           </div>
         )}

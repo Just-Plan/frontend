@@ -1,13 +1,5 @@
-import { IPlace } from "@/types/place.types";
-import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
+import { ILocationInfo } from "@/types/plan.types";
 
 export interface IProps {
-  item: IPlace;
-  onClickAdd: (place: IPlace) => void
-}
-
-export interface IDnDProps {
-  item: IPlace;
-  provided: DraggableProvided,
-  snapshot: DraggableStateSnapshot
+  item: ILocationInfo;
 }

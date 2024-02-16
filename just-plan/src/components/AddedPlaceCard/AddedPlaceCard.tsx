@@ -1,37 +1,17 @@
 "use client";
 import Image from "next/image";
+import { PropsWithChildren, useState } from "react";
 import type { IProps } from "./AddedPlaceCard.types";
 import { Dialog, DialogTrigger } from "../dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
-import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
-import { IMemo } from "@/types/place.types";
-import { useAtom } from "jotai";
-import { addedPlace } from "@/store";
+import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
 
 export const AddedPlaceCard = ({ item }: IProps) => {
-  const {googlePlaceId, name, formattedAddress, types, memo, latitude, longitude, photoReference} = item;
-  const image = '/images/image1.png'; // 임시
-  const time = 120;
+  const { id, date, image, title, category, address, time } = item;
 
-  const [added, setAdded] = useAtom(addedPlace);
-  const day='1';
-  const onSubmitMemo = (editMemo: IMemo) => {
-    // 와 이거 어떻게 바꾸지???
-    console.log('editMemo:', editMemo)
-    console.log('added[1]', added[day])
-    const temp = added[day].map(item => (
-      item.name === name ? {...item, memo: editMemo} : item))
-
-    console.log('added[1] edit', temp)
-
-    setAdded({
-      ...added,
-      1: temp,
-    });
-  }
   return (
-    <div>
-      <div>
+    <Dialog>
+      <DialogTrigger asChild className="hover:cursor-pointer">
         <div className="flex relative flex-col w-full hover:cursor-pointer">
           <div className="border w-[280px] sm:w-80 rounded-xl flex p-3 z-10 bg-white">
             <div className="w-16 h-16 relative my-auto">
@@ -40,19 +20,14 @@ export const AddedPlaceCard = ({ item }: IProps) => {
                 alt="장소 이미지"
                 fill={true}
                 className="rounded-md"
-                />
+              />
             </div>
 
             <div className="flex flex-col flex-1 ml-3">
-              <Dialog>
-                <DialogTrigger asChild className="hover:cursor-pointer">
-                  <div className="font-bold flex">{name}</div>
-                </DialogTrigger>
-                <DetailPlaceModal />
-              </Dialog> 
+              <div className="font-bold flex">{title}</div>
               <div className="flex">
-                <div className=" text-sky-600 font-bold mr-2">{types}</div>
-                <div className=" text-slate-400">{formattedAddress}</div>
+                <div className=" text-sky-600 font-bold mr-2">{category}</div>
+                <div className=" text-slate-400">{address}</div>
               </div>
               <Dialog>
                 <DialogTrigger className="flex hover:underline">
@@ -61,12 +36,11 @@ export const AddedPlaceCard = ({ item }: IProps) => {
                     alt="메모"
                     width={23}
                     height={23}
-                    />
+                  />
                   <div className="text-slate-500">메모</div>
                 </DialogTrigger>
-                {memo && <MemoModal memo={memo} onSubmitMemo={onSubmitMemo} />
-                }
-                </Dialog>
+                <MemoModal />
+              </Dialog>
             </div>
             <div className="float-right">x</div>
           </div>
@@ -79,7 +53,8 @@ export const AddedPlaceCard = ({ item }: IProps) => {
             </div>
           )}
         </div>
-      </div>
-    </div>
+      </DialogTrigger>
+      <DetailPlace />
+    </Dialog>
   );
 };

@@ -1,7 +1,7 @@
 import PlanCard from "@/components/PlanCard/PlanCard";
 import { MbtiCardContent } from "@/mocks";
 
-const MyScrapPlanList = () => {
+const MyPlanList = () => {
   return (
     <div className="flex justify-center">
       <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-10 ">
@@ -13,4 +13,4 @@ const MyScrapPlanList = () => {
   );
 };
 
-export default MyScrapPlanList;
+export default MyPlanList;

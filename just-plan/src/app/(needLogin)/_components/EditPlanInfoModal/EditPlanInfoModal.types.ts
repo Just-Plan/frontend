@@ -1,12 +1,7 @@
-import {
-  IModifyPlanInfo,
-  IPlanInfo,
-  IPlanInfoDetail,
-} from "@/types/plan.types";
+import { IPlanInfo } from "@/types/plan.types";
 import { Dispatch, SetStateAction } from "react";
 
 export interface IProps {
-  info: IModifyPlanInfo;
-  // setInfo: Dispatch<SetStateAction<IModifyPlanInfo>>;
-  onSubmitModify: (modifyInfo: IModifyPlanInfo) => void;
+  info: IPlanInfo;
+  setInfo: Dispatch<SetStateAction<IPlanInfo>>;
 }

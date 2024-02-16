@@ -1,13 +1,13 @@
 "use client";
 import Image from "next/image";
 import { Dialog, DialogTrigger } from "../dialog";
-import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
-import type { IProps } from "./StoredPlaceCard.types";
+import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
+import DetailPlace from "@/app/(needLogin)/_components/DetailPlace/DetailPlace";
+import { IProps } from "./StoredPlaceCard.types";
 import { Button } from "../Button";
 
-export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
-  const {googlePlaceId, name, formattedAddress, types, latitude, longitude, photoReference} = item;
-  const image = '/images/image1.png'; // 임시
+export const StoredPlaceCard = ({ item }: IProps) => {
+  const { id, date, image, title, category, address, time } = item;
 
   return (
     <Dialog>
@@ -24,13 +24,13 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
             </div>
 
             <div className="flex flex-col flex-1 ml-3">
-              <div className="font-bold flex">{name}</div>
+              <div className="font-bold flex">{title}</div>
               <div className="flex">
-                <div className=" text-sky-600 font-bold mr-2">{types}</div>
-                <div className=" text-slate-400">{formattedAddress}</div>
+                <div className=" text-sky-600 font-bold mr-2">{category}</div>
+                <div className=" text-slate-400">{address}</div>
               </div>
               <div className="flex justify-end w-full">
-                <Button variant={"outline"} className="h-7" onClickCapture={() => onClickAdd(item)} >
+                <Button variant={"outline"} className="h-7">
                   장소 추가
                 </Button>
               </div>
@@ -39,7 +39,7 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
           </div>
         </div>
       </DialogTrigger>
-      <DetailPlaceModal />
+      <DetailPlace />
     </Dialog>
   );
 };

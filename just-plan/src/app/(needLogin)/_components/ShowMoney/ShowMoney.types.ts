@@ -1,4 +1,4 @@
 export interface IProps {
-  cash: number;
+  cache: number;
   card: number;
 }
