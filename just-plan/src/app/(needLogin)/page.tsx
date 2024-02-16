@@ -119,8 +119,11 @@ const Home = () => {
   } = useSearchRegion(debouncedValue);
 
   useEffect(() => {
-    searchRegonRefetch();
+    if (debouncedValue) {
+      searchRegonRefetch();
+    }
   }, [debouncedValue]);
+
   if (isLoading || popularPlanisLoading || searchRegionIsLoading) {
     return <div>로딩중</div>;
   }
