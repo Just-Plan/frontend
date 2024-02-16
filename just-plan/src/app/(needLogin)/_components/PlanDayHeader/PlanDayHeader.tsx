@@ -1,10 +1,15 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import type { IProps } from "./PlanDayHeader.types";
+import { useAtomValue } from "jotai";
+import { addedPlace, planInfoAtom } from "@/store";
+import { add, format } from "date-fns";
 
-export const PlanDayHeader = ({ days, isModify }: IProps) => {
+export const PlanDayHeader = ({ isModify }: IProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const choose = searchParams.get("day");
+  const added = useAtomValue(addedPlace);
+  const planInfo = useAtomValue(planInfoAtom);
 
   const onChangeDay = (day: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
@@ -25,15 +30,15 @@ export const PlanDayHeader = ({ days, isModify }: IProps) => {
         )}
       </div>
 
-      {days.map((item) => (
+      {Object.keys(added).map((key) => (
         <div
           className="flex flex-col items-center hover:cursor-pointer py-1 px-2 relative"
-          key={item.id}
-          onClick={() => onChangeDay(item.id.toString())}
+          key={key}
+          onClick={() => onChangeDay(key)}
         >
-          <div>Day{item.id}</div>
-          <div className="text-slate-400 text-xs">{item.date}</div>
-          {!!choose && choose === item.id.toString() && (
+          <div>Day{key}</div>
+          <div className="text-slate-400 text-xs">{format(add(planInfo.startDate, {days: Number(key) - 1}), "yyyy.MM.dd")}</div>
+          {!!choose && choose === key && (
             <div className="bg-blue-300 w-full h-1 absolute bottom-0 left-0"></div>
           )}
         </div>

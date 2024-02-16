@@ -1,29 +1,33 @@
-import React, { PropsWithChildren } from "react";
 import { Switch } from "../Switch";
 import type { IProps } from "./DayPlanCard.types";
-import { Plan } from "@/mocks";
 import { AddedPlaceCard } from "..";
+import { useAtomValue } from "jotai";
+import { addedPlace, planInfoAtom } from "@/store";
+import { add, format } from "date-fns";
 
-const DayPlanCard = ({ item }: PropsWithChildren<IProps>) => {
-  const { id, date, image, title, category, address } = item;
+const DayPlanCard = ({ day }: IProps) => {
+
+  const planInfo = useAtomValue(planInfoAtom);
+  const added = useAtomValue(addedPlace);
+
   return (
     <div className="bg-white flex flex-col w-fit p-6  rounded-3xl">
       <div className="flex justify-between">
         <div>
-          <div className="font-bold text-2xl text-slate-400">{id}일차</div>
-          <div className="text-slate-400 text-sm font-bold">{date}</div>
+          <div className="font-bold text-2xl text-slate-400">{day}일차</div>
+          <div className="text-slate-400 text-sm font-bold">{format(add(planInfo.startDate, {days: Number(day) - 1}), "yyyy.MM.dd")}</div>
         </div>
 
         <div className="flex">
-          <Switch id={id.toString()} />
-          <label htmlFor={id.toString()} className="ml-3">
+          <Switch id={day} />
+          <label htmlFor={day} className="ml-3">
             대중교통
           </label>
         </div>
       </div>
       <div className="flex flex-col items-center h-[600px] w-full overflow-y-scroll relative">
-        {Plan.map((item) => (
-          <AddedPlaceCard key={item.id} item={item} />
+        {added[day].map((item) => (
+          <AddedPlaceCard key={item.name} item={item} />
         ))}
       </div>
     </div>
