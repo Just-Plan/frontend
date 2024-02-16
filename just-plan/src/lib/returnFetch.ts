@@ -1,5 +1,8 @@
 "use client";
-import returnFetch from "return-fetch";
+import returnFetch, {
+  FetchArgs,
+  ReturnFetchDefaultOptions,
+} from "return-fetch";
 
 const fetchExtended = returnFetch({
   baseUrl: "http://13.125.188.226:8080",
@@ -54,12 +57,31 @@ export const nextFetch = returnFetch({
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    authorization: `Bearer ${accessToken}` || "",
   },
   interceptors: {
-    request: async (args) => {
-      console.log("request interceptor args", args);
-      return args;
+    request: async ([url, configs]) => {
+      let headers: HeadersInit = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      console.log("11111url", url, "configs", configs);
+      if (accessToken) {
+        headers = {
+          ...headers,
+          Authorization: `Bearer ${accessToken}`,
+        };
+      }
+      if (!configs) {
+        configs = {
+          headers,
+        };
+      } else {
+        configs.headers = headers;
+      }
+      // configs!.headers = headers;
+      console.log("222222url", url, "configs", configs);
+
+      return [url, configs];
     },
     response: async (response, requestArgs) => {
       const res = await response.json();

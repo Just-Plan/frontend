@@ -63,6 +63,7 @@ export interface IPlan2 {
   published: boolean;
   region: IRegion;
   scrapCount: number;
+  scrapped: boolean | null;
   startDate: Date;
   tags: string[];
   title: string;

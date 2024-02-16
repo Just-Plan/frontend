@@ -22,12 +22,13 @@ const PlanCard = ({ item }: Props) => {
     published,
     region,
     scrapCount,
+    scrapped,
     startDate,
     tags,
     title,
     users,
   } = item;
-  const [isSelected, setIsSelected] = useState(false);
+  const [isSelected, setIsSelected] = useState<boolean>(scrapped as boolean);
   const [scrapCountValue, setScrapCountValue] = useState(scrapCount);
   const owner = users.find((user) => user.owner === true);
 
