@@ -4,31 +4,30 @@ import BeforeCreatePlanModal from "@/app/(needLogin)/_components/BeforeCreatePla
 import { localStorageUserInfoAtom, useLogout } from "@/store/auth.atom";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 export const Header = () => {
   const logout = useLogout();
-
   const router = useRouter();
-  const [userInfo, setUserInfo] = useAtom(localStorageUserInfoAtom);
-  console.log(userInfo);
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
+
   const onMoveToOtherPage = (path: string) => {
     router.push(path);
   };
+
+  // 만약 내 mbti 정보가 없다면 경고 후 mbti-test로 이동
   const onMoveToAddPlan = () => {
-    // 만약 내 mbti 정보가 없다면 경고 후 mbti-test로 이동
-    console.log("내 mbti 정보:", userInfo.mbtiName);
     if (userInfo.mbtiName !== "") {
       router.push("/add-plan");
     }
   };
+
   const onLogout = () => {
-    console.log(userInfo);
     logout();
-    console.log(userInfo);
   };
+
   return (
     <div className="justify-between	px-8 size-full h-14 flex items-center shadow-lg">
       <div
@@ -41,7 +40,7 @@ export const Header = () => {
         {userInfo.isLoggedIn && (
           <Dialog>
             <DialogTrigger
-              className="hover:cursor-pointer "
+              className="hover:cursor-pointer hover:text-gray-500"
               onClick={onMoveToAddPlan}
             >
               Create Plan
@@ -50,33 +49,40 @@ export const Header = () => {
           </Dialog>
         )}
         <div
-          className="hover:cursor-pointer"
+          className="hover:cursor-pointer hover:text-gray-500"
           onClick={() => onMoveToOtherPage("/mbti-test")}
         >
           MBTI Test
         </div>
         {userInfo.isLoggedIn ? (
           <>
-            <div onClick={onLogout}>logout</div>
-            <div className="flex">
-              <Avatar>
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  className="rounded-full w-10 h-10"
-                />
-                <AvatarFallback>CN</AvatarFallback>
-              </Avatar>
+            <div
+              className="hover:cursor-pointer hover:text-gray-500"
+              onClick={onLogout}
+            >
+              logout
             </div>
             <div
-              className="hover:cursor-pointer"
+              className="hover:cursor-pointer flex justify-center items-center gap-2 ml-2 hover:text-gray-500"
               onClick={() => onMoveToOtherPage("/mypage/myPlanList")}
             >
+              <Avatar>
+                <AvatarImage
+                  src={
+                    userInfo.profile
+                      ? userInfo.profile
+                      : "/images/mbti_title_image.png"
+                  }
+                  className="rounded-full w-10 h-10 border p-0.5 border-gray-600 "
+                />
+                <AvatarFallback>프로필</AvatarFallback>
+              </Avatar>
               {userInfo.name}
             </div>
           </>
         ) : (
           <div
-            className="hover:cursor-pointer"
+            className="hover:cursor-pointer hover:text-gray-500"
             onClick={() => onMoveToOtherPage("/signin")}
           >
             Login

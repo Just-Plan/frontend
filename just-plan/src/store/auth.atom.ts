@@ -8,6 +8,7 @@ export const initialUserInfo: UserInfo = {
   name: "",
   isLoggedIn: false,
   mbtiName: "",
+  profile: null,
 };
 export const localStorageUserInfoAtom = atomWithStorage<UserInfo>(
   "userInfo",
