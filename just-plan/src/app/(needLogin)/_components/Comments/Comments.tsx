@@ -4,13 +4,25 @@ import type { IProps } from "./Comments.types";
 import { returnDefaultImg } from "@/utils/returnDefaultImg";
 import { format } from "date-fns";
 import { useDeletePlaceComment } from "@/hooks/useDeletePlaceComment";
+import { useState } from "react";
+import { Input } from "@/components/Input";
+import { usePatchPlaceComment } from "@/hooks/usePatchPlaceComment";
 
 const Comments = ({ placeId, commentInfo }: IProps) => {
   const { placeCommentId, user, createdAt, content } = commentInfo;
-  const { mutate } = useDeletePlaceComment();
+  const [isModfiy, setIsModify] = useState(false);
+  const [commentValue, setCommentValue] = useState(content);
+
+  const { mutate: deleteMutate } = useDeletePlaceComment();
+  const { mutate: patchMutate } = usePatchPlaceComment();
 
   const onDelete = () => {
-    mutate({ placeId, placeCommentId });
+    deleteMutate({ placeId, placeCommentId });
+  };
+
+  const onModify = () => {
+    patchMutate({ placeId, placeCommentId, content: commentValue });
+    setIsModify(false);
   };
 
   return (
@@ -31,16 +43,50 @@ const Comments = ({ placeId, commentInfo }: IProps) => {
         <div className="text-xs">{format(createdAt, "yyyy-MM-dd")}</div>
       </div>
 
-      <div className="items-start flex ml-1">{content}</div>
-      <div className="flex justify-end text-gray-500 gap-2">
-        <div className="hover:cursor-pointer hover:text-gray-300">수정</div>
-        <div
-          className="hover:cursor-pointer hover:text-gray-300"
-          onClick={onDelete}
-        >
-          삭제
-        </div>
-      </div>
+      {!isModfiy ? (
+        <>
+          <div className="items-start flex ml-1">{content}</div>
+          <div className="flex justify-end text-gray-500 gap-2">
+            <div
+              className="hover:cursor-pointer hover:text-gray-300"
+              onClick={() => setIsModify(true)}
+            >
+              수정
+            </div>
+            <div
+              className="hover:cursor-pointer hover:text-gray-300"
+              onClick={onDelete}
+            >
+              삭제
+            </div>
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <Input
+              className="rounded-md mr-2"
+              placeholder={content}
+              value={commentValue}
+              onChange={(e) => setCommentValue(e.target.value)}
+            />
+          </div>
+          <div className="flex justify-end text-gray-500 gap-2">
+            <div
+              className="hover:cursor-pointer hover:text-gray-300"
+              onClick={() => setIsModify(false)}
+            >
+              취소
+            </div>
+            <div
+              className="hover:cursor-pointer hover:text-gray-300"
+              onClick={onModify}
+            >
+              완료
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 };
