@@ -7,6 +7,6 @@ interface IBody {
 
 export async function getCities() {
   const res = await nextFetch(`/api/cities/random/5`);
-  console.log("getcities:", res);
+
   return res as unknown as IBody;
 }

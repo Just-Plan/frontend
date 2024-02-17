@@ -14,28 +14,52 @@ import { Input } from "@/components/Input";
 
 import DateRangePicker from "@/components/DateRangePicker/DateRangePicker";
 import Image from "next/image";
-import {
-  ChangeEvent,
-  FormEvent,
-  MouseEvent,
-  useState,
-} from "react";
+import type { ChangeEvent, FormEvent } from "react";
+import { useEffect, useState } from "react";
 import type { IProps } from "./EditPlanInfoModal.types";
 import HouseholdContent from "./_components/HouseholdContent/HouseholdContent";
-import { DateRange } from "react-day-picker";
+import type { DateRange } from "react-day-picker";
 import { add } from "date-fns";
+import { AddHashTags } from "../AddHashTags/AddHashTags";
+import type { IModifyPlanInfo } from "@/types/plan.types";
 
-const EditPlanInfoModal = ({
-  info,
-  onSubmitModify,
-}: IProps) => {
-  const [addHashTag, setAddHashTag] = useState<string>("");
-  const [modifyInfo, setModifyInfo] = useState(info);
+const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
+  const [addHashTags, setAddHashTags] = useState<string[]>([]);
+  const [modifyInfo, setModifyInfo] = useState<IModifyPlanInfo>({
+    planId: "",
+    title: "",
+    tags: [""],
+    startDate: new Date(),
+    endDate: new Date(),
+    published: false,
+    budget: {
+      cash: 0,
+      card: 0,
+    },
+    useExpense: false,
+    expense: {
+      food: 0,
+      transportation: 0,
+      lodging: 0,
+      shopping: 0,
+      etc: 0,
+    },
+  });
   const [date, setDate] = useState<DateRange | undefined>({
     from: modifyInfo.startDate,
     to: modifyInfo.endDate,
   });
 
+  useEffect(() => {
+    setModifyInfo(info);
+    setDate({
+      from: info.startDate,
+      to: info.endDate,
+    });
+    setAddHashTags(info.tags);
+  }, [info]);
+
+  console.log("info 출력:", info);
   const onChangeMoney = (e: ChangeEvent<HTMLInputElement>) => {
     const [name, value] = [e.target.name, e.target.value];
     if (Number.isNaN(Number(value))) return null;
@@ -55,41 +79,23 @@ const EditPlanInfoModal = ({
     });
   };
 
-  const onAddHashTag = (
-    e: MouseEvent<HTMLButtonElement>,
-  ) => {
-    if (addHashTag === "") return;
-    setModifyInfo({
-      ...modifyInfo,
-      tags: [...modifyInfo.tags, addHashTag],
-    });
-    setAddHashTag("");
-  };
-
-  const onDeleteHashTag = (tag: string) => {
-    const newHashTagList = info.tags.filter((item) => item !== tag);
-    setModifyInfo({
-      ...modifyInfo,
-      tags: newHashTagList,
-    });
-  };
-
   const onChangeCheck = () => {
     setModifyInfo({
       ...modifyInfo,
-      useExpense: !modifyInfo.useExpense
-    })
-  }
+      useExpense: !modifyInfo.useExpense,
+    });
+  };
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const newModifyInfo = {
       ...modifyInfo,
-      startDate: add(date?.from as Date, {hours: 9}),
-      endDate: add(date?.to as Date, {hours: 9})
-    }
-    
+      tags: addHashTags,
+      startDate: add(date?.from as Date, { hours: 9 }),
+      endDate: add(date?.to as Date, { hours: 9 }),
+    };
+
     // api 요청 보내기
     onSubmitModify(newModifyInfo);
   };
@@ -113,31 +119,10 @@ const EditPlanInfoModal = ({
             <Label htmlFor="hashtag" variant="subTitle">
               여행 해시태그
             </Label>
-            <div className="flex gap-6">
-              <Input
-                id="hashtag"
-                placeholder="추가할 태그를 입력해주세요"
-                className="bg-ourGreen/80 mb-3 mt-1"
-                value={addHashTag}
-                onChange={(e) => setAddHashTag(e.target.value)}
-              />
-              <Button type="button" onClick={onAddHashTag}>
-                추가
-              </Button>
-            </div>
-            <div className="flex gap-5 -mt-2 mb-4 ml-2">
-              {modifyInfo.tags.map((tag) => (
-                <div key={tag} className="flex gap-0.5">
-                  <div className="text-blue-500">#{tag}</div>
-                  <div
-                    className="hover:cursor-pointer hover:bg-gray-200 w-5 h-5 flex justify-center rounded-full"
-                    onClick={() => onDeleteHashTag(tag)}
-                  >
-                    x
-                  </div>
-                </div>
-              ))}
-            </div>
+            <AddHashTags
+              setAddHashTags={setAddHashTags}
+              addHashTags={addHashTags}
+            />
             <Label htmlFor="hashtag" variant="subTitle">
               여행 날짜
             </Label>

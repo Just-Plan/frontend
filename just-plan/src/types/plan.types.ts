@@ -118,7 +118,7 @@ export interface IOwner {
 export interface IModifyPlanInfo {
   planId: string;
   title: string;
-  tags?: string[]; //
+  tags: string[]; //
   region?: IRegion; //
   startDate: Date;
   endDate: Date;
