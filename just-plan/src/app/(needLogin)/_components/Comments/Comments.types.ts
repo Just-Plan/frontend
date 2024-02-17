@@ -1,3 +1,5 @@
+import type { IPlaceComment } from "@/types/placeComment.types";
+
 export interface IComments {
   id: number;
   profile: string;
@@ -8,5 +10,5 @@ export interface IComments {
 }
 
 export interface IProps {
-  comment: IComments;
+  commentInfo: IPlaceComment;
 }

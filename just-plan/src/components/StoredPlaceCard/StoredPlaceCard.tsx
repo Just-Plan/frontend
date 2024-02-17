@@ -4,13 +4,24 @@ import { Dialog, DialogTrigger } from "../dialog";
 import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
 import type { IProps } from "./StoredPlaceCard.types";
 import { Button } from "../Button";
+import { useState } from "react";
 
 export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
-  const {googlePlaceId, name, formattedAddress, types, latitude, longitude, photoReference} = item;
-  const image = '/images/image1.png'; // 임시
+  const {
+    googlePlaceId,
+    placeId,
+    name,
+    formattedAddress,
+    types,
+    latitude,
+    longitude,
+    photoReference,
+  } = item;
+  const image = "/images/image1.png"; // 임시
+  const [open, setOpen] = useState(false);
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild className="hover:cursor-pointer">
         <div className="flex relative flex-col w-full hover:cursor-pointer">
           <div className="border w-[280px] sm:w-80 rounded-xl flex p-3 z-10 bg-white">
@@ -30,7 +41,11 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
                 <div className=" text-slate-400">{formattedAddress}</div>
               </div>
               <div className="flex justify-end w-full">
-                <Button variant={"outline"} className="h-7" onClickCapture={() => onClickAdd(item)} >
+                <Button
+                  variant={"outline"}
+                  className="h-7"
+                  onClickCapture={() => onClickAdd(item)}
+                >
                   장소 추가
                 </Button>
               </div>
@@ -39,7 +54,13 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
           </div>
         </div>
       </DialogTrigger>
-      <DetailPlaceModal />
+      <DetailPlaceModal
+        open={open}
+        placeId={placeId!}
+        name={name}
+        latitude={latitude}
+        longitude={longitude}
+      />
     </Dialog>
   );
 };

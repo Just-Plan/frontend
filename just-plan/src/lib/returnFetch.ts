@@ -1,8 +1,5 @@
 "use client";
-import returnFetch, {
-  FetchArgs,
-  ReturnFetchDefaultOptions,
-} from "return-fetch";
+import returnFetch from "return-fetch";
 
 const fetchExtended = returnFetch({
   baseUrl: "http://13.125.188.226:8080",
@@ -17,7 +14,7 @@ const fetchExtended = returnFetch({
       return args;
     },
 
-    response: async (response, requestArgs) => {
+    response: async (response) => {
       console.log("after receiving response");
 
       return response;
@@ -46,10 +43,6 @@ export const fetchComposed = returnFetch({
   },
 });
 
-const basicHeaders = {
-  "Content-Type": "application/json",
-};
-
 const accessToken = localStorage.getItem("access-token");
 
 export const nextFetch = returnFetch({
@@ -64,7 +57,7 @@ export const nextFetch = returnFetch({
         Accept: "application/json",
         "Content-Type": "application/json",
       };
-      console.log("11111url", url, "configs", configs);
+      // console.log("11111url", url, "configs", configs);
       if (accessToken) {
         headers = {
           ...headers,
@@ -79,14 +72,14 @@ export const nextFetch = returnFetch({
         configs.headers = headers;
       }
       // configs!.headers = headers;
-      console.log("222222url", url, "configs", configs);
+      // console.log("222222url", url, "configs", configs);
 
       return [url, configs];
     },
     response: async (response, requestArgs) => {
       const res = await response.json();
-      console.log("[return fetch] response 확인: ", response);
-      console.log("[return fetch] response 확인(json): ", res.code);
+      // console.log("[return fetch] response 확인: ", response);
+      // console.log("[return fetch] response 확인(json): ", res.code);
 
       if (res.code === 4005) {
         // 1. 토큰 재발급

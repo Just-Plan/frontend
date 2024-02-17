@@ -7,6 +7,7 @@ export const usePostMbtiResult = (selectedAnswers: number[]) => {
     onSuccess: () => {
       console.log("성공");
       console.log(selectedAnswers);
+      // localStorage에 변경
     },
     onError: () => {
       console.log("실패");

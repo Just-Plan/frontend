@@ -12,6 +12,7 @@ export const planKeys = {
   scrap: (page: number) => [...planKeys.all, "scrap", page] as const, // 스크랩 일정 조회
   mbtiFilter: (cityId: number, mbti: string[]) =>
     [...planKeys.all, { city: cityId }, { mbti: { ...mbti } }] as const, // mbti, 도시 필터링
+  // mbti sort 후 { ...mbti } -> 배열로
 };
 
 // 장소
@@ -21,6 +22,17 @@ export const placeKeys = {
   lists: (id: number) => [...placeKeys.all, "lists", id] as const, // planId의 전체 장소 조회
   search: (cityId: number, filters: string) =>
     [...placeKeys.all, "search", cityId, filters] as const, // 장소 검색
+  detail: (name: string, latitude: string, longitude: string) => [
+    ...placeKeys.all,
+    "detail",
+    { name, latitude, longitude },
+  ], // 장소 상세 정보
+};
+
+// 장소 댓글
+export const placeCommentKey = {
+  all: ["comments"] as const,
+  filter: (placeId: number) => [...placeCommentKey.all, placeId] as const, // placeId에 대한 queryKey
 };
 
 // mbti
