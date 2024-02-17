@@ -20,7 +20,6 @@ const DetailPlaceModal = ({
   latitude: string;
   longitude: string;
 }) => {
-  const engTitle = "Jeju International Airport";
   const endTime = "19:00";
 
   // 장소 상세 정보
@@ -60,7 +59,7 @@ const DetailPlaceModal = ({
   //   }
   // }, [placeDetailData, commentData]);
 
-  if (placeDetailError || commentError) return <div>에러</div>;
+  if (placeDetailError || commentError) return <div>에러1111</div>;
   if (placeDetailIsLoading || commentIsLoading) return <div>로딩중</div>;
 
   console.log(
@@ -81,37 +80,44 @@ const DetailPlaceModal = ({
             {placeDetailData?.types[0]}
           </div>
           <div className="font-bold text-3xl">{placeDetailData?.name}</div>
-          <div className="text-gray-400 text-sm font-normal">{engTitle}</div>
         </DialogTitle>
         <div className="flex flex-col sm:flex-row justify-between gap-6">
           <div className="flex flex-1 flex-col">
-            <Image
-              src={placeDetailData?.photos[0].photo_reference as string}
-              alt="장소 이미지"
-              width={400}
-              height={300}
-              className="rounded-2xl"
-              unoptimized={true}
-            />
-            <div className="bg-ourGreen p-1 rounded-e-xl my-5 text-xs font-bold">
+            {placeDetailData && (
+              <Image
+                src={placeDetailData.photos[0].photo_reference as string}
+                alt="장소 이미지"
+                width={400}
+                height={300}
+                className="rounded-2xl"
+                unoptimized={true}
+              />
+            )}
+            <div className="bg-ourGreen p-1 rounded-xl my-5 text-xs font-bold flex justify-center">
               {placeDetailData?.mbti.join(",")}가 가장 많이 스크랩한 장소입니다.
             </div>
-            <div className="flex">
-              <div className="text-blue-500 font-bold">
-                {placeDetailData?.opening_hours.open_now
-                  ? "영업중"
-                  : "영업 종료"}
+            {placeDetailData?.opening_hours ? (
+              <div>
+                <div className="flex">
+                  <div className="text-blue-500 font-bold">
+                    {placeDetailData.opening_hours.open_now
+                      ? "영업중"
+                      : "영업 종료"}
+                  </div>
+                  <div className="font-bold">{endTime}에 영업 종료</div>
+                </div>
+                <div className="flex">
+                  <div className="text-blue-500 font-bold">영업시간 안내</div>
+                  <div className="font-bold gap-1 flex flex-col">
+                    {placeDetailData?.opening_hours.weekday_text.map((item) => (
+                      <div key={item}>{item}</div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="font-bold">{endTime}에 영업 종료</div>
-            </div>
-            <div className="flex">
-              <div className="text-blue-500 font-bold">영업시간 안내</div>
-              <div className="font-bold gap-1 flex flex-col">
-                {placeDetailData?.opening_hours.weekday_text.map((item) => (
-                  <div key={item}>{item}</div>
-                ))}
-              </div>
-            </div>
+            ) : (
+              <div>영업 정보 없음</div>
+            )}
           </div>
 
           <div className="flex flex-1 flex-col">

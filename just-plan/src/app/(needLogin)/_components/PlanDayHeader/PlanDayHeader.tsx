@@ -15,7 +15,7 @@ export const PlanDayHeader = ({ isModify }: IProps) => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("day", day);
     router.push(
-      `/${isModify ? "modify" : "detail-plan"}?${newSearchParams.toString()}`
+      `/${isModify ? "modify" : "detail-plan"}?${newSearchParams.toString()}`,
     );
   };
   return (
@@ -37,7 +37,12 @@ export const PlanDayHeader = ({ isModify }: IProps) => {
           onClick={() => onChangeDay(key)}
         >
           <div>Day{key}</div>
-          <div className="text-slate-400 text-xs">{format(add(planInfo.startDate, {days: Number(key) - 1}), "yyyy.MM.dd")}</div>
+          <div className="text-slate-400 text-xs">
+            {format(
+              add(planInfo.startDate, { days: Number(key) - 1 }),
+              "yyyy.MM.dd",
+            )}
+          </div>
           {!!choose && choose === key && (
             <div className="bg-blue-300 w-full h-1 absolute bottom-0 left-0"></div>
           )}
