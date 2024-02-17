@@ -18,14 +18,12 @@ const PlanCard = ({ item }: Props) => {
   const {
     budget,
     days,
-    endDate,
     nights,
     planId,
     published,
     region,
     scrapCount,
     scrapped,
-    startDate,
     tags,
     title,
     users,
@@ -38,7 +36,7 @@ const PlanCard = ({ item }: Props) => {
   const router = useRouter();
   const handleToDetail = () => {
     console.log("리다이렉트!!!");
-    router.push(`detail-plan?planId=${planId}&day=`);
+    router.push(`/detail-plan?planId=${planId}&day=`);
   };
 
   const { mutate } = usePostPlanScrap();

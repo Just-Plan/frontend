@@ -64,7 +64,7 @@ export const Header = () => {
             </div>
             <div
               className="hover:cursor-pointer flex justify-center items-center gap-2 ml-2 hover:text-gray-500"
-              onClick={() => onMoveToOtherPage("/mypage/myPlanList")}
+              onClick={() => onMoveToOtherPage("/mypage/myPlanList?page=1")}
             >
               <Avatar>
                 <AvatarImage
