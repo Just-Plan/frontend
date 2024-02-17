@@ -24,7 +24,7 @@ interface IBody {
   placeDeleteIds: number[];
 }
 
-export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
+export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
@@ -137,7 +137,11 @@ export const PlanInfoHeader = ({ isModify }: IPlanInfoHeader) => {
     const temp: IPlaceRequestBody = { ...newBody, dayUpdates: newDayUpdates };
 
     placeMutate({ planId: Number(planId), body: temp });
+    onReload && onReload();
+    // console.log("???");
+
     router.push(`/detail-plan?planId=${planId}&day=`);
+    // detail-plan에서 fetch 요청 다시 보내게 하기
   };
 
   const onSubmitModify = (modifyInfo: IModifyPlanInfo) => {
