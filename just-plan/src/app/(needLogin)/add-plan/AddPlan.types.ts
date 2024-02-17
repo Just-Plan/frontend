@@ -1,4 +1,6 @@
+import type { IRegion } from "@/types/plan.types";
 import type { SetStateAction } from "jotai";
+import type { Dispatch } from "react";
 import type { DateRange } from "react-day-picker";
 
 export interface NameInputProps {
@@ -7,12 +9,12 @@ export interface NameInputProps {
 export interface SearchResultsProps {
   onPreviousStep: () => void;
   onNextStep?: (selectedResult: never[]) => void;
-  onResultSelect: (selectedResult: SetStateAction<never[]>) => void;
+  onResultSelect: Dispatch<SetStateAction<IRegion>>;
 }
 
 export interface DatePickerProps {
   planName: string;
-  searchResults: string[];
+  searchResults: IRegion;
   selectedDate: string | undefined;
   onPreviousStep: () => void;
   onSelectDate: (date: DateRange | undefined) => void;
