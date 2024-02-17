@@ -118,7 +118,8 @@ export interface IOwner {
 export interface IModifyPlanInfo {
   planId: string;
   title: string;
-  tags: string[];
+  tags?: string[]; //
+  region?: IRegion; //
   startDate: Date;
   endDate: Date;
   published: boolean;
@@ -130,7 +131,7 @@ export interface IModifyPlanInfo {
   expense: {
     food: number;
     transportation: number;
-    loadging: number;
+    lodging: number;
     shopping: number;
     etc: number;
   };

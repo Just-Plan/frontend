@@ -13,6 +13,9 @@ export const planKeys = {
   mbtiFilter: (cityId: number, mbti: string[]) =>
     [...planKeys.all, { city: cityId }, { mbti: { ...mbti } }] as const, // mbti, 도시 필터링
   // mbti sort 후 { ...mbti } -> 배열로
+
+  // 가계부 조회
+  account: () => [...planKeys.all, "account"] as const,
 };
 
 // 장소
