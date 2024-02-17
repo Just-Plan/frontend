@@ -7,6 +7,10 @@ import { NameInput } from "./_components/NameInput/NameInput";
 import { SearchResults } from "./_components/SearchResults/SearchResults";
 import { DatePicker } from "./_components/DatePicker/DatePicker";
 import type { IRegion } from "@/types/plan.types";
+import type { DateRange } from "react-day-picker";
+import { usePostCreatePlan } from "@/hooks/usePostCreatePlan";
+import { convertDateFormat } from "@/utils/convertDateFormat";
+import { HashTag } from "./_components/HashTag/HashTag";
 
 const Page = () => {
   const [step, setStep] = useState(1);
@@ -21,13 +25,15 @@ const Page = () => {
     latitude: "",
     longitude: "",
   });
-  const [selectedDate, setSelectedDate] = useState("");
-  const [expectedExpenses, setExpectedExpenses] = useState("");
-  const progressValue = (step / 3) * 100;
+  const [selectedDate, setSelectedDate] = useState<DateRange | undefined>(
+    undefined,
+  );
+  const [addHashTags, setAddHashTags] = useState<string[]>([]);
+  const progressValue = (step / 4) * 100;
 
-  const handleNextStep = (data: string) => {
+  const handleNextStep = (data?: string) => {
     if (step === 1) {
-      setName(data);
+      setName(data!);
     } else if (step === 2) {
     }
     setStep(step + 1);
@@ -37,9 +43,24 @@ const Page = () => {
   };
 
   useEffect(() => {
-    setStep(step + 1);
-  }, [searchResults, step]);
+    if (searchResults.id !== 0) {
+      handleNextStep();
+    }
+  }, [searchResults]);
 
+  const { mutate } = usePostCreatePlan();
+
+  const onCreatePlan = () => {
+    mutate({
+      title: name,
+      tags: addHashTags,
+      startDate: convertDateFormat(selectedDate?.from)!,
+      endDate: convertDateFormat(selectedDate?.to)!,
+      regionId: searchResults.id,
+    });
+  };
+
+  console.log("step:", step);
   return (
     <div className=" flex justify-center items-center">
       <div className="w-[80%] flex flex-col justify-center items-center">
@@ -58,14 +79,18 @@ const Page = () => {
             )}
             {step === 3 && (
               <DatePicker
-                planName={name}
-                searchResults={searchResults}
-                selectedDate={selectedDate}
+                onSelectDate={(date) => setSelectedDate(date)}
                 onPreviousStep={handlePreviousStep}
-                onSelectDate={(date: any) => setSelectedDate(date)}
-                onSelectExpenses={(expenses: any) =>
-                  setExpectedExpenses(expenses)
-                }
+                onNextStep={handleNextStep}
+                onCreatePlan={onCreatePlan}
+              />
+            )}
+            {step === 4 && (
+              <HashTag
+                onPreviousStep={handlePreviousStep}
+                onNextStep={onCreatePlan}
+                addHashTags={addHashTags}
+                setAddHashTags={setAddHashTags}
               />
             )}
           </CardContent>

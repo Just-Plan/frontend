@@ -13,10 +13,23 @@ export interface SearchResultsProps {
 }
 
 export interface DatePickerProps {
-  planName: string;
-  searchResults: IRegion;
-  selectedDate: string | undefined;
   onPreviousStep: () => void;
+  onNextStep: () => void;
   onSelectDate: (date: DateRange | undefined) => void;
-  onSelectExpenses: (expenses: string) => void;
+  onCreatePlan: () => void;
+}
+
+export interface HashTagProps {
+  onPreviousStep: () => void;
+  onNextStep: () => void;
+  setAddHashTags: Dispatch<SetStateAction<string[]>>;
+  addHashTags: string[];
+}
+
+export interface ICreatePlanReqBody {
+  title: string;
+  tags: string[];
+  startDate: string;
+  endDate: string;
+  regionId: number;
 }

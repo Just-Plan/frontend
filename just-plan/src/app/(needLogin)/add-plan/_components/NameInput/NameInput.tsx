@@ -3,6 +3,7 @@ import type { ChangeEvent } from "react";
 import { useState } from "react";
 import type { NameInputProps } from "../../AddPlan.types";
 import { Input } from "@/components/Input";
+import { Button } from "@/components/Button";
 
 export const NameInput = ({ onNextStep }: NameInputProps) => {
   const [name, setName] = useState("");
@@ -29,7 +30,7 @@ export const NameInput = ({ onNextStep }: NameInputProps) => {
         onChange={handleNameInputChange}
       />
       <span className="text-red-600">{error}</span>
-      <button onClick={handleNextStep}>다음</button>
+      <Button onClick={handleNextStep}>다음</Button>
     </div>
   );
 };
