@@ -10,5 +10,6 @@ export interface IComments {
 }
 
 export interface IProps {
+  placeId: number;
   commentInfo: IPlaceComment;
 }
