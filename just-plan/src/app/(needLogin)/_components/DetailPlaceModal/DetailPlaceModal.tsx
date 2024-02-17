@@ -150,7 +150,11 @@ const DetailPlaceModal = ({
             </div>
             <div className="gap-3 flex flex-col overflow-y-auto">
               {commentData?.map((comment) => (
-                <Comments key={comment.placeCommentId} commentInfo={comment} />
+                <Comments
+                  key={comment.placeCommentId}
+                  placeId={placeId}
+                  commentInfo={comment}
+                />
               ))}
             </div>
           </div>

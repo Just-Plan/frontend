@@ -1,12 +1,17 @@
 "use client";
 import Image from "next/image";
-import React from "react";
 import type { IProps } from "./Comments.types";
 import { returnDefaultImg } from "@/utils/returnDefaultImg";
 import { format } from "date-fns";
+import { useDeletePlaceComment } from "@/hooks/useDeletePlaceComment";
 
-const Comments = ({ commentInfo }: IProps) => {
-  const { user, createdAt, content } = commentInfo;
+const Comments = ({ placeId, commentInfo }: IProps) => {
+  const { placeCommentId, user, createdAt, content } = commentInfo;
+  const { mutate } = useDeletePlaceComment();
+
+  const onDelete = () => {
+    mutate({ placeId, placeCommentId });
+  };
 
   return (
     <div className="bg-gray-100 p-3 rounded-md">
@@ -27,6 +32,15 @@ const Comments = ({ commentInfo }: IProps) => {
       </div>
 
       <div className="items-start flex ml-1">{content}</div>
+      <div className="flex justify-end text-gray-500 gap-2">
+        <div className="hover:cursor-pointer hover:text-gray-300">수정</div>
+        <div
+          className="hover:cursor-pointer hover:text-gray-300"
+          onClick={onDelete}
+        >
+          삭제
+        </div>
+      </div>
     </div>
   );
 };
