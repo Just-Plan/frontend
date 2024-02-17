@@ -1,12 +1,12 @@
+import { nextFetch } from "@/lib/returnFetch";
+import type { IRegion } from "@/types/plan.types";
+
+interface IBody {
+  cities: IRegion[];
+}
+
 export async function getCities() {
-  const res = await fetch(`http://13.125.188.226:8080/api/cities/random/5`, {
-    // next: { tags: ["trends"] },
-    // cache: "no-store",
-  });
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  return res.json();
+  const res = await nextFetch(`/api/cities/random/5`);
+  console.log("getcities:", res);
+  return res as unknown as IBody;
 }

@@ -104,8 +104,8 @@ export interface IRegion {
   id: number;
   introduction: string;
   koreanName: string;
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
 }
 
 export interface IOwner {
