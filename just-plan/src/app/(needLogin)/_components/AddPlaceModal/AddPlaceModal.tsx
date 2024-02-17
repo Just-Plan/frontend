@@ -27,19 +27,21 @@ export const AddPlaceModal = () => {
   const cityId = 1; // 제주도. 임시!
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
-  }
+  };
 
   const onClickAdd = (place: IPlace) => {
-    setStored([
-      ...stored, place
-    ])
-  }
+    console.log(place);
+    setStored([...stored, place]);
+  };
 
   const debouncedValue = useDebounde(search, 400);
-  const {searchResultData, error, isLoading} = useSearchPlace(cityId, debouncedValue);
-
-  if (error) return <div>에러</div>
-  if (isLoading) return <div>로딩중</div>
+  const { searchResultData, error, isLoading } = useSearchPlace(
+    cityId,
+    debouncedValue,
+  );
+  console.log(searchResultData);
+  if (error) return <div>에러</div>;
+  if (isLoading) return <div>로딩중</div>;
 
   return (
     <DialogContent className="max-w-md sm:max-w-7xl max-h-[45rem] sm:max-h-[50rem] bg-ourGreen flex flex-col items-center">
@@ -69,11 +71,19 @@ export const AddPlaceModal = () => {
 
         <div className="flex gap-5 flex-col">
           <div>
-            <Input placeholder="떠나고 싶은 장소를 입력해주세요" value={search} onChange={onChangeSearch} />
+            <Input
+              placeholder="떠나고 싶은 장소를 입력해주세요"
+              value={search}
+              onChange={onChangeSearch}
+            />
           </div>
           <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto">
             {searchResultData.data.map((item: IPlace) => (
-              <StoredPlaceCard key={item.name} item={item} onClickAdd={onClickAdd} />
+              <StoredPlaceCard
+                key={item.name}
+                item={item}
+                onClickAdd={onClickAdd}
+              />
             ))}
           </div>
         </div>

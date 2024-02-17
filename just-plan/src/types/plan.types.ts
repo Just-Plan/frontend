@@ -81,14 +81,7 @@ export interface IPlanInfoDetail {
   };
   originPlan: any;
   published: boolean;
-  region: {
-    countryEnglishName: string;
-    countryKoreanName: string;
-    englishName: string;
-    id: number;
-    introduction: string;
-    koreanName: string;
-  };
+  region: IRegion;
   startDate: Date;
   tags: string[];
   title: string;
@@ -99,6 +92,17 @@ export interface IPlanInfoDetail {
     name: string;
     owner: boolean;
   }[];
+}
+
+export interface IRegion {
+  countryEnglishName: string;
+  countryKoreanName: string;
+  englishName: string;
+  id: number;
+  introduction: string;
+  koreanName: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface IOwner {

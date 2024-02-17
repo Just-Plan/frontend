@@ -9,7 +9,7 @@ import { useEffect } from "react";
 import { addedPlace, planInfoAtom, storedPlace } from "@/store";
 import { useAtom, useSetAtom } from "jotai";
 import { useGetPlaceInfo } from "@/hooks/useGetPlaceInfo";
-import { IDayPlan } from "@/types/place.types";
+import type { IDayPlan } from "@/types/place.types";
 
 const Page = () => {
   const searchParams = useSearchParams();

@@ -21,7 +21,6 @@ const fetchExtended = returnFetch({
     },
   },
 });
-const accessToken = localStorage.getItem("access-token") || "";
 
 export const fetchComposed = returnFetch({
   fetch: fetchExtended,

@@ -14,5 +14,5 @@ export const useSearchPlace = (cityId: number, query: string) => {
     gcTime: 300 * 1000,
   });
 
-  return {searchResultData, error, isLoading};
-}
+  return { searchResultData, error, isLoading };
+};
