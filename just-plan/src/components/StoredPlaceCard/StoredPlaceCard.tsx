@@ -6,8 +6,16 @@ import type { IProps } from "./StoredPlaceCard.types";
 import { Button } from "../Button";
 
 export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
-  const {googlePlaceId, name, formattedAddress, types, latitude, longitude, photoReference} = item;
-  const image = '/images/image1.png'; // 임시
+  const {
+    googlePlaceId,
+    name,
+    formattedAddress,
+    types,
+    latitude,
+    longitude,
+    photoReference,
+  } = item;
+  const image = "/images/image1.png"; // 임시
 
   return (
     <Dialog>
@@ -30,7 +38,11 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
                 <div className=" text-slate-400">{formattedAddress}</div>
               </div>
               <div className="flex justify-end w-full">
-                <Button variant={"outline"} className="h-7" onClickCapture={() => onClickAdd(item)} >
+                <Button
+                  variant={"outline"}
+                  className="h-7"
+                  onClickCapture={() => onClickAdd(item)}
+                >
                   장소 추가
                 </Button>
               </div>

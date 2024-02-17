@@ -18,7 +18,7 @@ const Page = () => {
   const day = searchParams.get("day");
 
   const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
-  const setStored = useSetAtom(storedPlace);
+  const [stored, setStored] = useAtom(storedPlace);
   const [added, setAdded] = useAtom(addedPlace);
   const {
     data: planData,
@@ -39,7 +39,7 @@ const Page = () => {
       console.log("planInfo", planInfo);
     }
   }, [planData]);
-
+  console.log(placeData);
   useEffect(() => {
     if (placeData) {
       console.log("placeData 출력", placeData);
@@ -56,7 +56,6 @@ const Page = () => {
       setAdded(newAdded);
     }
   }, [placeData]);
-
   // 만약, 저장을 누르면 정보 다시 로딩
   const onReload = () => {
     console.log("reload start!!!");
@@ -82,7 +81,11 @@ const Page = () => {
           </div>
         </div>
       ) : (
-        <PlanModifyDaily day={day} />
+        <PlanModifyDaily
+          day={day}
+          planRegion={planInfo.region}
+          places={placeData}
+        />
       )}
     </div>
   );
