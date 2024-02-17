@@ -104,6 +104,7 @@ export interface IRegion {
   latitude: number;
   longitude: number;
 }
+
 export interface IOwner {
   email: string;
   mbti: string;

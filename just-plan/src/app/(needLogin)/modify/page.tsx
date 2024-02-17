@@ -19,6 +19,7 @@ const Page = () => {
 
   const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
   const [stored, setStored] = useAtom(storedPlace);
+
   const [added, setAdded] = useAtom(addedPlace);
   const {
     data: planData,
@@ -56,6 +57,14 @@ const Page = () => {
       setAdded(newAdded);
     }
   }, [placeData]);
+  // 만약, 저장을 누르면 정보 다시 로딩
+  const onReload = () => {
+    console.log("reload start!!!");
+    planRefetch();
+    placeRefetch();
+    console.log("reload end!!!");
+  };
+
   // 만약, 저장을 누르면 정보 다시 로딩
   const onReload = () => {
     console.log("reload start!!!");
