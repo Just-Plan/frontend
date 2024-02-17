@@ -10,7 +10,7 @@ import { addedPlace, planInfoAtom, storedPlace } from "@/store";
 import { useEffect } from "react";
 import { useGetPlanInfo } from "@/hooks";
 import { useGetPlaceInfo } from "@/hooks/useGetPlaceInfo";
-import { IDayPlan } from "@/types/place.types";
+import type { IDayPlan } from "@/types/place.types";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -18,7 +18,7 @@ const Page = () => {
   const day = searchParams.get("day");
 
   const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
-  const [stored, setStored] = useAtom(storedPlace);
+  const setStored = useSetAtom(storedPlace);
 
   const [added, setAdded] = useAtom(addedPlace);
   const {
@@ -50,20 +50,13 @@ const Page = () => {
 
       const newAdded: IDayPlan = {};
       for (let i = 1; i < Object.keys(placeData.daysPlaces).length; i++) {
-        let key = Object.keys(placeData.daysPlaces)[i];
+        const key = Object.keys(placeData.daysPlaces)[i];
         newAdded[key] = placeData.daysPlaces[key];
       }
       console.log("added 출력", newAdded);
       setAdded(newAdded);
     }
   }, [placeData]);
-  // 만약, 저장을 누르면 정보 다시 로딩
-  const onReload = () => {
-    console.log("reload start!!!");
-    planRefetch();
-    placeRefetch();
-    console.log("reload end!!!");
-  };
 
   // 만약, 저장을 누르면 정보 다시 로딩
   const onReload = () => {

@@ -3,11 +3,15 @@ import Image from "next/image";
 import { Dialog, DialogTrigger } from "../dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
 import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
-import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
+import type {
+  DraggableProvided,
+  DraggableStateSnapshot,
+} from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
-import { IMemo, IPlace } from "@/types/place.types";
-import { useAtom, useAtomValue } from "jotai";
+import type { IMemo, IPlace } from "@/types/place.types";
+import { useAtom } from "jotai";
 import { addedPlace } from "@/store";
+import { useState } from "react";
 
 export interface IProps {
   item: IPlace;
@@ -21,20 +25,22 @@ export const AddedPlaceCardDnD = ({
   snapshot,
   time,
 }: IProps & { time: number }) => {
+  const [open, setOpen] = useState(false);
+  const [added, setAdded] = useAtom(addedPlace);
   const {
-    googlePlaceId,
+    // googlePlaceId,
+    placeId,
     name,
     formattedAddress,
     types,
     latitude,
     memo,
     longitude,
-    photoReference,
+    // photoReference,
   } = item;
 
   const image = "/images/image1.png"; // 임시
 
-  const [added, setAdded] = useAtom(addedPlace);
   const day = "1";
 
   // memo 바꾸기
@@ -80,11 +86,17 @@ export const AddedPlaceCardDnD = ({
               </div>
 
               <div className="flex flex-col flex-1 ml-3">
-                <Dialog>
+                <Dialog open={open} onOpenChange={setOpen}>
                   <DialogTrigger asChild className="hover:cursor-pointer">
                     <div className="font-bold flex">{name}</div>
                   </DialogTrigger>
-                  <DetailPlaceModal />
+                  <DetailPlaceModal
+                    open={open}
+                    placeId={placeId!}
+                    name={name}
+                    latitude={latitude}
+                    longitude={longitude}
+                  />
                 </Dialog>
 
                 <div className="flex">

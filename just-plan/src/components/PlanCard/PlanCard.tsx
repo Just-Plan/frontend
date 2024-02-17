@@ -1,10 +1,15 @@
 "use client";
 
 import Image from "next/image";
-import React, { PropsWithChildren } from "react";
+import React, { MouseEvent, PropsWithChildren, useState } from "react";
 import { Card, CardContent, CardHeader } from "../Card";
 import type { Props } from "./PlanCard.types";
 import { useRouter } from "next/navigation";
+import bookMark from "@/../public/svg/bookMark.svg";
+import selectBookMark from "@/../public/svg/selectBookMark.svg";
+import { usePostPlanScrap } from "@/hooks/usePostPlanScrap";
+import { useAtomValue } from "jotai";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
 
 const PlanCard = ({ item }: Props) => {
   const image = "/images/image1.png";
@@ -19,19 +24,56 @@ const PlanCard = ({ item }: Props) => {
     published,
     region,
     scrapCount,
+    scrapped,
     startDate,
     tags,
     title,
     users,
   } = item;
-
+  const [isSelected, setIsSelected] = useState<boolean>(scrapped as boolean);
+  const [scrapCountValue, setScrapCountValue] = useState(scrapCount);
   const owner = users.find((user) => user.owner === true);
-  console.log('owner:', owner);
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
 
   const router = useRouter();
   const handleToDetail = () => {
     console.log("리다이렉트!!!");
     router.push(`detail-plan?planId=${planId}&day=`);
+  };
+
+  const { mutate } = usePostPlanScrap();
+
+  const onClickBookMark = (
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+  ) => {
+    e.stopPropagation();
+    // 로그인 되어있는지 확인
+    if (userInfo.email === "") {
+      alert("로그인이 필요한 서비스입니다.");
+      return;
+    }
+
+    // 스크랩 요청 보내기
+    const body = {
+      planId: planId,
+      scrap: !isSelected,
+    };
+
+    let updatedScrapCount = isSelected
+      ? scrapCountValue - 1
+      : scrapCountValue + 1;
+    let updatedSelected = !isSelected;
+    mutate(body, {
+      onError: () => {
+        updatedScrapCount = isSelected
+          ? scrapCountValue + 1
+          : scrapCountValue - 1;
+        updatedSelected = !isSelected;
+      },
+    });
+    setIsSelected(updatedSelected);
+
+    setScrapCountValue(updatedScrapCount);
   };
   return (
     <Card className="w-[350px]" onClick={handleToDetail}>
@@ -59,34 +101,31 @@ const PlanCard = ({ item }: Props) => {
               <b>{owner?.name}님</b>의 {title}
             </div>
             <div className="flex justify-between">
-              <div className="text-sm">{days}박 {nights}일</div>
+              <div className="text-sm">
+                {days}박 {nights}일
+              </div>
               <div className="text-sm">{budget.card + budget.cash} 원</div>
             </div>
           </div>
-          <div className="hover:bg-gray-300 w-10 h-10 rounded-full flex flex-col justify-center items-center">
-            <svg
-              width="25"
-              height="25"
-              viewBox="0 0 15 15"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M3 2.5C3 2.22386 3.22386 2 3.5 2H11.5C11.7761 2 12 2.22386 12 2.5V13.5C12 13.6818 11.9014 13.8492 11.7424 13.9373C11.5834 14.0254 11.3891 14.0203 11.235 13.924L7.5 11.5896L3.765 13.924C3.61087 14.0203 3.41659 14.0254 3.25762 13.9373C3.09864 13.8492 3 13.6818 3 13.5V2.5ZM4 3V12.5979L6.97 10.7416C7.29427 10.539 7.70573 10.539 8.03 10.7416L11 12.5979V3H4Z"
-                fill="currentColor"
-                fillRule="evenodd"
-                clipRule="evenodd"
-              ></path>
-            </svg>
-            <div className="text-xs">{scrapCount}</div>
+          <div
+            className="hover:bg-gray-300 w-10 h-10 rounded-full flex flex-col justify-center items-center"
+            onClick={(e) => onClickBookMark(e)}
+          >
+            {!isSelected ? (
+              <Image src={bookMark} alt="북마크" width={25} height={25} />
+            ) : (
+              <Image src={selectBookMark} alt="북마크" width={25} height={25} />
+            )}
+
+            <div className="text-xs">{scrapCountValue}</div>
           </div>
         </div>
         <div className=" flex justify-between p-3">
-          <div className="ml-3 font-bold text-stone-700">{owner?.mbti.type}</div>
+          <div className="ml-3 font-bold text-stone-700">
+            {owner?.mbti.type}
+          </div>
           <div className="text-sky-600 font-bold flex">
-            {tags?.map((tag) => (
-              <div key={tag}>{tag} </div>
-            ))}
+            {tags?.map((tag) => <div key={tag}>{tag} </div>)}
           </div>
         </div>
       </CardContent>

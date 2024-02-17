@@ -1,19 +1,15 @@
 import { Dialog, DialogTrigger } from "@/components/dialog";
 import { AddPlaceModal, StoredPlaceMiniCard } from "..";
 import { PlanDayHeader } from "../PlanDayHeader/PlanDayHeader";
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from "@hello-pangea/dnd";
+import type { DropResult } from "@hello-pangea/dnd";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import { StoredPlaceCardDnD } from "@/components/StoredPlaceCard/StoredPlaceCardDnD";
 import DayPlanCardDnD from "@/components/DayPlanCard/DayPlanCardDnD";
 import { useAtom } from "jotai";
 import { addedPlace, storedPlace } from "@/store/place.atoms";
 import MyMap from "@/components/MyMap/MyMap";
-import { IRegion } from "@/types/plan.types";
+import type { IRegion } from "@/types/plan.types";
 
 const PlanModifyDaily = ({
   day,
@@ -26,6 +22,7 @@ const PlanModifyDaily = ({
 }) => {
   const [stored, setStored] = useAtom(storedPlace);
   const [added, setAdded] = useAtom(addedPlace);
+
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
     const sourceKey = source.droppableId;

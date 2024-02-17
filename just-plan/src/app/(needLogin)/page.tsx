@@ -13,72 +13,70 @@ import {
 } from "@/components/Carousel";
 import { useRouter } from "next/navigation";
 import { HomePageConfig, MBTI } from "@/constants";
-import { getCities } from "./_lib/getCities";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { getPlanList } from "./_lib/getPlanList";
-import type { IPlan, IPlan2 } from "@/types/plan.types";
-import { useEffect } from "react";
+import type { IPlan2, IRegion2 } from "@/types/plan.types";
+import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
+import { useGetCities } from "@/hooks/useGetCities";
+import { useGetPlanList } from "@/hooks/useGetPlanList";
+import { useGetInfinitePlanList } from "@/hooks/useGetInfinitePlanList";
+import { useDebounde } from "@/hooks";
+import { useSearchRegion } from "@/hooks/useSearchRegion";
+import { useAtomValue } from "jotai";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
+import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import BeforeCreatePlanModal from "./_components/BeforeCreatePlanModal/BeforeCreatePlanModal";
 
 const Home = () => {
   const router = useRouter();
-  const onMoveToAddPlan = () => {
-    router.push("/add-plan");
-  };
-  const { PopularPlan, PopularPlanDescription, MBTIPlan, MBTIPlanDescription } =
-    HomePageConfig;
-
-  const {
-    data: searchResult,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: ["cities"],
-    queryFn: getCities,
-    staleTime: 60 * 1000,
-    gcTime: 300 * 1000,
+  const [selectMBTI, setSelectMBTI] = useState<string[]>([]);
+  const [region, setRegion] = useState<IRegion2>({
+    id: 0,
+    koreanName: "",
+    englishName: "",
+    introduction: "",
+    countryKoreanName: "",
+    countryEnglishName: "",
   });
+  const [searchRegion, setSearchRegion] = useState("");
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
+
+  const onMoveToAddPlan = () => {
+    // 만약 내 mbti 정보가 없다면 경고 후 mbti-test로 이동
+    if (userInfo.mbtiName !== "") {
+      router.push("/add-plan");
+    }
+  };
+  const {
+    PopularPlan,
+    PopularPlanDescription,
+    PopularPlanDefaultDescription,
+    MBTIPlan,
+    MBTIPlanDescription,
+    MBTIPlanDefaultDescription,
+  } = HomePageConfig;
+
+  const { data: searchResult, error, isLoading } = useGetCities();
 
   const {
     data: popularPlanList,
     error: popularPlanError,
     isLoading: popularPlanisLoading,
-  } = useQuery({
-    queryKey: ["planList", 3],
-    queryFn: () => getPlanList(0, 3),
-    staleTime: 60 * 1000,
-    gcTime: 300 * 1000,
-  });
-
-  console.log(
-    "아니 여기서 왜 에러가?222 data:",
-    popularPlanList,
-    "error: ",
-    popularPlanError,
-  );
+    refetch: popularPlanRefetch,
+  } = useGetPlanList(region.id);
 
   const {
-    data: planList,
+    planList,
     fetchNextPage,
     hasNextPage,
     isFetching,
-  } = useInfiniteQuery({
-    queryKey: ["infinitePlan"],
-    queryFn: ({ pageParam }) => getPlanList(pageParam, 6),
-    getNextPageParam: (lastPage) => {
-      if (lastPage?.currentPage < lastPage?.totalPages) {
-        return lastPage.currentPage + 1;
-      }
-      return undefined;
-    },
-    initialPageParam: 0,
-  });
+    refetch: planListRefetch,
+  } = useGetInfinitePlanList(region.id, selectMBTI);
 
   const { ref, inView } = useInView({
     threshold: 0.4,
     delay: 0,
   });
-  console.log("hasNextPage", hasNextPage);
+  // console.log("hasNextPage", hasNextPage);
 
   useEffect(() => {
     if (inView && !isFetching && hasNextPage) {
@@ -86,13 +84,55 @@ const Home = () => {
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
-  if (isLoading || popularPlanisLoading) {
+  // 지역 선택 시
+  const onClickRegion = (regionInfo: any) => {
+    console.log("regionInfo:", regionInfo);
+    setRegion(regionInfo);
+  };
+
+  useEffect(() => {
+    popularPlanRefetch();
+    planListRefetch();
+  }, [region]);
+
+  useEffect(() => {
+    // mbti 선택할 때 마다 api 요청 다시 보내기
+    planListRefetch();
+  }, [selectMBTI]);
+
+  const onClickMBTI = (mbti: string) => {
+    const isContain = selectMBTI.indexOf(mbti);
+    if (isContain < 0) {
+      setSelectMBTI([...selectMBTI, mbti]);
+    } else {
+      const newMBTIList = selectMBTI.filter((item) => item !== mbti);
+      setSelectMBTI(newMBTIList);
+    }
+  };
+
+  const debouncedValue = useDebounde(searchRegion, 400);
+  const {
+    data: searchRegionData,
+    error: searchRegionError,
+    isLoading: searchRegionIsLoading,
+    refetch: searchRegonRefetch,
+  } = useSearchRegion(debouncedValue);
+
+  useEffect(() => {
+    if (debouncedValue) {
+      searchRegonRefetch();
+    }
+  }, [debouncedValue]);
+
+  if (isLoading || popularPlanisLoading || searchRegionIsLoading) {
     return <div>로딩중</div>;
   }
 
-  if (error || popularPlanError) {
+  if (error || popularPlanError || searchRegionError) {
     return <div>에러</div>;
   }
+  console.log("searchRegionData:", searchRegionData);
+  // 검색 결과 없는데 왜 기본값이 오는거지?
 
   return (
     <div className="py-10 px-5 sm:px-60 sm:py-32">
@@ -123,6 +163,8 @@ const Home = () => {
             <input
               className="outline-none bg-transparent"
               placeholder="어디로 떠나고 싶으신가요?"
+              value={searchRegion}
+              onChange={(e) => setSearchRegion(e.target.value)}
             />
             <svg width={20} viewBox="0 0 24 24" aria-hidden="true" fill="gray">
               <g>
@@ -130,35 +172,68 @@ const Home = () => {
               </g>
             </svg>
           </div>
-          <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
-            <div className="py-4 px-8">
-              {searchResult.data.cities.map((item: any) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between p-1 items-end"
-                >
-                  <div className="font-bold text-neutral-600 text-2xl">
-                    {item.koreanName}
+          {/* 만약, 지역 검색 결과가 없다면 */}
+          {searchRegion === "" ? (
+            <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
+              <div className="py-4 px-4">
+                {searchResult.data.cities.map((item: any) => (
+                  <div
+                    key={item.id}
+                    className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
+                    onClick={() => onClickRegion(item)}
+                  >
+                    <div className="font-bold text-neutral-600 text-2xl">
+                      {item.koreanName}
+                    </div>
+                    <div className="text-neutral-400">
+                      {item.countryKoreanName}
+                    </div>
                   </div>
-                  <div className="text-neutral-400">
-                    {item.countryKoreanName}
+                ))}
+              </div>
+            </ScrollArea>
+          ) : (
+            <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
+              <div className="py-4 px-4">
+                {searchRegionData?.cities.map((item: any) => (
+                  <div
+                    key={item.id}
+                    className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
+                    onClick={() => onClickRegion(item)}
+                  >
+                    <div className="font-bold text-neutral-600 text-2xl">
+                      {item.koreanName}
+                    </div>
+                    <div className="text-neutral-400">
+                      {item.countryKoreanName}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          </ScrollArea>
+                ))}
+              </div>
+            </ScrollArea>
+          )}
         </div>
       </div>
       <div className=" text-center mt-20">
-        <button
-          className="bg-white text-cyan-600 border-cyan-600 border-4 rounded-2xl w-80 h-14 hover:bg-cyan-600/20"
-          onClick={onMoveToAddPlan}
-        >
-          내 일정 작성하러 가기!
-        </button>
+        <Dialog>
+          <DialogTrigger
+            className="bg-white text-cyan-600 border-cyan-600 border-4 rounded-2xl w-80 h-14 hover:bg-cyan-600/20"
+            onClick={onMoveToAddPlan}
+          >
+            내 일정 작성하러 가기!
+          </DialogTrigger>
+          {userInfo.mbtiName === "" ? <BeforeCreatePlanModal /> : ""}
+        </Dialog>
         <div className="text-3xl font-bold mt-12">{PopularPlan}</div>
         <div className="text-xl text-zinc-600 mt-2">
-          {PopularPlanDescription}
+          {region.id === 0 ? (
+            <>{PopularPlanDefaultDescription}</>
+          ) : (
+            <>
+              {region.koreanName}
+              {PopularPlanDescription}
+            </>
+          )}
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
           {popularPlanList?.plans.map((item: IPlan2) => (
@@ -166,15 +241,34 @@ const Home = () => {
           ))}
         </div>
         <div className="text-3xl font-bold mt-12">{MBTIPlan}</div>
-        <div className="text-xl text-zinc-600 mt-2">
-          ENFP, INFJ{MBTIPlanDescription}
+        <div className="text-xl text-zinc-600 mt-2 flex justify-center">
+          {selectMBTI.length !== 0 ? (
+            <>
+              {selectMBTI.map((mbti, index) => {
+                if (index === 0) {
+                  return <div key={mbti}>{mbti}</div>;
+                } else {
+                  return <div key={mbti}>, {mbti}</div>;
+                }
+              })}
+              {MBTIPlanDescription}
+            </>
+          ) : (
+            <div>{MBTIPlanDefaultDescription}</div>
+          )}
         </div>
         <Carousel className="my-5 mx-12 sm:mx-40">
           <CarouselContent>
             <CarouselItem>
               <div className="flex w-full justify-center gap-1 sm:gap-5">
                 {MBTI.slice(0, 8).map((item) => (
-                  <Badge key={item} variant="unselected">
+                  <Badge
+                    key={item}
+                    variant={
+                      selectMBTI.indexOf(item) < 0 ? "unselected" : "selected"
+                    }
+                    onClick={() => onClickMBTI(item)}
+                  >
                     {item}
                   </Badge>
                 ))}
@@ -183,7 +277,13 @@ const Home = () => {
             <CarouselItem>
               <div className="flex w-full justify-center gap-1 sm:gap-5">
                 {MBTI.slice(8).map((item) => (
-                  <Badge key={item} variant="unselected">
+                  <Badge
+                    key={item}
+                    variant={
+                      selectMBTI.indexOf(item) < 0 ? "unselected" : "selected"
+                    }
+                    onClick={() => onClickMBTI(item)}
+                  >
                     {item}
                   </Badge>
                 ))}
@@ -193,7 +293,6 @@ const Home = () => {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-
         <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-y-16">
           {planList?.pages.map((itemList) =>
             itemList.plans.map((item: IPlan2) => (

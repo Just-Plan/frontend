@@ -1,11 +1,11 @@
 export interface IPlace {
-  googlePlaceId?: number | null;
+  googlePlaceId?: string | null;
   placeId?: number;
   name: string;
   formattedAddress: string;
   types: string;
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
   photoReference: string;
   orderNum?: number;
   memo?: {
@@ -39,4 +39,34 @@ export interface IDayPlan {
 export interface IMemo {
   color: string;
   content: string;
+}
+
+export interface IPlaceDetailResponse {
+  name: string;
+  rating: number;
+  types: string[];
+  photos: {
+    height: number;
+    width: number;
+    photo_reference: string;
+    html_attributions: string[];
+  }[];
+  mbti: string[];
+  comment: [];
+  user_ratings_total: number;
+  formatted_phone_number: string;
+  opening_hours: {
+    periods: {
+      open: {
+        day: 0;
+        time: string;
+      };
+      close: {
+        day: 0;
+        time: string;
+      };
+    }[];
+    open_now: boolean;
+    weekday_text: string[];
+  };
 }

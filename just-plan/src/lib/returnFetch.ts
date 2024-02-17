@@ -14,14 +14,13 @@ const fetchExtended = returnFetch({
       return args;
     },
 
-    response: async (response, requestArgs) => {
+    response: async (response) => {
       console.log("after receiving response");
 
       return response;
     },
   },
 });
-
 export const fetchComposed = returnFetch({
   fetch: fetchExtended,
   headers: {
@@ -44,10 +43,6 @@ export const fetchComposed = returnFetch({
   },
 });
 
-const basicHeaders = {
-  "Content-Type": "application/json",
-};
-
 const accessToken = localStorage.getItem("access-token");
 
 export const nextFetch = returnFetch({
@@ -55,17 +50,36 @@ export const nextFetch = returnFetch({
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
-    authorization: `Bearer ${accessToken}` || "",
   },
   interceptors: {
-    request: async (args) => {
-      console.log("request interceptor args", args);
-      return args;
+    request: async ([url, configs]) => {
+      let headers: HeadersInit = {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      };
+      // console.log("11111url", url, "configs", configs);
+      if (accessToken) {
+        headers = {
+          ...headers,
+          Authorization: `Bearer ${accessToken}`,
+        };
+      }
+      if (!configs) {
+        configs = {
+          headers,
+        };
+      } else {
+        configs.headers = headers;
+      }
+      // configs!.headers = headers;
+      // console.log("222222url", url, "configs", configs);
+
+      return [url, configs];
     },
     response: async (response, requestArgs) => {
       const res = await response.json();
-      console.log("[return fetch] response 확인: ", response);
-      console.log("[return fetch] response 확인(json): ", res.code);
+      // console.log("[return fetch] response 확인: ", response);
+      // console.log("[return fetch] response 확인(json): ", res.code);
 
       if (res.code === 4005) {
         // 1. 토큰 재발급

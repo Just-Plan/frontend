@@ -4,23 +4,26 @@ import type { IProps } from "./AddedPlaceCard.types";
 import { Dialog, DialogTrigger } from "../dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
 import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
-import { IMemo } from "@/types/place.types";
+import type { IMemo } from "@/types/place.types";
 import { useAtom } from "jotai";
 import { addedPlace } from "@/store";
+import { useState } from "react";
 
 export const AddedPlaceCard = ({ item, time }: IProps & { time: number }) => {
   const {
-    googlePlaceId,
+    placeId,
     name,
     formattedAddress,
     types,
     memo,
     latitude,
     longitude,
-    photoReference,
+    // photoReference,
   } = item;
   const image = "/images/image1.png"; // 임시
   const [added, setAdded] = useAtom(addedPlace);
+  const [open, setOpen] = useState(false);
+
   const day = "1";
   const onSubmitMemo = (editMemo: IMemo) => {
     // 와 이거 어떻게 바꾸지???
@@ -52,11 +55,17 @@ export const AddedPlaceCard = ({ item, time }: IProps & { time: number }) => {
             </div>
 
             <div className="flex flex-col flex-1 ml-3">
-              <Dialog>
+              <Dialog open={open} onOpenChange={setOpen}>
                 <DialogTrigger asChild className="hover:cursor-pointer">
                   <div className="font-bold flex">{name}</div>
                 </DialogTrigger>
-                <DetailPlaceModal />
+                <DetailPlaceModal
+                  open={open}
+                  placeId={placeId!}
+                  name={name}
+                  latitude={latitude}
+                  longitude={longitude}
+                />
               </Dialog>
               <div className="flex">
                 <div className=" text-sky-600 font-bold mr-2">{types}</div>

@@ -1,59 +1,114 @@
-import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/dialog";
+import { DialogContent, DialogHeader, DialogTitle } from "@/components/dialog";
 import { Input } from "@/components/Input";
 import Image from "next/image";
 import Comments from "../Comments/Comments";
-import { PlaceDetailInfo } from "@/mocks";
 import { Button } from "@/components/Button";
+import { useGetPlaceComment } from "@/hooks/useGetPlaceComment";
+import { useGetPlaceDetail } from "@/hooks/useGetPlaceDetail";
+import { useEffect } from "react";
 
-const DetailPlaceModal = () => {
+const DetailPlaceModal = ({
+  open,
+  placeId,
+  name,
+  latitude,
+  longitude,
+}: {
+  open: boolean;
+  placeId: number;
+  name: string;
+  latitude: string;
+  longitude: string;
+}) => {
+  const engTitle = "Jeju International Airport";
+  const endTime = "19:00";
+
+  // 장소 상세 정보
   const {
-    category,
-    title,
-    engTitle,
-    image,
-    mbti,
-    status,
-    endTime,
-    businessHours,
-    comments,
-  } = PlaceDetailInfo;
+    resultData: placeDetailData,
+    error: placeDetailError,
+    isLoading: placeDetailIsLoading,
+    refetch: placeDetailRefetch,
+  } = useGetPlaceDetail(name, latitude, longitude);
+
+  // 댓글
+  const {
+    data: commentData,
+    error: commentError,
+    isLoading: commentIsLoading,
+    refetch: commentRefetch,
+  } = useGetPlaceComment(placeId);
+
+  useEffect(() => {
+    console.log("placeId:", placeId, " 의 open 여부 확인: ", open);
+    if (open) {
+      console.log("placeId:", placeId, "모달창!!!");
+      placeDetailRefetch();
+      commentRefetch();
+    }
+  }, [open]);
+
+  // useEffect(() => {
+  //   if (placeDetailData && commentData) {
+  //     console.log(
+  //       "data!!!",
+  //       "placeDetailData:",
+  //       placeDetailData,
+  //       "commentData:",
+  //       commentData,
+  //     );
+  //   }
+  // }, [placeDetailData, commentData]);
+
+  if (placeDetailError || commentError) return <div>에러</div>;
+  if (placeDetailIsLoading || commentIsLoading) return <div>로딩중</div>;
+
+  console.log(
+    "data!!!",
+    "placeDetailData:",
+    placeDetailData,
+    "commentData:",
+    commentData,
+  );
+
+  placeDetailData && console.log("placeDetail.types", placeDetailData.types);
+
   return (
     <DialogContent className="max-w-3xl max-h-full sm:max-h-[150rem] overflow-y-auto">
       <DialogHeader>
         <DialogTitle className="mb-3">
-          <div className="text-blue-500 text-sm">{category}</div>
-          <div className="font-bold text-3xl">{title}</div>
+          <div className="text-blue-500 text-sm">
+            {placeDetailData?.types[0]}
+          </div>
+          <div className="font-bold text-3xl">{placeDetailData?.name}</div>
           <div className="text-gray-400 text-sm font-normal">{engTitle}</div>
         </DialogTitle>
         <div className="flex flex-col sm:flex-row justify-between gap-6">
           <div className="flex flex-1 flex-col">
             <Image
-              src={image}
+              src={placeDetailData?.photos[0].photo_reference as string}
               alt="장소 이미지"
               width={400}
               height={300}
               className="rounded-2xl"
+              unoptimized={true}
             />
             <div className="bg-ourGreen p-1 rounded-e-xl my-5 text-xs font-bold">
-              {mbti.join(",")}가 가장 많이 스크랩한 장소입니다.
+              {placeDetailData?.mbti.join(",")}가 가장 많이 스크랩한 장소입니다.
             </div>
             <div className="flex">
               <div className="text-blue-500 font-bold">
-                {status ? "영업중" : "영업 종료"}
+                {placeDetailData?.opening_hours.open_now
+                  ? "영업중"
+                  : "영업 종료"}
               </div>
               <div className="font-bold">{endTime}에 영업 종료</div>
             </div>
             <div className="flex">
               <div className="text-blue-500 font-bold">영업시간 안내</div>
               <div className="font-bold gap-1 flex flex-col">
-                {businessHours.map((item) => (
-                  <div key={item.id}>
-                    {item.day} {item.openTime}~{item.closeTime}
-                  </div>
+                {placeDetailData?.opening_hours.weekday_text.map((item) => (
+                  <div key={item}>{item}</div>
                 ))}
               </div>
             </div>
@@ -70,8 +125,8 @@ const DetailPlaceModal = () => {
               </Button>
             </div>
             <div className="gap-3 flex flex-col overflow-y-auto">
-              {comments.map((comment) => (
-                <Comments key={comment.id} comment={comment} />
+              {commentData?.map((comment) => (
+                <Comments key={comment.placeCommentId} commentInfo={comment} />
               ))}
             </div>
           </div>

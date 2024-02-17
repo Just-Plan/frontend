@@ -4,7 +4,7 @@ export const MBTI = [
   "ISFJ",
   "ISTJ",
   "ENFJ",
-  "ENPJ",
+  "ENTJ",
   "ESFJ",
   "ESTJ",
   "INFP",
@@ -12,12 +12,12 @@ export const MBTI = [
   "ISFP",
   "ISTP",
   "ENFP",
-  "ENPP",
+  "ENTP",
   "ESFP",
   "ESTP",
 ];
 
-export const MBTIList= [
+export const MBTIList = [
   {
     value: "infj",
     label: "INFJ",
@@ -82,4 +82,4 @@ export const MBTIList= [
     value: "estp",
     label: "ESTP",
   },
-]
+];
