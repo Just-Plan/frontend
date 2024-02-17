@@ -38,9 +38,12 @@ export const SignUpForm = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.code === 2000) {
+          console.log(data);
           setAuthId(data.data.auth_id);
         } else {
+          // 다른 상황에 대한 처리를 여기에 추가하세요.
           console.log(`Verification failed with code ${data.code}`);
+          // 다른 동작을 추가하세요.
         }
       })
       .catch((error) => {
@@ -80,8 +83,14 @@ export const SignUpForm = () => {
         <CardContent>
           <div className="grid w-full items-center gap-4">
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="email">이름</Label>
-              <Input id="email" placeholder="이름을 입력해주세요" />
+              <Label variant={"subTitle"} htmlFor="name">
+                이름
+              </Label>
+              <Input
+                id="name"
+                placeholder="이름을 입력해주세요"
+                {...register("name")}
+              />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label variant={"subTitle"} htmlFor="email">
@@ -105,8 +114,26 @@ export const SignUpForm = () => {
               </div>
             </div>
             <div className="flex flex-col space-y-1.5">
-              <Label htmlFor="password">비밀번호</Label>
-              <Input id="password" placeholder="비밀번호를 입력해주세요" />
+              <Label variant={"subTitle"} htmlFor="password">
+                비밀번호
+              </Label>
+              <Input
+                id="password"
+                placeholder="비밀번호를 입력해주세요"
+                type="password"
+                {...register("password", {
+                  required: "비밀번호를 입력하세요",
+                  minLength: {
+                    value: 8,
+                    message: "비밀번호는 최소 8자 이상이어야 합니다",
+                  },
+                  pattern: {
+                    value: /^(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/,
+                    message:
+                      "비밀번호는 최소 8자 이상이어야 하며, 특수 문자를 포함해야 합니다",
+                  },
+                })}
+              />
             </div>
             <div className="flex flex-col space-y-1.5">
               <Label variant={"subTitle"} htmlFor="passwordConfirm">

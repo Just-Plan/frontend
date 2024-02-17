@@ -21,17 +21,21 @@ const defaultPlanInfo: IPlanInfoDetail = {
     id: 0,
     introduction: "",
     koreanName: "",
+    latitude: 0,
+    longitude: 0,
   },
   startDate: new Date(),
   tags: [""],
   title: "",
   useExpense: false,
-  users: [{
-    email: "",
-    mbti: "",
-    name: "",
-    owner: false
-  }]
-}
+  users: [
+    {
+      email: "",
+      mbti: "",
+      name: "",
+      owner: false,
+    },
+  ],
+};
 
 export const planInfoAtom = atom<IPlanInfoDetail>(defaultPlanInfo);

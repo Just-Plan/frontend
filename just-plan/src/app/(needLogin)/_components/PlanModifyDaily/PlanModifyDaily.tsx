@@ -1,25 +1,30 @@
 import { Dialog, DialogTrigger } from "@/components/dialog";
 import { AddPlaceModal, StoredPlaceMiniCard } from "..";
 import { PlanDayHeader } from "../PlanDayHeader/PlanDayHeader";
-import {
-  DragDropContext,
-  Draggable,
-  DropResult,
-  Droppable,
-} from "@hello-pangea/dnd";
+import type { DropResult } from "@hello-pangea/dnd";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import { StoredPlaceCardDnD } from "@/components/StoredPlaceCard/StoredPlaceCardDnD";
 import DayPlanCardDnD from "@/components/DayPlanCard/DayPlanCardDnD";
 import { useAtom } from "jotai";
 import { addedPlace, storedPlace } from "@/store/place.atoms";
+import MyMap from "@/components/MyMap/MyMap";
+import type { IRegion } from "@/types/plan.types";
 
-const PlanModifyDaily = ({ day }: { day: string }) => {
+const PlanModifyDaily = ({
+  day,
+  planRegion,
+  places,
+}: {
+  day: string;
+  planRegion: IRegion;
+  places: any;
+}) => {
   const [stored, setStored] = useAtom(storedPlace);
   const [added, setAdded] = useAtom(addedPlace);
 
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
-
     const sourceKey = source.droppableId;
     const destinationKey = destination.droppableId;
 
@@ -43,6 +48,7 @@ const PlanModifyDaily = ({ day }: { day: string }) => {
       });
     }
   };
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="bg-ourGreen flex flex-row p-3 sm:p-5 rounded-2xl gap-5">
@@ -97,7 +103,13 @@ const PlanModifyDaily = ({ day }: { day: string }) => {
           </div>
           <div className="flex gap-5">
             <DayPlanCardDnD dayPlan={added[day]} day={day} />
-            <div className="bg-white w-full hidden sm:block">지도</div>
+            <div className="bg-white w-full hidden sm:block">
+              <MyMap
+                places={places.daysPlaces[day]}
+                day={day}
+                planRegion={planRegion}
+              />
+            </div>
           </div>
         </div>
       </div>

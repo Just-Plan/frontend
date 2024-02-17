@@ -3,7 +3,10 @@ import Image from "next/image";
 import { Dialog, DialogTrigger } from "../dialog";
 import MemoModal from "@/app/(needLogin)/_components/MemoModal/MemoModal";
 import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
-import { DraggableProvided, DraggableStateSnapshot } from "@hello-pangea/dnd";
+import type {
+  DraggableProvided,
+  DraggableStateSnapshot,
+} from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import type { IMemo, IPlace } from "@/types/place.types";
 import { useAtom } from "jotai";
@@ -16,9 +19,16 @@ export interface IProps {
   snapshot: DraggableStateSnapshot;
 }
 
-export const AddedPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
+export const AddedPlaceCardDnD = ({
+  item,
+  provided,
+  snapshot,
+  time,
+}: IProps & { time: number }) => {
+  const [open, setOpen] = useState(false);
+  const [added, setAdded] = useAtom(addedPlace);
   const {
-    googlePlaceId,
+    // googlePlaceId,
     placeId,
     name,
     formattedAddress,
@@ -26,14 +36,11 @@ export const AddedPlaceCardDnD = ({ item, provided, snapshot }: IProps) => {
     latitude,
     memo,
     longitude,
-    photoReference,
+    // photoReference,
   } = item;
 
-  const time = 120;
   const image = "/images/image1.png"; // 임시
-  const [open, setOpen] = useState(false);
 
-  const [added, setAdded] = useAtom(addedPlace);
   const day = "1";
 
   // memo 바꾸기

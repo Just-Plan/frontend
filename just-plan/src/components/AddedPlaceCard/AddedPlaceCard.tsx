@@ -9,7 +9,7 @@ import { useAtom } from "jotai";
 import { addedPlace } from "@/store";
 import { useState } from "react";
 
-export const AddedPlaceCard = ({ item }: IProps) => {
+export const AddedPlaceCard = ({ item, time }: IProps & { time: number }) => {
   const {
     placeId,
     name,
@@ -18,13 +18,12 @@ export const AddedPlaceCard = ({ item }: IProps) => {
     memo,
     latitude,
     longitude,
-    photoReference,
+    // photoReference,
   } = item;
   const image = "/images/image1.png"; // 임시
-  const time = 120;
+  const [added, setAdded] = useAtom(addedPlace);
   const [open, setOpen] = useState(false);
 
-  const [added, setAdded] = useAtom(addedPlace);
   const day = "1";
   const onSubmitMemo = (editMemo: IMemo) => {
     // 와 이거 어떻게 바꾸지???

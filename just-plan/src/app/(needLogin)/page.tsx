@@ -13,7 +13,7 @@ import {
 } from "@/components/Carousel";
 import { useRouter } from "next/navigation";
 import { HomePageConfig, MBTI } from "@/constants";
-import { IPlan2, IRegion } from "@/types/plan.types";
+import type { IPlan2, IRegion2 } from "@/types/plan.types";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import { useGetCities } from "@/hooks/useGetCities";
@@ -29,7 +29,7 @@ import BeforeCreatePlanModal from "./_components/BeforeCreatePlanModal/BeforeCre
 const Home = () => {
   const router = useRouter();
   const [selectMBTI, setSelectMBTI] = useState<string[]>([]);
-  const [region, setRegion] = useState<IRegion>({
+  const [region, setRegion] = useState<IRegion2>({
     id: 0,
     koreanName: "",
     englishName: "",

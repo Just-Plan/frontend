@@ -10,7 +10,7 @@ import { addedPlace, planInfoAtom, storedPlace } from "@/store";
 import { useEffect } from "react";
 import { useGetPlanInfo } from "@/hooks";
 import { useGetPlaceInfo } from "@/hooks/useGetPlaceInfo";
-import { IDayPlan } from "@/types/place.types";
+import type { IDayPlan } from "@/types/place.types";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -19,6 +19,7 @@ const Page = () => {
 
   const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
   const setStored = useSetAtom(storedPlace);
+
   const [added, setAdded] = useAtom(addedPlace);
   const {
     data: planData,
@@ -39,7 +40,7 @@ const Page = () => {
       console.log("planInfo", planInfo);
     }
   }, [planData]);
-
+  console.log(placeData);
   useEffect(() => {
     if (placeData) {
       console.log("placeData 출력", placeData);
@@ -49,7 +50,7 @@ const Page = () => {
 
       const newAdded: IDayPlan = {};
       for (let i = 1; i < Object.keys(placeData.daysPlaces).length; i++) {
-        let key = Object.keys(placeData.daysPlaces)[i];
+        const key = Object.keys(placeData.daysPlaces)[i];
         newAdded[key] = placeData.daysPlaces[key];
       }
       console.log("added 출력", newAdded);
@@ -82,7 +83,11 @@ const Page = () => {
           </div>
         </div>
       ) : (
-        <PlanModifyDaily day={day} />
+        <PlanModifyDaily
+          day={day}
+          planRegion={planInfo.region}
+          places={placeData}
+        />
       )}
     </div>
   );

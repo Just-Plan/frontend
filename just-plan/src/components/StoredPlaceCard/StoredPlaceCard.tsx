@@ -8,14 +8,14 @@ import { useState } from "react";
 
 export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
   const {
-    googlePlaceId,
+    // googlePlaceId,
     placeId,
     name,
     formattedAddress,
     types,
     latitude,
     longitude,
-    photoReference,
+    // photoReference,
   } = item;
   const image = "/images/image1.png"; // 임시
   const [open, setOpen] = useState(false);

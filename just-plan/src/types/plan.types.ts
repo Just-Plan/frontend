@@ -12,7 +12,7 @@ export interface IProps {
   item: ILocationInfo;
 }
 
-export interface IRegion {
+export interface IRegion2 {
   id: number;
   koreanName: string;
   englishName: string;
@@ -95,6 +95,17 @@ export interface IPlanInfoDetail {
     name: string;
     owner: boolean;
   }[];
+}
+
+export interface IRegion {
+  countryEnglishName: string;
+  countryKoreanName: string;
+  englishName: string;
+  id: number;
+  introduction: string;
+  koreanName: string;
+  latitude: number;
+  longitude: number;
 }
 
 export interface IOwner {
