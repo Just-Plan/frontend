@@ -5,7 +5,8 @@ import Comments from "../Comments/Comments";
 import { Button } from "@/components/Button";
 import { useGetPlaceComment } from "@/hooks/useGetPlaceComment";
 import { useGetPlaceDetail } from "@/hooks/useGetPlaceDetail";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { usePostPlaceComment } from "@/hooks/usePostPlaceComment";
 
 const DetailPlaceModal = ({
   open,
@@ -21,6 +22,7 @@ const DetailPlaceModal = ({
   longitude: string;
 }) => {
   const endTime = "19:00";
+  const [commentValue, setCommentValue] = useState("");
 
   // 장소 상세 정보
   const {
@@ -58,6 +60,16 @@ const DetailPlaceModal = ({
   //     );
   //   }
   // }, [placeDetailData, commentData]);
+
+  const { mutate } = usePostPlaceComment();
+
+  const onSubmitComment = () => {
+    setCommentValue("");
+    mutate({
+      placeId: placeId,
+      content: commentValue,
+    });
+  };
 
   if (placeDetailError || commentError) return <div>에러1111</div>;
   if (placeDetailIsLoading || commentIsLoading) return <div>로딩중</div>;
@@ -125,8 +137,14 @@ const DetailPlaceModal = ({
               <Input
                 className="rounded-md mr-2"
                 placeholder="댓글을 입력하세요."
+                value={commentValue}
+                onChange={(e) => setCommentValue(e.target.value)}
               />
-              <Button variant={"ghost"} className="w-16">
+              <Button
+                variant={"ghost"}
+                className="w-16"
+                onClick={onSubmitComment}
+              >
                 댓글 달기
               </Button>
             </div>
