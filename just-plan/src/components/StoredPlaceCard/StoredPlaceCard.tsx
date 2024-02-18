@@ -44,7 +44,7 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
                 <Button
                   variant={"outline"}
                   className="h-7"
-                  onClickCapture={() => onClickAdd(item)}
+                  onClick={(e) => onClickAdd(e, item)}
                 >
                   장소 추가
                 </Button>
