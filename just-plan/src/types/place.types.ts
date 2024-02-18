@@ -12,6 +12,7 @@ export interface IPlace {
     color: string;
     content: string;
   };
+  mbti?: string[];
 }
 
 interface IPlaceRequestInner {
@@ -69,4 +70,11 @@ export interface IPlaceDetailResponse {
     open_now: boolean;
     weekday_text: string[];
   };
+}
+
+export interface IPlaceInnerResponse {
+  [key: string]: IPlace[];
+}
+export interface IPlaceResponse {
+  daysPlaces: IPlaceInnerResponse;
 }

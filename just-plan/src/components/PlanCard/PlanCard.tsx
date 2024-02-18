@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import React, { MouseEvent, PropsWithChildren, useState } from "react";
+import type { MouseEvent } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader } from "../Card";
 import type { Props } from "./PlanCard.types";
 import { useRouter } from "next/navigation";
@@ -10,18 +11,16 @@ import selectBookMark from "@/../public/svg/selectBookMark.svg";
 import { usePostPlanScrap } from "@/hooks/usePostPlanScrap";
 import { useAtomValue } from "jotai";
 import { localStorageUserInfoAtom } from "@/store/auth.atom";
+import ESFP from "@/../public/images/ESFP.png";
 
 const PlanCard = ({ item }: Props) => {
-  const image = "/images/image1.png";
-  const profile = "/images/image1.png";
-
   const {
     budget,
     days,
     nights,
     planId,
-    published,
     region,
+    photoUrl,
     scrapCount,
     scrapped,
     tags,
@@ -30,8 +29,14 @@ const PlanCard = ({ item }: Props) => {
   } = item;
   const [isSelected, setIsSelected] = useState<boolean>(scrapped as boolean);
   const [scrapCountValue, setScrapCountValue] = useState(scrapCount);
-  const owner = users.find((user) => user.owner === true);
+  const owner = users.find((user) => user.owner === true)!;
   const userInfo = useAtomValue(localStorageUserInfoAtom);
+
+  const image = photoUrl || ESFP;
+  // const image = "/images/image1.png"; // 임시
+
+  // 주인을 찾자
+  const profile = owner.profileUrl || ESFP;
 
   const router = useRouter();
   const handleToDetail = () => {
@@ -74,27 +79,30 @@ const PlanCard = ({ item }: Props) => {
     setScrapCountValue(updatedScrapCount);
   };
   return (
-    <Card className="w-[350px]" onClick={handleToDetail}>
+    <Card className="w-[384px]" onClick={handleToDetail}>
       <CardHeader className="p-0">
-        <Image
-          src={image}
-          width={384}
-          height={240}
-          className="object-contain"
-          alt="장소 이미지"
-        />
+        <div className="w-96 h-60 relative">
+          <Image
+            src={image}
+            fill
+            className="object-cover"
+            alt="장소 이미지"
+            unoptimized={true}
+          />
+        </div>
       </CardHeader>
       <CardContent className="bg-white p-0">
-        <div className="flex justify-between p-3 items-center">
+        <div className="flex justify-between p-3 items-center w-96">
           <div className="bg-red-300 w-16 h-16 rounded-full relative flex">
             <Image
               className="rounded-full"
               src={profile}
               fill={true}
               alt="프로필"
+              unoptimized={true}
             />
           </div>
-          <div className=" w-60">
+          <div className="w-60">
             <div className="text-base flex">
               <b>{owner?.name}님</b>의 {title}
             </div>

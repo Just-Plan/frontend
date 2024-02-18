@@ -1,14 +1,7 @@
 import { postPlaceStored } from "@/app/(needLogin)/_components/AddPlaceModal/_lib/postPlaceStored";
 import { placeKeys } from "@/constants/queries";
-import type { IPlace } from "@/types/place.types";
+import type { IPlace, IPlaceResponse } from "@/types/place.types";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
-interface ITemp2 {
-  [key: string]: IPlace[];
-}
-interface ITemp {
-  daysPlaces: ITemp2;
-}
 
 export const usePostPlaceStored = () => {
   const queryClient = useQueryClient();
@@ -19,7 +12,7 @@ export const usePostPlaceStored = () => {
     onSuccess: (data, variables) => {
       alert("post place info 성공");
       // [places, lists, ${planId}] 에서 daysPlanes[0] 에 추가하기
-      queryClient.setQueryData<ITemp>(
+      queryClient.setQueryData<IPlaceResponse>(
         placeKeys.lists(variables.planId),
         (prev) => {
           if (!prev) return prev;
