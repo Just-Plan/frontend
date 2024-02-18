@@ -5,20 +5,16 @@ import { AddedPlaceCardDnD } from "../AddedPlaceCard/AddedPlaceCardDnD";
 import { useAtom } from "jotai";
 import { addedPlace, storedPlace } from "@/store/place.atoms";
 import type { IDnDProps } from "./DayPlanCard.types";
+import { getKaKaoTravelTimes } from "@/utils/kakaoTravelTime";
+import { useEffect, useState } from "react";
 
 const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
   const [added, setAdded] = useAtom(addedPlace);
+  const [travelTimes, setTravelTimes] = useState<any[]>([]);
 
   const date = "2024-01-01"; // 임시
   if (day !== "1" && day !== "2") return; // 임시
 
-  const origin = "37.7749,-122.4194"; // 샌프란시스코의 좌표
-  const destination = "34.0522,-118.2437"; // 로스앤젤레스의 좌표
-
-  const latLongArray = added[day].map((item) => [
-    item.latitude,
-    item.longitude,
-  ]);
   // Directions API 호출
   // fetch(
   //   `/google/api/directions/json?origin=${origin}&destination=${destination}&key=${process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY}`,
@@ -32,40 +28,61 @@ const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
   //   .catch((error) => {
   //     console.error("Directions API 호출 중 오류:", error);
   //   });
-  async function getTravelTimes(coordinates: string | any[]) {
-    const travelTimes = [];
+  // async function getTravelTimes(coordinates: string | any[]) {
+  //   const travelTimes = [];
 
-    for (let i = 0; i < coordinates.length - 1; i++) {
-      const origin = coordinates[i];
-      const destination = coordinates[i + 1];
+  //   for (let i = 0; i < coordinates.length - 1; i++) {
+  //     const origin = coordinates[i];
+  //     const destination = coordinates[i + 1];
 
-      try {
-        const response = await fetch(
-          `/google/api/directions/json?origin=${origin}&destination=${destination}&key=${process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY}`,
-        );
+  //     try {
+  //       const response = await fetch(
+  //         `/google/api/directions/json?origin=${origin}&destination=${destination}&key=${process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY}`,
+  //       );
 
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
+  //       if (!response.ok) {
+  //         throw new Error("Network response was not ok");
+  //       }
 
-        const data = await response.json();
-        console.log(data);
-        const duration = data.routes[0].legs[0].duration.text;
-        travelTimes.push(duration);
-      } catch (error) {
-        console.error("Directions API 호출 중 오류:", error);
-        travelTimes.push(null); // Push null to indicate error for this pair
-      }
-    }
+  //       const data = await response.json();
+  //       console.log(data);
+  //       const duration = data.routes[0].legs[0].duration.text;
+  //       travelTimes.push(duration);
+  //     } catch (error) {
+  //       console.error("Directions API 호출 중 오류:", error);
+  //       travelTimes.push(null); // Push null to indicate error for this pair
+  //     }
+  //   }
 
-    return travelTimes;
-  }
+  //   return travelTimes;
+  // }
 
-  getTravelTimes(latLongArray).then((travelTimes) => {
-    console.log("이동 시간 배열:", travelTimes);
-  });
-  console.log(added[day], latLongArray);
+  // getTravelTimes(latLongArray).then((travelTimes) => {
+  //   console.log("이동 시간 배열:", travelTimes);
+  // });
 
+  useEffect(() => {
+    const fetchTravelTimes = async () => {
+      const latLongArray = added[day].map((item) => [
+        item.longitude,
+        item.latitude,
+      ]);
+      const promises = latLongArray.slice(0, -1).map((startPoint, i) => {
+        const endPoint = latLongArray[i + 1];
+        return getKaKaoTravelTimes(startPoint, endPoint)
+          .then((travelTime) => travelTime)
+          .catch((error) => {
+            console.error("Error fetching travel time:", error);
+            return null;
+          });
+      });
+      const allTravelTimes = await Promise.all(promises);
+      setTravelTimes(allTravelTimes);
+    };
+
+    fetchTravelTimes();
+  }, [added, day]);
+  console.log("1");
   return (
     <div className="bg-white flex flex-col w-fit p-6  rounded-3xl">
       <div className="flex justify-between">
@@ -102,7 +119,7 @@ const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
                     <AddedPlaceCardDnD
                       key={item.name}
                       item={item}
-                      time={10}
+                      time={travelTimes[index]}
                       provided={provided}
                       snapshot={snapshot}
                     />

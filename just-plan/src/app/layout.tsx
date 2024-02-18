@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Poppins, Oswald } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components";
 import QueryProvider from "@/providers/QueryProvider";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Oswald({ subsets: ["latin"], weight: "300" });
 
 export const metadata: Metadata = {
   title: "Create Next App",

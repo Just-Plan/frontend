@@ -41,6 +41,7 @@ export const MyMap = ({ places, day, planRegion, width, height }: any) => {
       });
     }
   }, [added[day], map]);
+
   const onUnmount = React.useCallback(function callback(map: any) {
     setMap(null);
   }, []);
@@ -54,31 +55,87 @@ export const MyMap = ({ places, day, planRegion, width, height }: any) => {
     width: width || "100%",
     height: height || "100%",
   };
-  return isLoaded ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      center={{ lat: planRegion.latitude, lng: planRegion.longitude }}
-      zoom={11}
-      onLoad={onLoad}
-      onUnmount={onUnmount}
-    >
-      {places.map((location, index) => (
-        <Marker
-          key={location.id}
-          position={{ lat: location.latitude, lng: location.longitude }}
-          title={`장소 ${index + 1}`} // 각 마커에 대한 타이틀 설정
-          onClick={() =>
-            handleMarkerClick({
-              lat: location.latitude,
-              lng: location.longitude,
-            })
-          }
-        />
-      ))}
-    </GoogleMap>
-  ) : (
-    <></>
+
+  useEffect(() => {
+    if (planRegion.countryKoreanName === "대한민국") {
+      // Initialize Kakao Maps
+      const script = document.createElement("script");
+      script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}&libraries=services&autoload=false`;
+      script.async = true;
+      document.body.appendChild(script);
+
+      script.onload = () => {
+        kakao.maps.load(() => {
+          const container = document.getElementById("kakao-map");
+          const options = {
+            center: new kakao.maps.LatLng(
+              planRegion.latitude,
+              planRegion.longitude,
+            ),
+            level: 10,
+          };
+          const map = new kakao.maps.Map(container, options);
+
+          // Add markers to the map
+          places.forEach((location: any, index: number) => {
+            const marker = new kakao.maps.Marker({
+              position: new kakao.maps.LatLng(
+                location.latitude,
+                location.longitude,
+              ),
+              map: map,
+            });
+
+            // Add click event listener for the marker
+            kakao.maps.event.addListener(marker, "click", () => {
+              const markerPosition = marker.getPosition();
+
+              map.setCenter(markerPosition);
+
+              map.setLevel(4);
+            }); // Push the marker into the places array for later reference
+            location.marker = marker;
+          });
+        });
+      };
+    }
+  }, [places, planRegion]);
+
+  return (
+    <>
+      {planRegion.countryKoreanName === "대한민국" ? (
+        <div
+          id="kakao-map"
+          style={{ width: width || "100%", height: height || "100%" }}
+        >
+          {/* This div will be replaced by the Kakao Map */}
+        </div>
+      ) : (
+        isLoaded && (
+          <GoogleMap
+            mapContainerStyle={containerStyle}
+            center={{ lat: planRegion.latitude, lng: planRegion.longitude }}
+            zoom={11}
+            onLoad={onLoad}
+            onUnmount={onUnmount}
+          >
+            {places.map((location, index) => (
+              <Marker
+                key={location.id}
+                position={{ lat: location.latitude, lng: location.longitude }}
+                title={`장소 ${index + 1}`}
+                onClick={() =>
+                  handleMarkerClick({
+                    lat: location.latitude,
+                    lng: location.longitude,
+                  })
+                }
+              />
+            ))}
+          </GoogleMap>
+        )
+      )}
+    </>
   );
 };
-
 export default MyMap;
