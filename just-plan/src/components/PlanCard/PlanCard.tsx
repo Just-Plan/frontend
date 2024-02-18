@@ -19,7 +19,7 @@ const PlanCard = ({ item }: Props) => {
     days,
     nights,
     planId,
-    region,
+    // region,
     photoUrl,
     scrapCount,
     scrapped,

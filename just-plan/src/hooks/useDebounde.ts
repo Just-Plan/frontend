@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 export const useDebounde = <T>(value: T, delay: number) => {
   const [debouncedValue, setDebouncedValue] = useState<T>(value);
@@ -7,8 +7,8 @@ export const useDebounde = <T>(value: T, delay: number) => {
     const timer = setTimeout(() => setDebouncedValue(value), delay);
     return () => {
       clearTimeout(timer);
-    }
-  }, [value, delay])
+    };
+  }, [value, delay]);
 
   return debouncedValue;
-}
+};

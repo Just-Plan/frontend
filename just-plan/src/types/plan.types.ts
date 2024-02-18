@@ -72,6 +72,21 @@ export interface IPlan2 {
   photoUrl: string | null; // 추가
 }
 
+export interface IOriginPlan {
+  planId: number;
+  title: string;
+  users: {
+    email: string;
+    name: string;
+    profileUrl: string | null;
+    mbti: {
+      id: number;
+      type: string;
+    };
+    owner: boolean;
+  }[];
+}
+
 export interface IPlanInfoDetail {
   planId: string;
   budget: { card: number; cash: number };
@@ -79,11 +94,11 @@ export interface IPlanInfoDetail {
   expense: {
     food: number;
     transportation: number;
-    loadging: number;
+    lodging: number;
     shopping: number;
     etc: number;
   };
-  originPlan: any;
+  originPlan: IOriginPlan | null;
   published: boolean;
   region: IRegion;
   startDate: Date;
@@ -105,8 +120,8 @@ export interface IRegion {
   id: number;
   introduction: string;
   koreanName: string;
-  latitude: number;
-  longitude: number;
+  latitude: string;
+  longitude: string;
 }
 
 export interface IOwner {
@@ -119,7 +134,7 @@ export interface IOwner {
 export interface IModifyPlanInfo {
   planId: string;
   title: string;
-  tags?: string[]; //
+  tags: string[]; //
   region?: IRegion; //
   startDate: Date;
   endDate: Date;
@@ -149,4 +164,42 @@ export interface IPlanListResBody {
 export interface IScrapRequstBody {
   planId: number;
   scrap: boolean;
+}
+
+export interface IUserFinal {
+  email: string;
+  name: string;
+  profileUrl: string;
+  mbti: {
+    id: number;
+    type: string;
+  };
+  owner: boolean;
+}
+export interface IPlanFinal {
+  // 일정 생성 response
+  planId: number;
+  title: string;
+  users: IUserFinal[];
+  scrapped: boolean;
+  scrapCount: number;
+  region: IRegion;
+  startDate: Date;
+  endDate: Date;
+  photoUrl: string | null;
+  published: boolean;
+  originPlan: IOriginPlan;
+  tags: string[];
+  budget: {
+    cash: number;
+    card: number;
+  };
+  useExpense: boolean;
+  expense: {
+    food: number;
+    transportation: number;
+    lodging: number;
+    shopping: number;
+    etc: number;
+  };
 }

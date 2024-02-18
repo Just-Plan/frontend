@@ -110,7 +110,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
             />
           </div>
           <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto">
-            {searchResultData.data.map((item: IPlace) => (
+            {searchResultData?.map((item: IPlace) => (
               <StoredPlaceCard
                 key={item.name}
                 item={item}

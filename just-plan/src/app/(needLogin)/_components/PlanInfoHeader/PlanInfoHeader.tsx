@@ -37,7 +37,6 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
   const planInfo = useAtomValue(planInfoAtom);
-  const [isCloned, setIsCloned] = useState(false);
 
   const [info, setInfo] = useState<IModifyPlanInfo>({
     planId: "",
@@ -70,14 +69,13 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
       expense: planInfo.expense,
     });
     const cloneCheck = !!planInfo.originPlan;
-    setIsCloned(cloneCheck);
 
     if (cloneCheck) {
       // 유저 찾기
       const owner =
-        planInfo.originPlan.users !== undefined &&
-        planInfo.originPlan?.users.find((user: IOwner) => user.owner === true);
-      owner && userCloneInfo(owner);
+        planInfo?.originPlan?.users !== undefined &&
+        planInfo.originPlan?.users.find((user) => user.owner === true);
+      owner && userCloneInfo(owner as unknown as IOwner);
     }
   }, [planInfo]);
 

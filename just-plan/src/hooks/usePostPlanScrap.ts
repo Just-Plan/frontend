@@ -1,5 +1,5 @@
 import { postPlanScrap } from "@/components/PlanCard/_lib/postPlanScrap";
-import { IScrapRequstBody } from "@/types/plan.types";
+import type { IScrapRequstBody } from "@/types/plan.types";
 import { useMutation } from "@tanstack/react-query";
 
 export const usePostPlanScrap = () => {

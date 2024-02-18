@@ -1,7 +1,6 @@
 "use client";
 
 import Image from "next/image";
-import { ScrollArea } from "@/components/ScrollArea";
 import PlanCard from "@/components/PlanCard/PlanCard";
 import { Badge } from "@/components/Badge";
 import {
@@ -13,31 +12,30 @@ import {
 } from "@/components/Carousel";
 import { useRouter } from "next/navigation";
 import { HomePageConfig, MBTI } from "@/constants";
-import type { IPlan2, IRegion2 } from "@/types/plan.types";
+import type { IPlan2, IRegion } from "@/types/plan.types";
 import { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useGetCities } from "@/hooks/useGetCities";
 import { useGetPlanList } from "@/hooks/useGetPlanList";
 import { useGetInfinitePlanList } from "@/hooks/useGetInfinitePlanList";
-import { useDebounde } from "@/hooks";
-import { useSearchRegion } from "@/hooks/useSearchRegion";
 import { useAtomValue } from "jotai";
 import { localStorageUserInfoAtom } from "@/store/auth.atom";
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import BeforeCreatePlanModal from "./_components/BeforeCreatePlanModal/BeforeCreatePlanModal";
+import { SearchCity } from "@/components/SearchCity/SearchCity";
 
 const Home = () => {
   const router = useRouter();
   const [selectMBTI, setSelectMBTI] = useState<string[]>([]);
-  const [region, setRegion] = useState<IRegion2>({
+  const [region, setRegion] = useState<IRegion>({
     id: 0,
     koreanName: "",
     englishName: "",
     introduction: "",
     countryKoreanName: "",
     countryEnglishName: "",
+    latitude: "",
+    longitude: "",
   });
-  const [searchRegion, setSearchRegion] = useState("");
   const userInfo = useAtomValue(localStorageUserInfoAtom);
 
   const onMoveToAddPlan = () => {
@@ -54,8 +52,6 @@ const Home = () => {
     MBTIPlanDescription,
     MBTIPlanDefaultDescription,
   } = HomePageConfig;
-
-  const { data: searchResult, error, isLoading } = useGetCities();
 
   const {
     data: popularPlanList,
@@ -76,19 +72,12 @@ const Home = () => {
     threshold: 0.4,
     delay: 0,
   });
-  // console.log("hasNextPage", hasNextPage);
 
   useEffect(() => {
     if (inView && !isFetching && hasNextPage) {
       fetchNextPage();
     }
   }, [inView, isFetching, hasNextPage, fetchNextPage]);
-
-  // 지역 선택 시
-  const onClickRegion = (regionInfo: any) => {
-    console.log("regionInfo:", regionInfo);
-    setRegion(regionInfo);
-  };
 
   useEffect(() => {
     popularPlanRefetch();
@@ -110,29 +99,13 @@ const Home = () => {
     }
   };
 
-  const debouncedValue = useDebounde(searchRegion, 400);
-  const {
-    data: searchRegionData,
-    error: searchRegionError,
-    isLoading: searchRegionIsLoading,
-    refetch: searchRegonRefetch,
-  } = useSearchRegion(debouncedValue);
-
-  useEffect(() => {
-    if (debouncedValue) {
-      searchRegonRefetch();
-    }
-  }, [debouncedValue]);
-
-  if (isLoading || popularPlanisLoading || searchRegionIsLoading) {
+  if (popularPlanisLoading) {
     return <div>로딩중</div>;
   }
 
-  if (error || popularPlanError || searchRegionError) {
+  if (popularPlanError) {
     return <div>에러</div>;
   }
-  console.log("searchRegionData:", searchRegionData);
-  // 검색 결과 없는데 왜 기본값이 오는거지?
 
   return (
     <div className="py-10 px-5 sm:px-60 sm:py-32">
@@ -159,59 +132,7 @@ const Home = () => {
           <div className="text-sky-700 font-bold text-3xl mt-5 text-center">
             나의 여행 플랜 찾기
           </div>
-          <div className="bg-white h-10 rounded-3xl flex justify-between pl-5 pr-5 mt-5 border sm:w-96">
-            <input
-              className="outline-none bg-transparent"
-              placeholder="어디로 떠나고 싶으신가요?"
-              value={searchRegion}
-              onChange={(e) => setSearchRegion(e.target.value)}
-            />
-            <svg width={20} viewBox="0 0 24 24" aria-hidden="true" fill="gray">
-              <g>
-                <path d="M10.25 3.75c-3.59 0-6.5 2.91-6.5 6.5s2.91 6.5 6.5 6.5c1.795 0 3.419-.726 4.596-1.904 1.178-1.177 1.904-2.801 1.904-4.596 0-3.59-2.91-6.5-6.5-6.5zm-8.5 6.5c0-4.694 3.806-8.5 8.5-8.5s8.5 3.806 8.5 8.5c0 1.986-.682 3.815-1.824 5.262l4.781 4.781-1.414 1.414-4.781-4.781c-1.447 1.142-3.276 1.824-5.262 1.824-4.694 0-8.5-3.806-8.5-8.5z"></path>
-              </g>
-            </svg>
-          </div>
-          {/* 만약, 지역 검색 결과가 없다면 */}
-          {searchRegion === "" ? (
-            <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
-              <div className="py-4 px-4">
-                {searchResult.data.cities.map((item: any) => (
-                  <div
-                    key={item.id}
-                    className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
-                    onClick={() => onClickRegion(item)}
-                  >
-                    <div className="font-bold text-neutral-600 text-2xl">
-                      {item.koreanName}
-                    </div>
-                    <div className="text-neutral-400">
-                      {item.countryKoreanName}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          ) : (
-            <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
-              <div className="py-4 px-4">
-                {searchRegionData?.cities.map((item: any) => (
-                  <div
-                    key={item.id}
-                    className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
-                    onClick={() => onClickRegion(item)}
-                  >
-                    <div className="font-bold text-neutral-600 text-2xl">
-                      {item.koreanName}
-                    </div>
-                    <div className="text-neutral-400">
-                      {item.countryKoreanName}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </ScrollArea>
-          )}
+          <SearchCity setRegion={setRegion} />
         </div>
       </div>
       <div className=" text-center mt-20">

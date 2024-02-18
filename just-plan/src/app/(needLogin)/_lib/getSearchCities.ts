@@ -18,8 +18,8 @@ export async function getSearchCities(searchTerm: string): Promise<string[]> {
 
     const cities = await response.json();
     return cities;
-  } catch (error: any) {
-    console.error("An error occurred:", error.message);
+  } catch (error) {
+    console.error("An error occurred:", error);
     throw new Error("Failed to fetch cities");
   }
 }

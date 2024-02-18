@@ -1,11 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
-import {
-  DragDropContext,
-  Draggable,
-  Droppable,
-  DropResult,
-} from "@hello-pangea/dnd";
+import type { DropResult } from "@hello-pangea/dnd";
+import { DragDropContext, Draggable, Droppable } from "@hello-pangea/dnd";
 // import { TItemStatus, TItems } from "./todo.";
 import { cn } from "@/lib/utils";
 
@@ -21,7 +17,7 @@ export type TItems = {
   [key in TItemStatus]: TItem[];
 };
 
-export default function page() {
+export default function Page() {
   const [items, setItems] = useState<TItems>({
     todo: [...Array(5)].map((_, i) => ({
       id: `${i}${i}${i}`,
@@ -77,7 +73,7 @@ export default function page() {
                     {...provided.droppableProps}
                     className={cn(
                       "flex flex-col gap-3 rounded-xl bg-gray-200 p-4 ring-1 ring-gray-300 transition-shadow dark:bg-[#000000]",
-                      snapshot.isDraggingOver ? "shadow-lg" : "shadow"
+                      snapshot.isDraggingOver ? "shadow-lg" : "shadow",
                     )}
                   >
                     <span className="text-xs font-semibold">
@@ -98,7 +94,7 @@ export default function page() {
                               "rounded-lg bg-white p-4 transition-shadow dark:bg-[#121212]",
                               snapshot.isDragging
                                 ? "bg-opacity-90 shadow-2xl shadow-gray-400"
-                                : "shadow"
+                                : "shadow",
                             )}
                           >
                             <h5 className="font-semibold">{item.title}</h5>

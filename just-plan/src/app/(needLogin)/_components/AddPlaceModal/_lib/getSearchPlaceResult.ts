@@ -1,5 +1,10 @@
-export const getSearchPlaceResult = async (cityId: number, query: string) => {
-  const res = await fetch(`http://13.125.188.226:8080/api/search/place/cityId/${cityId}?query=${query}`);
+import { nextFetch } from "@/lib/returnFetch";
+import type { IPlace } from "@/types/place.types";
 
-  return res.json();
-}
+export const getSearchPlaceResult = async (cityId: number, query: string) => {
+  const res = await nextFetch(
+    `/api/search/place/cityId/${cityId}?query=${query}`,
+  );
+
+  return res as unknown as IPlace[];
+};

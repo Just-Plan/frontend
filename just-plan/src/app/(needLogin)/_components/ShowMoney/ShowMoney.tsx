@@ -1,8 +1,7 @@
 import Image from "next/image";
-import React, { PropsWithChildren } from "react";
 import type { IProps } from "./ShowMoney.types";
 
-const ShowMoney = ({ cash, card }: PropsWithChildren<IProps>) => {
+const ShowMoney = ({ cash, card }: IProps) => {
   return (
     <div className="flex justify-between items-center">
       <div className="flex gap-2 sm:gap-5 my-5">

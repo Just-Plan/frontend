@@ -1,5 +1,4 @@
 import { postPlaceCopy } from "@/app/(needLogin)/_components/PlanInfoHeader/_lib/postPlaceCopy";
-import { postPlanCopy } from "@/app/(needLogin)/_components/PlanInfoHeader/_lib/postPlanCopy";
 import { useMutation } from "@tanstack/react-query";
 
 export const usePostPlaceCopy = () => {
