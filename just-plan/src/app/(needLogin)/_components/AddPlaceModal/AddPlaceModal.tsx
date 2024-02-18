@@ -34,7 +34,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   };
 
   const onClickAdd = (
-    e: MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     place: IPlace,
   ) => {
     e.stopPropagation();

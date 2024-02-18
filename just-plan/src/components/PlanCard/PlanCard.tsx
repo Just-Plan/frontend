@@ -79,9 +79,9 @@ const PlanCard = ({ item }: Props) => {
     setScrapCountValue(updatedScrapCount);
   };
   return (
-    <Card className="w-[384px]" onClick={handleToDetail}>
+    <Card className="" onClick={handleToDetail}>
       <CardHeader className="p-0">
-        <div className="w-96 h-60 relative">
+        <div className=" w-64 h-44 relative">
           <Image
             src={image}
             fill
@@ -92,7 +92,7 @@ const PlanCard = ({ item }: Props) => {
         </div>
       </CardHeader>
       <CardContent className="bg-white p-0">
-        <div className="flex justify-between p-3 items-center w-96">
+        <div className="flex justify-between p-3 items-center w-64">
           <div className="bg-red-300 w-16 h-16 rounded-full relative flex">
             <Image
               className="rounded-full"

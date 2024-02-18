@@ -21,7 +21,7 @@ export const StoredPlaceCardDnD = ({
     types,
     latitude,
     longitude,
-    // photoReference,
+    photoReference,
   } = item;
 
   const [open, setOpen] = useState(false);
