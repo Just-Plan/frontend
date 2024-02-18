@@ -93,11 +93,11 @@ export interface IPlanInfoDetail {
   expense: {
     food: number;
     transportation: number;
-    loadging: number;
+    lodging: number;
     shopping: number;
     etc: number;
   };
-  originPlan: IOriginPlan;
+  originPlan: IOriginPlan | null;
   published: boolean;
   region: IRegion;
   startDate: Date;

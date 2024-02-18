@@ -2,18 +2,18 @@ import { Switch } from "../Switch";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import { AddedPlaceCardDnD } from "../AddedPlaceCard/AddedPlaceCardDnD";
-import { useAtom } from "jotai";
-import { addedPlace, storedPlace } from "@/store/place.atoms";
+import { useAtomValue } from "jotai";
+import { addedPlace } from "@/store/place.atoms";
 import type { IDnDProps } from "./DayPlanCard.types";
 
 const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
-  const [added, setAdded] = useAtom(addedPlace);
-
+  const added = useAtomValue(addedPlace);
+  console.log(dayPlan);
   const date = "2024-01-01"; // 임시
   if (day !== "1" && day !== "2") return; // 임시
 
-  const origin = "37.7749,-122.4194"; // 샌프란시스코의 좌표
-  const destination = "34.0522,-118.2437"; // 로스앤젤레스의 좌표
+  // const origin = "37.7749,-122.4194"; // 샌프란시스코의 좌표
+  // const destination = "34.0522,-118.2437"; // 로스앤젤레스의 좌표
 
   const latLongArray = added[day].map((item) => [
     item.latitude,
@@ -32,6 +32,9 @@ const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
   //   .catch((error) => {
   //     console.error("Directions API 호출 중 오류:", error);
   //   });
+
+  // any 나중에 수정 필요
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   async function getTravelTimes(coordinates: string | any[]) {
     const travelTimes = [];
 

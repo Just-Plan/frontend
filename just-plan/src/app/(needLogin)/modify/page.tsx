@@ -86,7 +86,7 @@ const Page = () => {
         <PlanModifyDaily
           day={day}
           planRegion={planInfo.region}
-          places={placeData}
+          places={placeData!}
         />
       )}
     </div>

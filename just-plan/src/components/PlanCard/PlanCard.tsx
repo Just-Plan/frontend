@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import React, { MouseEvent, PropsWithChildren, useState } from "react";
+import type { MouseEvent } from "react";
+import { useState } from "react";
 import { Card, CardContent, CardHeader } from "../Card";
 import type { Props } from "./PlanCard.types";
 import { useRouter } from "next/navigation";
@@ -20,8 +21,8 @@ const PlanCard = ({ item }: Props) => {
     days,
     nights,
     planId,
-    published,
-    region,
+    // published,
+    // region,
     scrapCount,
     scrapped,
     tags,

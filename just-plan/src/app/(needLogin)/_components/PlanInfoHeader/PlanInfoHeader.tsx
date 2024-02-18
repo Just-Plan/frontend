@@ -14,10 +14,13 @@ import { format } from "date-fns";
 import { addedPlace, planInfoAtom, storedPlace } from "@/store";
 import { useAtom, useAtomValue } from "jotai";
 import { usePatchPlaceInfo } from "@/hooks/usePostPlanMutation";
-import { IDayPlan, IDayUpdates, IPlaceRequestBody } from "@/types/place.types";
+import type {
+  IDayPlan,
+  IDayUpdates,
+  IPlaceRequestBody,
+} from "@/types/place.types";
 import { localStorageUserInfoAtom } from "@/store/auth.atom";
 import { usePostPlanCopy } from "@/hooks/usePostPlanCopy";
-import { usePostPlaceCopy } from "@/hooks/usePostPlaceCopy";
 
 interface IBody {
   dayUpdates: IDayPlan;
@@ -29,7 +32,6 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId");
   const planInfo = useAtomValue(planInfoAtom);
-  const [isCloned, setIsCloned] = useState(false);
 
   const [info, setInfo] = useState<IModifyPlanInfo>({
     planId: "",
@@ -43,7 +45,7 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
     expense: {
       food: 0,
       transportation: 0,
-      loadging: 0,
+      lodging: 0,
       shopping: 0,
       etc: 0,
     },
@@ -62,14 +64,13 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
       expense: planInfo.expense,
     });
     const cloneCheck = !!planInfo.originPlan;
-    setIsCloned(cloneCheck);
 
     if (cloneCheck) {
       // 유저 찾기
       const owner =
-        planInfo.originPlan.users !== undefined &&
-        planInfo.originPlan?.users.find((user: IOwner) => user.owner === true)!;
-      owner && userCloneInfo(owner);
+        planInfo?.originPlan?.users !== undefined &&
+        planInfo.originPlan?.users.find((user) => user.owner === true);
+      owner && userCloneInfo(owner as unknown as IOwner);
     }
   }, [planInfo]);
 
@@ -121,7 +122,7 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
       placeDeleteIds: [],
     };
 
-    let newDayUpdates: IDayUpdates = {};
+    const newDayUpdates: IDayUpdates = {};
 
     Object.keys(newBody.dayUpdates).forEach((key) => {
       const temp = Object.keys(newBody.dayUpdates[key]).map((item) => {

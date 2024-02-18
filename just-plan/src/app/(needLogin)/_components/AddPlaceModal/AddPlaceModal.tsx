@@ -13,9 +13,10 @@ import Image from "next/image";
 import { StoredPlaceMiniCard } from "..";
 import { Input } from "@/components/Input";
 import { StoredPlaceCard } from "@/components";
-import { ChangeEvent, useState } from "react";
+import type { ChangeEvent } from "react";
+import { useState } from "react";
 import { useSearchPlace } from "@/hooks/useSearchPlace";
-import { IPlace } from "@/types/place.types";
+import type { IPlace } from "@/types/place.types";
 import { useDebounde } from "@/hooks";
 import { useAtom } from "jotai";
 import { storedPlace } from "@/store/place.atoms";
@@ -78,7 +79,7 @@ export const AddPlaceModal = () => {
             />
           </div>
           <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto">
-            {searchResultData.data.map((item: IPlace) => (
+            {searchResultData?.map((item: IPlace) => (
               <StoredPlaceCard
                 key={item.name}
                 item={item}

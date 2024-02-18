@@ -1,8 +1,8 @@
 import { nextFetch } from "@/lib/returnFetch";
-import { IPlanListResBody } from "@/types/plan.types";
+import type { IPlanListResBody } from "@/types/plan.types";
 
 export async function getPlanList(
-  page: any,
+  page: number,
   size: number,
   regionId: number,
   mbtiList?: string[],

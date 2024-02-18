@@ -9,14 +9,13 @@ import { useState } from "react";
 
 export const StoredPlaceCardDnD = ({ item, provided, snapshot }: IDnDProps) => {
   const {
-    googlePlaceId,
     placeId,
     name,
     formattedAddress,
     types,
     latitude,
     longitude,
-    photoReference,
+    // photoReference,
   } = item;
   const image = "/images/image1.png"; // 임시
   const [open, setOpen] = useState(false);

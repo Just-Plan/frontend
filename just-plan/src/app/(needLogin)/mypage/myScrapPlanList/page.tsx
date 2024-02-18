@@ -1,9 +1,8 @@
 "use client";
 
 import MypageHeader from "../_components/MypageHeader.tsx/MypageHeader";
-import { useGetMyPage } from "@/hooks/useGetMyPage";
 import PlanCard from "@/components/PlanCard/PlanCard";
-import { IPlan2 } from "@/types/plan.types";
+import type { IPlan2 } from "@/types/plan.types";
 import Pagination from "../_components/Pagination.tsx/Pagination";
 import { useEffect } from "react";
 import { useGetScrapList } from "@/hooks/useGetScrapList";

@@ -8,19 +8,25 @@ import type { TravelQuestion } from "./components/MbtiSelectSection/MbtiSelectSe
 import MbtiResult from "./components/MbtiResult";
 
 import { usePostMbtiResult } from "@/hooks/usePostMbtiResult";
-import { nextFetch } from "@/lib/returnFetch";
+import { useGetMbtiQuestions } from "@/hooks/useGetMbtiQuestions";
 
 const MBTIPage = () => {
   const [mbtiStep, setMbtiStep] = useState(0);
   const [questions, setQuestions] = useState<TravelQuestion[]>([]);
   const [selectedAnswers, setSelectedAnswers] = useState<number[]>([]);
 
+  const { data: mbtiData, error, isLoading } = useGetMbtiQuestions();
+
   useEffect(() => {
     // 수정 필요
-    nextFetch("api/mbti/questions")
-      .then((data) => setQuestions(data))
-      .catch((error) => console.error("Error fetching data:", error));
-  }, []);
+    // nextFetch("api/mbti/questions")
+    //   .then((data) => setQuestions(data))
+    //   .catch((error) => console.error("Error fetching data:", error));
+    if (mbtiData) {
+      setQuestions(mbtiData);
+    }
+  }, [mbtiData]);
+
   console.log(mbtiStep);
   const progressValue = (mbtiStep / questions.length) * 100;
 
@@ -34,6 +40,10 @@ const MBTIPage = () => {
       mutate();
     }
   }, [progressValue, mutate]);
+
+  if (error) return <div>에러</div>;
+  if (isLoading) return <div>로딩중</div>;
+
   return (
     <div className=" flex justify-center items-center">
       <div className="w-[80%] flex flex-col justify-center items-center pb-8">

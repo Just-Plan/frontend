@@ -10,6 +10,7 @@ import { useAtom } from "jotai";
 import { addedPlace, storedPlace } from "@/store/place.atoms";
 import MyMap from "@/components/MyMap/MyMap";
 import type { IRegion } from "@/types/plan.types";
+import type { IPlaceResponse } from "@/types/place.types";
 
 const PlanModifyDaily = ({
   day,
@@ -18,7 +19,7 @@ const PlanModifyDaily = ({
 }: {
   day: string;
   planRegion: IRegion;
-  places: any;
+  places: IPlaceResponse;
 }) => {
   const [stored, setStored] = useAtom(storedPlace);
   const [added, setAdded] = useAtom(addedPlace);

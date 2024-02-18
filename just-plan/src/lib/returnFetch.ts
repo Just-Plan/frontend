@@ -43,8 +43,11 @@ export const fetchComposed = returnFetch({
   },
 });
 
-const accessToken = localStorage.getItem("access-token");
-
+let accessToken: string | null;
+if (typeof window !== "undefined") {
+  // 클라이언트 사이드에서만 실행
+  accessToken = localStorage.getItem("access-token");
+}
 export const nextFetch = returnFetch({
   fetch: fetchExtended,
   headers: {

@@ -1,5 +1,5 @@
 import { nextFetch } from "@/lib/returnFetch";
-import { IPlanListResBody } from "@/types/plan.types";
+import type { IPlanListResBody } from "@/types/plan.types";
 
 export const getMyPage = async (
   page: string | undefined,
