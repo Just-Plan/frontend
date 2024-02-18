@@ -87,6 +87,7 @@ const Page = () => {
           day={day}
           planRegion={planInfo.region}
           places={placeData}
+          planId={Number(planId)}
         />
       )}
     </div>

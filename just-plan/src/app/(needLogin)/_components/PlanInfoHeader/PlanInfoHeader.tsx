@@ -11,13 +11,21 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
 import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
 import { format } from "date-fns";
-import { addedPlace, planInfoAtom, storedPlace } from "@/store";
+import {
+  addedPlace,
+  deletePlaceAtom,
+  planInfoAtom,
+  storedPlace,
+} from "@/store";
 import { useAtom, useAtomValue } from "jotai";
 import { usePatchPlaceInfo } from "@/hooks/usePostPlanMutation";
-import { IDayPlan, IDayUpdates, IPlaceRequestBody } from "@/types/place.types";
+import type {
+  IDayPlan,
+  IDayUpdates,
+  IPlaceRequestBody,
+} from "@/types/place.types";
 import { localStorageUserInfoAtom } from "@/store/auth.atom";
 import { usePostPlanCopy } from "@/hooks/usePostPlanCopy";
-import { usePostPlaceCopy } from "@/hooks/usePostPlaceCopy";
 
 interface IBody {
   dayUpdates: IDayPlan;
@@ -43,7 +51,7 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
     expense: {
       food: 0,
       transportation: 0,
-      loadging: 0,
+      lodging: 0,
       shopping: 0,
       etc: 0,
     },
@@ -68,13 +76,15 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
       // 유저 찾기
       const owner =
         planInfo.originPlan.users !== undefined &&
-        planInfo.originPlan?.users.find((user: IOwner) => user.owner === true)!;
+        planInfo.originPlan?.users.find((user: IOwner) => user.owner === true);
       owner && userCloneInfo(owner);
     }
   }, [planInfo]);
 
   const [added, setAdded] = useAtom(addedPlace);
   const [stored, setStored] = useAtom(storedPlace);
+  // 장소 삭제
+  const [placeDeleteIds, setPlaceDeleteIds] = useAtom(deletePlaceAtom);
 
   const { mutate: planMutate } = usePatchPlanInfo();
   const { mutate: placeMutate } = usePatchPlaceInfo();
@@ -118,10 +128,10 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
         ...temp2,
         "0": { ...resultStored },
       },
-      placeDeleteIds: [],
+      placeDeleteIds: placeDeleteIds,
     };
 
-    let newDayUpdates: IDayUpdates = {};
+    const newDayUpdates: IDayUpdates = {};
 
     Object.keys(newBody.dayUpdates).forEach((key) => {
       const temp = Object.keys(newBody.dayUpdates[key]).map((item) => {
@@ -139,7 +149,7 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
     placeMutate({ planId: Number(planId), body: temp });
     onReload && onReload();
     // console.log("???");
-
+    setPlaceDeleteIds([]);
     router.push(`/detail-plan?planId=${planId}&day=`);
     // detail-plan에서 fetch 요청 다시 보내게 하기
   };
@@ -221,9 +231,7 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
 
       <div className="flex">
         <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
-          {info.tags.map((tag) => (
-            <div key={tag}># {tag}</div>
-          ))}
+          {info.tags?.map((tag) => <div key={tag}># {tag}</div>)}
         </div>
         {isModify ? (
           <Button
