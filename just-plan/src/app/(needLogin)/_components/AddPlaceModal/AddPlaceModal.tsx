@@ -14,7 +14,7 @@ import { StoredPlaceMiniCard } from "..";
 import { Input } from "@/components/Input";
 import { StoredPlaceCard } from "@/components";
 import type { ChangeEvent, MouseEvent } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchPlace } from "@/hooks/useSearchPlace";
 import type { IPlace } from "@/types/place.types";
 import { useDebounde } from "@/hooks";
@@ -26,12 +26,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const [search, setSearch] = useState("");
   const stored = useAtomValue(storedPlace);
   // 장소 임시 보관함
-  const [storedTemp, setStoredTemp] = useState(stored);
-  console.log("storedTemp 출력", storedTemp);
-
-  useEffect(() => {
-    setStoredTemp(stored);
-  }, [stored]);
+  const [addStorePlace, setAddStorePlace] = useState<IPlace[]>([]);
 
   const cityId = 1; // 제주도. 임시!
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -44,19 +39,8 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   ) => {
     e.stopPropagation();
     console.log(place);
-    // setStored([...stored, place]);
-    setStoredTemp([...storedTemp, place]);
-  };
 
-  const onDeletePlace = (place: IPlace) => {
-    const newStored = storedTemp.filter(
-      (item) =>
-        !(
-          item.latitude === place.latitude && item.longitude === place.longitude
-        ),
-    );
-    setStoredTemp(newStored);
-    console.log("삭제, 기존:", place, "새로:", newStored);
+    setAddStorePlace([...addStorePlace, place]);
   };
 
   const debouncedValue = useDebounde(search, 400);
@@ -69,8 +53,8 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const { mutate } = usePostPlaceStored();
 
   const onSubmitStored = () => {
-    console.log("되는가 보자:", storedTemp);
-    const bodyTemp = storedTemp.map((item) => {
+    console.log("되는가 보자:", addStorePlace);
+    const bodyTemp = addStorePlace.map((item) => {
       return {
         googlePlaceId: item.googlePlaceId,
         name: item.name,
@@ -82,6 +66,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
       };
     });
     console.log("정제한 body: ", bodyTemp);
+    setAddStorePlace([]);
     mutate({ planId: planId, body: bodyTemp });
   };
   if (error) return <div>에러</div>;
@@ -107,12 +92,11 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
             <div className="text-xs font-semibold">장소 보관함</div>
           </div>
           <div className="bg-white p-4 rounded-xl gap-3 flex flex-col h-96 sm:h-[32rem] overflow-y-auto">
-            {storedTemp.map((item) => (
-              <StoredPlaceMiniCard
-                key={item.name}
-                place={item}
-                onDeletePlace={onDeletePlace}
-              />
+            {stored.map((item) => (
+              <StoredPlaceMiniCard key={item.name} place={item} />
+            ))}
+            {addStorePlace.map((item) => (
+              <StoredPlaceMiniCard key={item.name} place={item} isNew />
             ))}
           </div>
         </div>
