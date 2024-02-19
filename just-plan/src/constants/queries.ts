@@ -14,6 +14,7 @@ export const planKeys = {
     [...planKeys.all, { city: cityId }, { mbti: { ...mbti } }] as const, // mbti, 도시 필터링
   // mbti sort 후 { ...mbti } -> 배열로
 
+  popular: (size: number) => [...planKeys.all, size] as const,
   // 가계부 조회
   account: () => [...planKeys.all, "account"] as const,
 };

@@ -25,59 +25,80 @@ export const usePostPlanScrap = () => {
     }) => postPlanScrap(body),
     onMutate: async (newOption) => {
       // 인자 -> mutationFn에 들어가는 인자랑 동일하게 들어온다.
-      // 낙관적 업데이트를 해보자!
-      // 와... 인기랑 mbti랑 구분해야하네..........
-      // mbti만 먼저 해보자
 
-      console.log("newOption:", newOption);
-      // 요거 invalidate 왜 해주는거지?
-      queryClient.invalidateQueries(
-        planKeys.mbtiFilter(
-          newOption.cityId,
-          newOption.mbtiList,
-        ) as unknown as QueryFilters,
-      );
-      // invalite로 만들어서 다음에 이 캐시된 데이터가 필요하면 refetch 되도록 한다. 근데 왜 하지?
-
-      const prevOption = queryClient.getQueryData<ITemp>(
+      const prevMBTIFilter = queryClient.getQueryData<ITemp>(
         planKeys.mbtiFilter(newOption.cityId, newOption.mbtiList),
       );
 
-      console.log(
-        "key:",
+      const copyPrevMBTIFilter = JSON.parse(JSON.stringify(prevMBTIFilter));
+
+      queryClient.setQueryData<ITemp>(
         planKeys.mbtiFilter(newOption.cityId, newOption.mbtiList),
+        (prev) => {
+          if (!prev) return prev;
+          prev.pages = prev.pages.map((page) => {
+            page.plans.map((plan) => {
+              if (plan.planId === newOption.body.planId) {
+                plan.scrapped = !plan.scrapped;
+                if (plan.scrapped) plan.scrapCount++;
+                else plan.scrapCount--;
+              }
+              return plan;
+            });
+            return page;
+          });
+          return prev;
+        },
       );
 
-      let newOption2;
-      if (prevOption) {
-        newOption2 = JSON.parse(JSON.stringify(prevOption));
-        newOption2.pages.forEach((page: IPlanListResBody) => {
-          page.plans.forEach((plan) => {
+      const prevPopular = queryClient.getQueryData<IPlanListResBody>(
+        planKeys.popular(3),
+      );
+
+      const copyPrevPopular = JSON.parse(JSON.stringify(prevPopular));
+
+      queryClient.setQueryData<IPlanListResBody>(
+        planKeys.popular(3),
+        (prev) => {
+          if (!prev) return prev;
+          prev.plans = prev.plans.map((plan) => {
             if (plan.planId === newOption.body.planId) {
               plan.scrapped = !plan.scrapped;
+              if (plan.scrapped) plan.scrapCount++;
+              else plan.scrapCount--;
             }
+            return plan;
           });
-        });
-
-        queryClient.setQueryData(
-          planKeys.mbtiFilter(newOption.cityId, newOption.mbtiList),
-          newOption2,
-        );
-      }
-      console.log("prevOption:", prevOption, "newOption2:", newOption2);
+          return prev;
+        },
+      );
 
       // 반환값: onSuccess, onError 등에서 세번째 인자인 context로 전달한다.
       // 이 context에 이전값을 전달하면, 에러 발생 시 onError에서 이전값 복원 가능.
-      return { prevOption };
+      return { copyPrevMBTIFilter, copyPrevPopular };
     },
-    onSuccess: () => {
+    onSuccess: (_, variables) => {
       alert("patch place info 성공");
+
+      queryClient.invalidateQueries(
+        planKeys.mbtiFilter(
+          variables.cityId,
+          variables.mbtiList,
+        ) as unknown as QueryFilters,
+      );
+      queryClient.invalidateQueries(
+        planKeys.popular(3) as unknown as QueryFilters,
+      );
     },
     onError: (error, newTodo, context) => {
       alert("patch place info 실패");
 
       // onError에서 롤백 로직을 구현
-      queryClient.setQueryData(planKeys.mbtiFilter(0, []), context?.prevOption);
+      queryClient.setQueryData(
+        planKeys.mbtiFilter(0, []),
+        context?.copyPrevMBTIFilter,
+      );
+      queryClient.setQueryData(planKeys.popular(3), context?.copyPrevPopular);
     },
   });
 };
