@@ -1,17 +1,21 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
 import { Label } from "@radix-ui/react-label";
+import { useAtomValue } from "jotai";
 
 const LeftSide = () => {
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
+
   return (
     <div className="flex flex-col justify-center items-center px-5 gap-5">
       <Avatar className="w-full h-full max-h-72 max-w-72">
-        <AvatarImage src="https://github.com/shadcn.png" />
+        <AvatarImage src={userInfo.profile!} />
         <AvatarFallback>CN</AvatarFallback>
       </Avatar>
       <div className="flex justify-center flex-col items-center ">
-        <p>강윤지</p>
-        <p className="font-extralight text-sm">cmw0918@naver.com</p>
+        <p>{userInfo.name}</p>
+        <p className="font-extralight text-sm">{userInfo.email}</p>
       </div>
       <p className="text-center">INFP 윤지의 여행 일정 기록장임뮈당</p>
       <div className="flex justify-center flex-col items-center ">

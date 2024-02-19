@@ -58,7 +58,7 @@ const Page = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <MypageHeader choose="./editMemberInfo" />
+      <MypageHeader choose="회원 정보 수정" />
       <div className="flex flex-col justify-center items-center gap-5 px-5">
         <div className="w-full flex flex-col gap-5">
           <Label>내 정보 수정하기</Label>

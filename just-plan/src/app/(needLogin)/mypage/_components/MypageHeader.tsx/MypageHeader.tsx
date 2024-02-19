@@ -29,7 +29,7 @@ const MypageHeader = ({ choose }: { choose: string }) => {
             href={el.content}
             className={cn(
               "rounded-3xl py-8 md:w-32 w-24 bg-gray-100 hover:bg-ourGreen m-auto flex items-center justify-center",
-              el.content === choose ? "bg-ourGreen" : "",
+              el.name === choose ? "bg-ourGreen" : "",
             )}
           >
             {el.name}

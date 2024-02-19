@@ -80,7 +80,7 @@ const PlanCard = ({ item, cityId, mbtiList }: Props) => {
   const newTitle = calc(owner?.name, title);
 
   return (
-    <Card className="" onClick={handleToDetail}>
+    <Card className="w-64" onClick={handleToDetail}>
       <CardHeader className="p-0">
         <div className="w-64 h-44 relative">
           <Image

@@ -29,16 +29,23 @@ const Page = ({
 
   return (
     <div className="flex flex-col w-full">
-      <MypageHeader choose="./myPlanList" />
-      <div className="flex justify-center flex-col">
-        <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-10">
-          {data?.data.plans.map((item: IPlan2) => (
-            <PlanCard item={item} key={item.planId} />
-          ))}
-        </div>
+      <MypageHeader choose="스크럼 여행 일정" />
+      {data && (
+        <div className="flex justify-center flex-col">
+          <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-10">
+            {data.plans.map((item: IPlan2) => (
+              <PlanCard
+                item={item}
+                key={item.planId}
+                cityId={0}
+                mbtiList={[]}
+              />
+            ))}
+          </div>
 
-        <Pagination totalPage={data.data.totalPages} page={page} />
-      </div>
+          <Pagination totalPage={data.totalPages} page={page} />
+        </div>
+      )}
     </div>
   );
 };

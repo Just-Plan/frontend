@@ -4,5 +4,5 @@ export interface UserInfo {
   name: string;
   isLoggedIn: boolean;
   mbtiName: string;
-  profile?: string | null;
+  profile: string | null;
 }
