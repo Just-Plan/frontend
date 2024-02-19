@@ -106,6 +106,9 @@ const Home = () => {
   if (popularPlanError) {
     return <div>에러</div>;
   }
+  console.log("popularPlanList::::::", popularPlanList);
+
+  console.log("planList::::::", planList);
 
   // sm:px-60
   return (
@@ -161,7 +164,12 @@ const Home = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center mt-5  gap-y-16 gap-x-36">
           {popularPlanList?.plans.map((item: IPlan2) => (
-            <PlanCard item={item} key={item.planId} />
+            <PlanCard
+              item={item}
+              key={item.planId}
+              cityId={region.id}
+              mbtiList={selectMBTI}
+            />
           ))}
         </div>
         <div className="text-3xl font-bold mt-12">{MBTIPlan}</div>
@@ -221,7 +229,12 @@ const Home = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center mt-5  gap-y-16 gap-x-36">
           {planList?.pages.map((itemList) =>
             itemList.plans.map((item: IPlan2) => (
-              <PlanCard item={item} key={item.planId} />
+              <PlanCard
+                item={item}
+                key={item.planId}
+                cityId={region.id}
+                mbtiList={selectMBTI}
+              />
             )),
           )}
           <div ref={ref} className="h-10 bg-red-200" />

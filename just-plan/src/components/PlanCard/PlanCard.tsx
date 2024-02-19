@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import type { MouseEvent } from "react";
-import { useState } from "react";
 import { Card, CardContent, CardHeader } from "../Card";
 import type { Props } from "./PlanCard.types";
 import { useRouter } from "next/navigation";
@@ -15,7 +14,7 @@ import ESFP from "@/../public/images/ESFP.png";
 import { Separator } from "@/components/ui/separator";
 import dot from "@/../public/svg/dot.svg";
 
-const PlanCard = ({ item }: Props) => {
+const PlanCard = ({ item, cityId, mbtiList }: Props) => {
   const {
     budget,
     days,
@@ -29,13 +28,10 @@ const PlanCard = ({ item }: Props) => {
     title,
     users,
   } = item;
-  const [isSelected, setIsSelected] = useState<boolean>(scrapped as boolean);
-  const [scrapCountValue, setScrapCountValue] = useState(scrapCount);
   const owner = users.find((user) => user.owner === true)!;
   const userInfo = useAtomValue(localStorageUserInfoAtom);
 
   const image = photoUrl || ESFP;
-  // const image = "/images/image1.png"; // 임시
 
   // 주인을 찾자
   const profile = owner.profileUrl || ESFP;
@@ -61,24 +57,14 @@ const PlanCard = ({ item }: Props) => {
     // 스크랩 요청 보내기
     const body = {
       planId: planId,
-      scrap: !isSelected,
+      scrap: !scrapped,
     };
-
-    let updatedScrapCount = isSelected
-      ? scrapCountValue - 1
-      : scrapCountValue + 1;
-    let updatedSelected = !isSelected;
-    mutate(body, {
-      onError: () => {
-        updatedScrapCount = isSelected
-          ? scrapCountValue + 1
-          : scrapCountValue - 1;
-        updatedSelected = !isSelected;
-      },
+    // mutate(body, cityId, mbtiList);
+    mutate({
+      body,
+      cityId,
+      mbtiList,
     });
-    setIsSelected(updatedSelected);
-
-    setScrapCountValue(updatedScrapCount);
   };
 
   const calc = (name: string, title: string) => {
@@ -135,12 +121,12 @@ const PlanCard = ({ item }: Props) => {
             className="hover:bg-gray-300 w-9 h-9 rounded-full flex flex-col justify-center items-center"
             onClick={(e) => onClickBookMark(e)}
           >
-            {!isSelected ? (
+            {!scrapped ? (
               <Image src={bookMark} alt="북마크" width={18} height={18} />
             ) : (
               <Image src={selectBookMark} alt="북마크" width={18} height={18} />
             )}
-            <div className="text-xs">{scrapCountValue}</div>
+            <div className="text-xs">{scrapCount}</div>
           </div>
         </div>
         <Separator className="" />
