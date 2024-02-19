@@ -22,7 +22,6 @@ import { localStorageUserInfoAtom } from "@/store/auth.atom";
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import BeforeCreatePlanModal from "./_components/BeforeCreatePlanModal/BeforeCreatePlanModal";
 import { SearchCity } from "@/components/SearchCity/SearchCity";
-import { PopularCardContent } from "@/mocks";
 
 const Home = () => {
   const router = useRouter();
@@ -54,41 +53,41 @@ const Home = () => {
     MBTIPlanDefaultDescription,
   } = HomePageConfig;
 
-  // const {
-  //   data: popularPlanList,
-  //   error: popularPlanError,
-  //   isLoading: popularPlanisLoading,
-  //   refetch: popularPlanRefetch,
-  // } = useGetPlanList(region.id);
+  const {
+    data: popularPlanList,
+    error: popularPlanError,
+    isLoading: popularPlanisLoading,
+    refetch: popularPlanRefetch,
+  } = useGetPlanList(region.id);
 
-  // const {
-  //   planList,
-  //   fetchNextPage,
-  //   hasNextPage,
-  //   isFetching,
-  //   refetch: planListRefetch,
-  // } = useGetInfinitePlanList(region.id, selectMBTI);
+  const {
+    planList,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    refetch: planListRefetch,
+  } = useGetInfinitePlanList(region.id, selectMBTI);
 
   const { ref, inView } = useInView({
     threshold: 0.4,
     delay: 0,
   });
 
-  // useEffect(() => {
-  //   if (inView && !isFetching && hasNextPage) {
-  //     fetchNextPage();
-  //   }
-  // }, [inView, isFetching, hasNextPage, fetchNextPage]);
+  useEffect(() => {
+    if (inView && !isFetching && hasNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, isFetching, hasNextPage, fetchNextPage]);
 
-  // useEffect(() => {
-  //   popularPlanRefetch();
-  //   planListRefetch();
-  // }, [region]);
+  useEffect(() => {
+    popularPlanRefetch();
+    planListRefetch();
+  }, [region]);
 
-  // useEffect(() => {
-  //   // mbti 선택할 때 마다 api 요청 다시 보내기
-  //   planListRefetch();
-  // }, [selectMBTI]);
+  useEffect(() => {
+    // mbti 선택할 때 마다 api 요청 다시 보내기
+    planListRefetch();
+  }, [selectMBTI]);
 
   const onClickMBTI = (mbti: string) => {
     const isContain = selectMBTI.indexOf(mbti);
@@ -100,17 +99,17 @@ const Home = () => {
     }
   };
 
-  // if (popularPlanisLoading) {
-  //   return <div>로딩중</div>;
-  // }
+  if (popularPlanisLoading) {
+    return <div>로딩중</div>;
+  }
 
-  // if (popularPlanError) {
-  //   return <div>에러</div>;
-  // }
+  if (popularPlanError) {
+    return <div>에러</div>;
+  }
 
   // sm:px-60
   return (
-    <div className="py-10 px-5 sm:px-44 sm:py-32 md:px-44">
+    <div className="py-10 px-5 sm:px-20 sm:py-32 md:px-44 gap-10">
       <div className="flex flex-col justify-around  lg:flex-row">
         <div className="h-52 md:h-96 sm:h-72">
           <div className="h-5/6 relative">
@@ -130,7 +129,7 @@ const Home = () => {
             />
           </div>
         </div>
-        <div className="flex items-center flex-col">
+        <div className="flex justify-center flex-col items-center">
           <div className="text-sky-700 font-bold text-3xl mt-5 text-center">
             나의 여행 플랜 찾기
           </div>
@@ -161,9 +160,7 @@ const Home = () => {
         {/* <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 place-items-center mt-5 gap-y-16 gap-x-20"> */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center mt-5  gap-y-16 gap-x-36">
-          {/* {popularPlanList?.plans.map((item: IPlan2) => ( */}
-          {/* ///////////////////////// */}
-          {PopularCardContent.map((item: IPlan2) => (
+          {popularPlanList?.plans.map((item: IPlan2) => (
             <PlanCard item={item} key={item.planId} />
           ))}
         </div>
@@ -184,10 +181,10 @@ const Home = () => {
             <div>{MBTIPlanDefaultDescription}</div>
           )}
         </div>
-        <Carousel className="my-5 mx-12 sm:mx-40">
+        <Carousel className="my-5 mx-12 md:mx-0 ">
           <CarouselContent>
             <CarouselItem>
-              <div className="flex w-full justify-center gap-1 sm:gap-5">
+              <div className="flex w-full justify-center gap-1 md:gap-2 lg:gap-5">
                 {MBTI.slice(0, 8).map((item) => (
                   <Badge
                     key={item}
@@ -202,7 +199,7 @@ const Home = () => {
               </div>
             </CarouselItem>
             <CarouselItem>
-              <div className="flex w-full justify-center gap-1 sm:gap-5">
+              <div className="flex w-full justify-center gap-1 md:gap-2 lg:gap-5">
                 {MBTI.slice(8).map((item) => (
                   <Badge
                     key={item}
@@ -220,12 +217,13 @@ const Home = () => {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 place-items-center mt-5 gap-y-16 gap-x-20">
-          {/* {planList?.pages.map((itemList) =>
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 place-items-center mt-5 gap-y-16 gap-x-20"> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center mt-5  gap-y-16 gap-x-36">
+          {planList?.pages.map((itemList) =>
             itemList.plans.map((item: IPlan2) => (
               <PlanCard item={item} key={item.planId} />
             )),
-          )} */}
+          )}
           <div ref={ref} className="h-10 bg-red-200" />
         </div>
       </div>
