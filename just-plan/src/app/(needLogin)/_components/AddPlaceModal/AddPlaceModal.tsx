@@ -4,7 +4,6 @@ import { Button } from "@/components/Button";
 import {
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -14,16 +13,15 @@ import { StoredPlaceMiniCard } from "..";
 import { Input } from "@/components/Input";
 import { StoredPlaceCard } from "@/components";
 import type { ChangeEvent, MouseEvent } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSearchPlace } from "@/hooks/useSearchPlace";
 import type { IPlace } from "@/types/place.types";
 import { useDebounde } from "@/hooks";
-// import { useAtom, useAtomValue } from "jotai";
-import { storedPlace } from "@/store/place.atoms";
+import { addStorePlaceAtom, storedPlace } from "@/store/place.atoms";
 import { usePostPlaceStored } from "@/hooks/usePostPlaceStored";
 import { planInfoAtom } from "@/store";
 // import MyMap from "@/components/MyMap/MyMap";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { KaKaoMap } from "@/components/Maps/KakaoMap/KaKaoMap";
 import GoogleMap from "@/components/Maps/GoogleMap/GoogleMap";
 
@@ -31,16 +29,8 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const [search, setSearch] = useState("");
   const stored = useAtomValue(storedPlace);
   // 장소 임시 보관함
-  const [addStorePlace, setAddStorePlace] = useState<IPlace[]>([]);
-  const [storedTemp, setStoredTemp] = useState(stored);
-  console.log(storedTemp);
-  console.log("storedTemp 출력", storedTemp);
-  // const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
+  const [addStorePlace, setAddStorePlace] = useAtom(addStorePlaceAtom);
   const planInfo = useAtomValue(planInfoAtom);
-
-  useEffect(() => {
-    setStoredTemp(stored);
-  }, [stored]);
 
   const cityId = 1; // 제주도. 임시!
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +81,6 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
         <DialogTitle className="text-4xl mb-3 mt-5 font-bold">
           여행하고 싶은 장소를 추가해보세요!
         </DialogTitle>
-        <DialogDescription></DialogDescription>
       </DialogHeader>
       <div className="flex gap-5 w-full sm:px-10">
         <div className="flex flex-col items-center gap-5">
@@ -134,7 +123,6 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
         </div>
 
         <div className="bg-white w-full sm:block">
-          지도
           {/* <MyMap places={stored} planRegion={planInfo.region} /> */}
           {/* 대한민국이면 카카오, 해외면 구글 */}
           {planInfo.region.countryKoreanName === "대한민국" ? (
@@ -155,9 +143,19 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
           {/* <MyMap places={stored} day={1} planRegion={planInfo.region} /> */}
         </div>
       </div>
-      <DialogFooter className="m-auto">
+      <DialogFooter className="m-auto w-96 flex">
         <DialogClose asChild>
-          <Button onClick={onSubmitStored}>저장하기</Button>
+          <Button
+            className="flex-1 bg-gray-300 text-gray-800"
+            onClick={() => setAddStorePlace([])}
+          >
+            닫기
+          </Button>
+        </DialogClose>
+        <DialogClose asChild>
+          <Button className="flex-1" onClick={onSubmitStored}>
+            저장하기
+          </Button>
         </DialogClose>
       </DialogFooter>
     </DialogContent>
