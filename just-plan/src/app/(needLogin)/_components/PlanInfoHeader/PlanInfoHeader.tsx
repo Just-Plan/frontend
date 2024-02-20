@@ -11,7 +11,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
 import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
 import { format } from "date-fns";
-import { addedPlace, planInfoAtom, storedPlace } from "@/store";
+import {
+  addedPlace,
+  deletePlaceAtom,
+  planInfoAtom,
+  storedPlace,
+} from "@/store";
 import { useAtom, useAtomValue } from "jotai";
 import { usePatchPlaceInfo } from "@/hooks/usePostPlanMutation";
 import type {
@@ -76,6 +81,8 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
 
   const [added, setAdded] = useAtom(addedPlace);
   const [stored, setStored] = useAtom(storedPlace);
+  // 장소 삭제
+  const [placeDeleteIds, setPlaceDeleteIds] = useAtom(deletePlaceAtom);
 
   const { mutate: planMutate } = usePatchPlanInfo();
   const { mutate: placeMutate } = usePatchPlaceInfo();
@@ -119,7 +126,7 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
         ...temp2,
         "0": { ...resultStored },
       },
-      placeDeleteIds: [],
+      placeDeleteIds: placeDeleteIds,
     };
 
     const newDayUpdates: IDayUpdates = {};
@@ -140,7 +147,7 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
     placeMutate({ planId: Number(planId), body: temp });
     onReload && onReload();
     // console.log("???");
-
+    setPlaceDeleteIds([]);
     router.push(`/detail-plan?planId=${planId}&day=`);
     // detail-plan에서 fetch 요청 다시 보내게 하기
   };
@@ -222,9 +229,7 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
 
       <div className="flex">
         <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
-          {info.tags.map((tag) => (
-            <div key={tag}># {tag}</div>
-          ))}
+          {info.tags?.map((tag) => <div key={tag}># {tag}</div>)}
         </div>
         {isModify ? (
           <Button

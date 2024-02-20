@@ -12,7 +12,7 @@ const menuArr = [
 
 const MypageHeader = ({ choose }: { choose: string }) => {
   return (
-    <div className="flex flex-col bg-white gap-5 mb-5">
+    <div className="flex flex-col bg-white gap-5 mb-5 mx-5">
       <AspectRatio ratio={16 / 3} className="max-h-80">
         <Image
           src="/images/test.jpg"
@@ -22,14 +22,14 @@ const MypageHeader = ({ choose }: { choose: string }) => {
         />
       </AspectRatio>
 
-      <div className="flex w-full justify-between">
+      <div className="flex w-full justify-between relative">
         {menuArr.map((el) => (
           <Link
             key={el.name}
             href={el.content}
             className={cn(
-              "rounded-3xl py-8 md:w-32 w-24 bg-gray-100 hover:bg-ourGreen m-auto flex items-center justify-center",
-              el.content === choose ? "bg-ourGreen" : "",
+              "rounded-3xl py-8 md:w-40 w-20 bg-gray-100 hover:bg-ourGreen m-auto flex items-center justify-center shadow-inner text-gray-600 font-semibold hover:translate-y-1 text-xs md:text-lg",
+              el.name === choose ? "bg-ourGreen" : "",
             )}
           >
             {el.name}

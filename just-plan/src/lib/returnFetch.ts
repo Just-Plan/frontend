@@ -2,7 +2,8 @@
 import returnFetch from "return-fetch";
 
 const fetchExtended = returnFetch({
-  baseUrl: "http://13.125.188.226:8080",
+  // baseUrl: "http://13.125.188.226:8080",
+  baseUrl: "https://justplan.site",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -48,8 +49,11 @@ if (typeof window !== "undefined") {
   // 클라이언트 사이드에서만 실행
   accessToken = localStorage.getItem("access-token");
 }
-export const nextFetch = returnFetch({
-  fetch: fetchExtended,
+
+const fetcher = returnFetch({
+  // baseUrl: "http://13.125.188.226:8080",
+  baseUrl: "https://justplan.site",
+
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -60,7 +64,6 @@ export const nextFetch = returnFetch({
         Accept: "application/json",
         "Content-Type": "application/json",
       };
-      // console.log("11111url", url, "configs", configs);
       if (accessToken) {
         headers = {
           ...headers,
@@ -74,20 +77,15 @@ export const nextFetch = returnFetch({
       } else {
         configs.headers = headers;
       }
-      // configs!.headers = headers;
-      // console.log("222222url", url, "configs", configs);
 
       return [url, configs];
     },
     response: async (response, requestArgs) => {
       const res = await response.json();
-      // console.log("[return fetch] response 확인: ", response);
-      // console.log("[return fetch] response 확인(json): ", res.code);
-
       if (res.code === 4005) {
         // 1. 토큰 재발급
         const refreshTokenFetch = await fetch(
-          `http://13.125.188.226:8080/api/user/reissue-token`,
+          `https://justplan.site/api/user/reissue-token`,
           {
             credentials: "include",
           },
@@ -105,3 +103,8 @@ export const nextFetch = returnFetch({
     },
   },
 });
+
+// Parameters여기에 함수를 넣으면 인자를 준다
+export const nextFetch = <T>(
+  ...params: Parameters<ReturnType<typeof returnFetch>>
+) => fetcher(...params) as Promise<T>;

@@ -13,26 +13,44 @@ import Image from "next/image";
 import { StoredPlaceMiniCard } from "..";
 import { Input } from "@/components/Input";
 import { StoredPlaceCard } from "@/components";
-import type { ChangeEvent } from "react";
-import { useState } from "react";
+import type { ChangeEvent, MouseEvent } from "react";
+import { useEffect, useState } from "react";
 import { useSearchPlace } from "@/hooks/useSearchPlace";
 import type { IPlace } from "@/types/place.types";
 import { useDebounde } from "@/hooks";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { storedPlace } from "@/store/place.atoms";
+import { usePostPlaceStored } from "@/hooks/usePostPlaceStored";
+import { planInfoAtom } from "@/store";
+import MyMap from "@/components/MyMap/MyMap";
 
-export const AddPlaceModal = () => {
+export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const [search, setSearch] = useState("");
-  const [stored, setStored] = useAtom(storedPlace);
+  const stored = useAtomValue(storedPlace);
+  // 장소 임시 보관함
+  const [addStorePlace, setAddStorePlace] = useState<IPlace[]>([]);
+  const [storedTemp, setStoredTemp] = useState(stored);
+  console.log(storedTemp);
+  console.log("storedTemp 출력", storedTemp);
+  const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
+
+  useEffect(() => {
+    setStoredTemp(stored);
+  }, [stored]);
 
   const cityId = 1; // 제주도. 임시!
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
-  const onClickAdd = (place: IPlace) => {
+  const onClickAdd = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
+    place: IPlace,
+  ) => {
+    e.stopPropagation();
     console.log(place);
-    setStored([...stored, place]);
+
+    setAddStorePlace([...addStorePlace, place]);
   };
 
   const debouncedValue = useDebounde(search, 400);
@@ -40,10 +58,29 @@ export const AddPlaceModal = () => {
     cityId,
     debouncedValue,
   );
-  console.log(searchResultData);
+
+  const { mutate } = usePostPlaceStored();
+
+  const onSubmitStored = () => {
+    console.log("되는가 보자:", addStorePlace);
+    const bodyTemp = addStorePlace.map((item) => {
+      return {
+        googlePlaceId: item.googlePlaceId,
+        name: item.name,
+        formattedAddress: item.formattedAddress,
+        types: item.types,
+        latitude: item.latitude,
+        longitude: item.longitude,
+        photoReference: item.photoReference,
+      };
+    });
+    console.log("정제한 body: ", bodyTemp);
+    setAddStorePlace([]);
+    mutate({ planId: planId, body: bodyTemp });
+  };
   if (error) return <div>에러</div>;
   if (isLoading) return <div>로딩중</div>;
-
+  console.log(planInfo.region);
   return (
     <DialogContent className="max-w-md sm:max-w-7xl max-h-[45rem] sm:max-h-[50rem] bg-ourGreen flex flex-col items-center">
       <DialogHeader>
@@ -67,6 +104,9 @@ export const AddPlaceModal = () => {
             {stored.map((item) => (
               <StoredPlaceMiniCard key={item.name} place={item} />
             ))}
+            {addStorePlace.map((item) => (
+              <StoredPlaceMiniCard key={item.name} place={item} isNew />
+            ))}
           </div>
         </div>
 
@@ -89,11 +129,13 @@ export const AddPlaceModal = () => {
           </div>
         </div>
 
-        <div className="bg-white w-[200rem] hidden sm:flex">지도</div>
+        <div className="bg-white w-full hidden sm:block">
+          <MyMap places={stored} planRegion={planInfo.region} />
+        </div>
       </div>
       <DialogFooter className="m-auto">
         <DialogClose asChild>
-          <Button>저장하기</Button>
+          <Button onClick={onSubmitStored}>저장하기</Button>
         </DialogClose>
       </DialogFooter>
     </DialogContent>

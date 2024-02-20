@@ -101,3 +101,5 @@ export const addedPlace = atom<IDayPlan>({
     },
   ],
 });
+
+export const deletePlaceAtom = atom<number[]>([]);

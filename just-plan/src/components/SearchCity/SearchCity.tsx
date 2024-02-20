@@ -53,41 +53,47 @@ export const SearchCity = ({ setRegion }: IProps) => {
           </g>
         </svg>
       </div>
-      {searchRegion === "" ? ( // 만약, 지역 검색 결과가 없다면
-        <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
-          <div className="py-4 px-4">
-            {searchResult?.cities.map((item: IRegion) => (
-              <div
-                key={item.id}
-                className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
-                onClick={() => onClickRegion(item)}
-              >
-                <div className="font-bold text-neutral-600 text-2xl">
-                  {item.koreanName}
+      <div className="sm:w-96">
+        {searchRegion === "" ? ( // 만약, 지역 검색 결과가 없다면
+          <ScrollArea className="w-72 sm:w-96 h-48 rounded-md border mt-5 bg-white">
+            <div className="py-4 sm:px-4">
+              {searchResult?.cities.map((item: IRegion) => (
+                <div
+                  key={item.id}
+                  className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
+                  onClick={() => onClickRegion(item)}
+                >
+                  <div className="font-bold text-neutral-600 text-2xl">
+                    {item.koreanName}
+                  </div>
+                  <div className="text-neutral-400">
+                    {item.countryKoreanName}
+                  </div>
                 </div>
-                <div className="text-neutral-400">{item.countryKoreanName}</div>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
-      ) : (
-        <ScrollArea className="w-fill h-48 rounded-md border mt-5 bg-white">
-          <div className="py-4 px-4">
-            {searchRegionData?.cities.map((item: IRegion) => (
-              <div
-                key={item.id}
-                className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
-                onClick={() => onClickRegion(item)}
-              >
-                <div className="font-bold text-neutral-600 text-2xl">
-                  {item.koreanName}
+              ))}
+            </div>
+          </ScrollArea>
+        ) : (
+          <ScrollArea className="w-72 sm:w-96 h-48 rounded-md border mt-5 bg-white">
+            <div className="py-4 px-4">
+              {searchRegionData?.cities.map((item: IRegion) => (
+                <div
+                  key={item.id}
+                  className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
+                  onClick={() => onClickRegion(item)}
+                >
+                  <div className="font-bold text-neutral-600 text-2xl">
+                    {item.koreanName}
+                  </div>
+                  <div className="text-neutral-400">
+                    {item.countryKoreanName}
+                  </div>
                 </div>
-                <div className="text-neutral-400">{item.countryKoreanName}</div>
-              </div>
-            ))}
-          </div>
-        </ScrollArea>
-      )}
+              ))}
+            </div>
+          </ScrollArea>
+        )}
+      </div>
     </>
   );
 };

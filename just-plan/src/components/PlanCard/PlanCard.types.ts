@@ -16,4 +16,6 @@ export interface ICardUserData {
 export interface Props {
   // item: IPlan;
   item: IPlan2;
+  cityId: number;
+  mbtiList: string[];
 }

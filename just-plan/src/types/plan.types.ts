@@ -52,6 +52,7 @@ interface IUser {
   mbti: { id: number; type: string };
   name: string;
   owner: boolean;
+  profileUrl: string | null;
 }
 
 export interface IPlan2 {

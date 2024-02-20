@@ -6,8 +6,14 @@ import { Button } from "../Button";
 import { cn } from "@/lib/utils";
 import type { IDnDProps } from "./StoredPlaceCard.types";
 import { useState } from "react";
+import ESFP from "@/../public/images/ESFP.png";
 
-export const StoredPlaceCardDnD = ({ item, provided, snapshot }: IDnDProps) => {
+export const StoredPlaceCardDnD = ({
+  item,
+  provided,
+  snapshot,
+  onDeletePlace,
+}: IDnDProps) => {
   const {
     placeId,
     name,
@@ -15,11 +21,11 @@ export const StoredPlaceCardDnD = ({ item, provided, snapshot }: IDnDProps) => {
     types,
     latitude,
     longitude,
-    // photoReference,
+    photoReference,
   } = item;
-  const image = "/images/image1.png"; // 임시
-  const [open, setOpen] = useState(false);
 
+  const [open, setOpen] = useState(false);
+  const image = photoReference || ESFP;
   return (
     <div
       ref={provided.innerRef}
@@ -39,6 +45,7 @@ export const StoredPlaceCardDnD = ({ item, provided, snapshot }: IDnDProps) => {
                   alt="장소 이미지"
                   fill={true}
                   className="rounded-md"
+                  unoptimized={true}
                 />
               </div>
 
@@ -54,7 +61,12 @@ export const StoredPlaceCardDnD = ({ item, provided, snapshot }: IDnDProps) => {
                   </Button>
                 </div>
               </div>
-              <div className="float-right">x</div>
+              <div
+                className="float-right bg-gray-200 rounded-full w-5 h-5 flex justify-center items-center hover:cursor-pointer"
+                onClick={(e) => onDeletePlace(e, placeId!)}
+              >
+                x
+              </div>
             </div>
           </div>
         </DialogTrigger>

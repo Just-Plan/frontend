@@ -47,7 +47,7 @@ const MBTIPage = () => {
   return (
     <div className=" flex justify-center items-center">
       <div className="w-[80%] flex flex-col justify-center items-center pb-8">
-        <Progress value={progressValue} className="mt-[5rem] w-[80%]" />
+        <Progress value={progressValue} className="mt-[5rem] w-[80%] " />
         <Card className="mt-[5rem] flex flex-col justify-center items-center min-w-80 pb-10  bg-ourGreen">
           <CardHeader>
             <CardTitle className="text-[2rem]">당신의 여행 MBTI는?</CardTitle>

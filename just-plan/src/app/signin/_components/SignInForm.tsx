@@ -46,6 +46,7 @@ export const SignInForm = () => {
             name: result.data.name,
             isLoggedIn: true,
             mbtiName: result.data.mbtiName,
+            profile: result.data.profile,
           };
           setUserInfo(userInfo);
           router.push("/");
@@ -57,7 +58,21 @@ export const SignInForm = () => {
         console.error("Error:", error);
       });
   };
-
+  const kakaoLogin = () => {
+    fetch("http://13.125.188.226:8080/api/kakao/login")
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("There was a problem with the fetch operation:", error);
+      });
+  };
   return (
     <Card className="w-[350px] bg-ourGreen rounded-3xl ">
       <CardHeader></CardHeader>
@@ -116,7 +131,12 @@ export const SignInForm = () => {
               로그인하기
             </Button>
             <div className="flex justify-center">
-              <Button type="button" variant={"link"} className="text-slate-500">
+              <Button
+                type="button"
+                variant={"link"}
+                className="text-slate-500"
+                onClick={() => router.push("/signup")}
+              >
                 회원가입
               </Button>
               <Button type="button" variant={"link"} className="text-slate-500">
@@ -129,6 +149,7 @@ export const SignInForm = () => {
             variant="outline"
             size={"lg"}
             className="w-full gap-1"
+            onClick={kakaoLogin}
           >
             <Image
               src={"/images/KakaoLogo.png"}

@@ -7,23 +7,27 @@ import { cn } from "@/lib/utils";
 import { StoredPlaceCardDnD } from "@/components/StoredPlaceCard/StoredPlaceCardDnD";
 import DayPlanCardDnD from "@/components/DayPlanCard/DayPlanCardDnD";
 import { useAtom } from "jotai";
-import { addedPlace, storedPlace } from "@/store/place.atoms";
+import { addedPlace, deletePlaceAtom, storedPlace } from "@/store/place.atoms";
 import MyMap from "@/components/MyMap/MyMap";
 import type { IRegion } from "@/types/plan.types";
+import type { MouseEvent } from "react";
 import type { IPlaceResponse } from "@/types/place.types";
 
 const PlanModifyDaily = ({
   day,
   planRegion,
   places,
+  planId,
 }: {
   day: string;
   planRegion: IRegion;
   places: IPlaceResponse;
+  planId: number;
 }) => {
   const [stored, setStored] = useAtom(storedPlace);
   const [added, setAdded] = useAtom(addedPlace);
 
+  const [placeDeleteIds, setPlaceDeleteIds] = useAtom(deletePlaceAtom);
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
     const sourceKey = source.droppableId;
@@ -50,6 +54,20 @@ const PlanModifyDaily = ({
     }
   };
 
+  const onDeletePlace = (
+    e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>,
+    deletePlaceId: number,
+  ) => {
+    e.stopPropagation();
+    // stored에서 삭제
+    const newStored = stored.filter((item) => item.placeId !== deletePlaceId);
+    setStored(newStored);
+
+    // 삭제한거 placeDeleteIds에 넣기
+    setPlaceDeleteIds([...placeDeleteIds, deletePlaceId]);
+  };
+  console.log(planRegion);
+
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="bg-ourGreen flex flex-row p-3 sm:p-5 rounded-2xl gap-5">
@@ -60,7 +78,7 @@ const PlanModifyDaily = ({
               <DialogTrigger className="flex h-full bg-indigo-400 rounded-none text-white p-2">
                 장소 추가
               </DialogTrigger>
-              <AddPlaceModal />
+              <AddPlaceModal planId={planId} />
             </Dialog>
           </div>
 
@@ -86,6 +104,7 @@ const PlanModifyDaily = ({
                         item={item}
                         provided={provided}
                         snapshot={snapshot}
+                        onDeletePlace={onDeletePlace}
                       />
                     )}
                   </Draggable>

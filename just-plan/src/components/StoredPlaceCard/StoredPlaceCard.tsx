@@ -5,19 +5,19 @@ import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/Det
 import type { IProps } from "./StoredPlaceCard.types";
 import { Button } from "../Button";
 import { useState } from "react";
+import ESFP from "@/../public/images/ESFP.png";
 
 export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
   const {
-    // googlePlaceId,
     placeId,
     name,
     formattedAddress,
     types,
     latitude,
     longitude,
-    // photoReference,
+    photoReference,
   } = item;
-  const image = "/images/image1.png"; // 임시
+  const image = photoReference || ESFP;
   const [open, setOpen] = useState(false);
 
   return (
@@ -31,6 +31,7 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
                 alt="장소 이미지"
                 fill={true}
                 className="rounded-md"
+                unoptimized={true}
               />
             </div>
 
@@ -44,7 +45,7 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
                 <Button
                   variant={"outline"}
                   className="h-7"
-                  onClickCapture={() => onClickAdd(item)}
+                  onClick={(e) => onClickAdd(e, item)}
                 >
                   장소 추가
                 </Button>
