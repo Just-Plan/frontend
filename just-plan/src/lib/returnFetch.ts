@@ -50,7 +50,9 @@ if (typeof window !== "undefined") {
 }
 
 const fetcher = returnFetch({
-  baseUrl: "http://13.125.188.226:8080",
+  // baseUrl: "http://13.125.188.226:8080",
+  baseUrl: "https://justplan.site",
+
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

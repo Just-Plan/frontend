@@ -10,10 +10,17 @@ declare const kakao: any; // kakao maps 타입 선언이 필요. 실제 프로�
 interface IProps {
   day?: any;
   planRegion: any;
+  isStore?: boolean;
+  idName: string;
 }
-export const KaKaoMap = ({ day, planRegion }: IProps) => {
+export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
   const added = useAtomValue(addedPlace);
   const stored = useAtomValue(storedPlace);
+
+  const temp = isStore ? stored : added[day];
+  // 만약 장소 보관함의 장소 추가라면
+  // added[day]가 마커 찍히는게 아니라, store 에 있는게 찍히는거!
+  console.log("isStore: ", isStore, "day:", day, "temp:", temp);
 
   useEffect(() => {
     // Initialize Kakao Maps
@@ -24,7 +31,9 @@ export const KaKaoMap = ({ day, planRegion }: IProps) => {
 
     script.onload = () => {
       kakao.maps.load(() => {
-        const container = document.getElementById("kakao-map");
+        // const container = document.getElementById("kakao-map");
+        const container = document.getElementById(idName);
+
         const options = {
           center: new kakao.maps.LatLng(
             planRegion.latitude,
@@ -35,7 +44,7 @@ export const KaKaoMap = ({ day, planRegion }: IProps) => {
         const map = new kakao.maps.Map(container, options); // 위에거 적용해서 맵 만들기 -> 객체?로 만든다.
 
         // Add markers to the map -> 장소 추가 시 마커 추가하는 부분
-        added[day].forEach((location: any) => {
+        temp.forEach((location: any) => {
           const marker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(
               location.latitude,
@@ -60,7 +69,8 @@ export const KaKaoMap = ({ day, planRegion }: IProps) => {
   // planRegion -> 제주도 등
   return (
     <>
-      <div id="kakao-map" style={{ width: "100%", height: "100%" }} />
+      {/* <div id="kakao-map" style={{ width: "100%", height: "100%" }} /> */}
+      <div></div>
     </>
   );
 };

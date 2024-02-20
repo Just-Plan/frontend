@@ -24,6 +24,8 @@ import { usePostPlaceStored } from "@/hooks/usePostPlaceStored";
 import { planInfoAtom } from "@/store";
 import MyMap from "@/components/MyMap/MyMap";
 import { useAtomValue } from "jotai";
+import { KaKaoMap } from "@/components/Maps/KakaoMap/KaKaoMap";
+import GoogleMap from "@/components/Maps/GoogleMap/GoogleMap";
 
 export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const [search, setSearch] = useState("");
@@ -131,8 +133,26 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
           </div>
         </div>
 
-        <div className="bg-white w-full hidden sm:block">
-          <MyMap places={stored} planRegion={planInfo.region} />
+        <div className="bg-white w-full sm:block">
+          지도
+          {/* <MyMap places={stored} planRegion={planInfo.region} /> */}
+          {/* 대한민국이면 카카오, 해외면 구글 */}
+          {planInfo.region.countryKoreanName === "대한민국" ? (
+            <>
+              <KaKaoMap
+                planRegion={planInfo.region}
+                isStore
+                idName="kakao-map-stored"
+              />
+              <div
+                id="kakao-map-stored"
+                style={{ width: "100%", height: "100%" }}
+              />
+            </>
+          ) : (
+            <GoogleMap />
+          )}
+          {/* <MyMap places={stored} day={1} planRegion={planInfo.region} /> */}
         </div>
       </div>
       <DialogFooter className="m-auto">
