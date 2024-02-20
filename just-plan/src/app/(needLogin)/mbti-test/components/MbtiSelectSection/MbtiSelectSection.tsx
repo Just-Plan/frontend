@@ -38,7 +38,7 @@ export const MbtiSelectSection = ({
             alt="mbti_image_임시"
           />
           <div className="mt-[2rem] text-[1.5rem]">
-            Q: {questions[currentStepIndex]?.question}
+            Q {currentStepIndex + 1}: {questions[currentStepIndex]?.question}
           </div>
         </CardContent>
         <CardFooter className="flex flex-col">
