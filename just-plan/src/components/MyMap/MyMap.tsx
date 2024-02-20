@@ -7,7 +7,16 @@ import { addedPlace } from "@/store";
 import { useAtomValue } from "jotai";
 import type { IPlace } from "@/types/place.types";
 
-export const MyMap = ({ places, day, planRegion, width, height }: any) => {
+declare const kakao: any; // kakao maps 타입 선언이 필요. 실제 프로젝트에서는 kakao maps 타입 정의를 사용해야 할 수도 있음.
+
+interface IProps {
+  places: IPlace[];
+  day?: any;
+  planRegion: any;
+  width?: any;
+  height?: any;
+}
+export const MyMap = ({ places, day, planRegion, width, height }: IProps) => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY!,
@@ -81,7 +90,7 @@ export const MyMap = ({ places, day, planRegion, width, height }: any) => {
           const map = new kakao.maps.Map(container, options);
 
           // Add markers to the map
-          places.forEach((location: any, index: number) => {
+          places.forEach((location: any) => {
             const marker = new kakao.maps.Marker({
               position: new kakao.maps.LatLng(
                 location.latitude,
@@ -125,8 +134,11 @@ export const MyMap = ({ places, day, planRegion, width, height }: any) => {
           >
             {places.map((location, index) => (
               <Marker
-                key={location.id}
-                position={{ lat: location.latitude, lng: location.longitude }}
+                key={location.name}
+                position={{
+                  lat: Number(location.latitude),
+                  lng: Number(location.longitude),
+                }}
                 title={`장소 ${index + 1}`}
                 onClick={() =>
                   handleMarkerClick({
