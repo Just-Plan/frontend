@@ -9,7 +9,7 @@ import type {
 } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import type { IMemo, IPlace } from "@/types/place.types";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import { addedPlace } from "@/store";
 import { useState } from "react";
 
@@ -26,7 +26,8 @@ export const AddedPlaceCardDnD = ({
   time,
 }: IProps & { time: number }) => {
   const [open, setOpen] = useState(false);
-  const [added, setAdded] = useAtom(addedPlace);
+  // const [added, setAdded] = useAtom(addedPlace); // 이거 수정 필요
+  const added = useAtomValue(addedPlace);
   const {
     // googlePlaceId,
     placeId,
@@ -53,10 +54,11 @@ export const AddedPlaceCardDnD = ({
     });
     console.log("added[1] edit", temp);
 
-    setAdded({
-      ...added,
-      1: temp,
-    });
+    // 이거 수정 필요
+    // setAdded({
+    //   ...added,
+    //   "1": temp,
+    // });
   };
 
   return (

@@ -8,7 +8,7 @@ export const Spinner: React.FC<SpinnerProps> = ({ className }) => {
       aria-hidden="true"
       className={cn(
         "w-6 h-6 text-gray-600 animate-spin dark:text-gray-600 fill-slate-200",
-        className
+        className,
       )}
       viewBox="0 0 100 101"
       fill="none"

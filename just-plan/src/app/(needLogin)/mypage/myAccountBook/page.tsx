@@ -25,7 +25,7 @@ const Page = () => {
 
   return (
     <div className="flex flex-col w-full">
-      <MypageHeader choose="./myPlanList" />
+      <MypageHeader choose="가계부" />
       <div className="flex justify-center items-center">
         <div className="flex flex-1 ">
           <div className="h-80 overflow-y-auto md:px-0 flex flex-col flex-1  gap-5">

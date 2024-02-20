@@ -52,6 +52,7 @@ interface IUser {
   mbti: { id: number; type: string };
   name: string;
   owner: boolean;
+  profileUrl: string | null;
 }
 
 export interface IPlan2 {
@@ -93,11 +94,11 @@ export interface IPlanInfoDetail {
   expense: {
     food: number;
     transportation: number;
-    loadging: number;
+    lodging: number;
     shopping: number;
     etc: number;
   };
-  originPlan: IOriginPlan;
+  originPlan: IOriginPlan | null;
   published: boolean;
   region: IRegion;
   startDate: Date;

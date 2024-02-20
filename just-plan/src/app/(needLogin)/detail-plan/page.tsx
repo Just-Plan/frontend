@@ -48,7 +48,7 @@ const Page = () => {
 
       const newAdded: IDayPlan = {};
       for (let i = 1; i < Object.keys(placeData.daysPlaces).length; i++) {
-        let key = Object.keys(placeData.daysPlaces)[i];
+        const key = Object.keys(placeData.daysPlaces)[i];
         newAdded[key] = placeData.daysPlaces[key];
       }
       console.log("added 출력", newAdded);

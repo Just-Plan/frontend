@@ -8,7 +8,7 @@ import type { MouseEvent } from "react";
 export interface IProps {
   item: IPlace;
   onClickAdd: (
-    e: MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     place: IPlace,
   ) => void;
 }

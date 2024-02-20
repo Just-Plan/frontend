@@ -28,6 +28,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const [search, setSearch] = useState("");
   const stored = useAtomValue(storedPlace);
   // 장소 임시 보관함
+  const [addStorePlace, setAddStorePlace] = useState<IPlace[]>([]);
   const [storedTemp, setStoredTemp] = useState(stored);
   console.log(storedTemp);
   console.log("storedTemp 출력", storedTemp);
@@ -43,24 +44,13 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   };
 
   const onClickAdd = (
-    e: MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     place: IPlace,
   ) => {
     e.stopPropagation();
     console.log(place);
-    // setStored([...stored, place]);
-    setStoredTemp([...storedTemp, place]);
-  };
 
-  const onDeletePlace = (place: IPlace) => {
-    const newStored = storedTemp.filter(
-      (item) =>
-        !(
-          item.latitude === place.latitude && item.longitude === place.longitude
-        ),
-    );
-    setStoredTemp(newStored);
-    console.log("삭제, 기존:", place, "새로:", newStored);
+    setAddStorePlace([...addStorePlace, place]);
   };
 
   const debouncedValue = useDebounde(search, 400);
@@ -72,8 +62,8 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const { mutate } = usePostPlaceStored();
 
   const onSubmitStored = () => {
-    console.log("되는가 보자:", storedTemp);
-    const bodyTemp = storedTemp.map((item) => {
+    console.log("되는가 보자:", addStorePlace);
+    const bodyTemp = addStorePlace.map((item) => {
       return {
         googlePlaceId: item.googlePlaceId,
         name: item.name,
@@ -85,6 +75,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
       };
     });
     console.log("정제한 body: ", bodyTemp);
+    setAddStorePlace([]);
     mutate({ planId: planId, body: bodyTemp });
   };
   if (error) return <div>에러</div>;
@@ -110,12 +101,11 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
             <div className="text-xs font-semibold">장소 보관함</div>
           </div>
           <div className="bg-white p-4 rounded-xl gap-3 flex flex-col h-96 sm:h-[32rem] overflow-y-auto">
-            {storedTemp.map((item) => (
-              <StoredPlaceMiniCard
-                key={item.name}
-                place={item}
-                onDeletePlace={onDeletePlace}
-              />
+            {stored.map((item) => (
+              <StoredPlaceMiniCard key={item.name} place={item} />
+            ))}
+            {addStorePlace.map((item) => (
+              <StoredPlaceMiniCard key={item.name} place={item} isNew />
             ))}
           </div>
         </div>
@@ -129,7 +119,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
             />
           </div>
           <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto">
-            {searchResultData.data.map((item: IPlace) => (
+            {searchResultData?.map((item: IPlace) => (
               <StoredPlaceCard
                 key={item.name}
                 item={item}

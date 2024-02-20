@@ -9,38 +9,38 @@ import {
   DialogTitle,
 } from "@/components/dialog";
 import { memoBGList } from "@/constants";
-import { IMemo } from "@/types/place.types";
-import { FormEvent, useState } from "react";
-
+import type { IMemo } from "@/types/place.types";
+import type { FormEvent } from "react";
+import { useState } from "react";
 
 interface IProps {
   memo: IMemo;
-  onSubmitMemo: (editMemo: any) => void;
+  onSubmitMemo: (editMemo: IMemo) => void;
 }
 
-const MemoModal = ({memo, onSubmitMemo}: IProps) => {
+const MemoModal = ({ memo, onSubmitMemo }: IProps) => {
   const [memoInfo, setMemoInfo] = useState(memo);
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('텍스트 출력', memoInfo.content);
-    console.log('색 출력:', memoInfo.color);
+    console.log("텍스트 출력", memoInfo.content);
+    console.log("색 출력:", memoInfo.color);
     onSubmitMemo(memoInfo);
-  }
+  };
 
   const onClickColor = (item: string) => {
     setMemoInfo({
       ...memoInfo,
       color: item,
-    })
-  }
-  
+    });
+  };
+
   const onChangeText = (text: string) => {
     setMemoInfo({
       ...memoInfo,
       content: text,
-    })
-  }
+    });
+  };
 
   return (
     <DialogContent className="w-96 sm:w-[550px]">
@@ -65,11 +65,13 @@ const MemoModal = ({memo, onSubmitMemo}: IProps) => {
           }`}
           value={memoInfo.content || ""}
           onChange={(e) => onChangeText(e.target.value)}
-          />
+        />
       </form>
       <DialogFooter className="m-auto">
         <DialogClose asChild>
-          <Button type="submit" form="memo">저장하기</Button>
+          <Button type="submit" form="memo">
+            저장하기
+          </Button>
         </DialogClose>
       </DialogFooter>
     </DialogContent>

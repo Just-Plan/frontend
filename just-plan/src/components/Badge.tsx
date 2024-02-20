@@ -16,15 +16,15 @@ const badgeVariants = cva(
           "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
         outline: "text-foreground",
         unselected:
-          "border-transparent text-[7px] sm:text-xs bg-cyan-400 text-destructive-foreground w-7 sm:w-20 h-7 justify-center hover:bg-cyan-400/80 hover:cursor-pointer",
+          "border-transparent text-[7px] md:text-xs bg-cyan-400 text-destructive-foreground w-7 md:w-20 h-7 justify-center hover:bg-cyan-400/80 hover:cursor-pointer",
         selected:
-          "border-transparent text-[7px] sm:text-xs bg-cyan-600 text-destructive-foreground p-1 sm:w-20 h-7 justify-center hover:bg-cyan-600/80 hover:cursor-pointer",
+          "border-transparent text-[7px] md:text-xs bg-cyan-600 text-destructive-foreground p-1 md:w-20 h-7 justify-center hover:bg-cyan-600/80 hover:cursor-pointer",
       },
     },
     defaultVariants: {
       variant: "default",
     },
-  }
+  },
 );
 
 export interface BadgeProps

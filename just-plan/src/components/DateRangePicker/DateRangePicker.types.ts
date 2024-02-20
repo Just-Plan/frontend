@@ -1,8 +1,8 @@
-import { SetStateAction } from "jotai"
-import { Dispatch } from "react"
-import { DateRange } from "react-day-picker"
+import type { SetStateAction } from "jotai";
+import type { Dispatch } from "react";
+import type { DateRange } from "react-day-picker";
 
 export interface IProps {
-  setDate: Dispatch<SetStateAction<DateRange | undefined>>
-  date: DateRange | undefined
+  setDate: Dispatch<SetStateAction<DateRange | undefined>>;
+  date: DateRange | undefined;
 }

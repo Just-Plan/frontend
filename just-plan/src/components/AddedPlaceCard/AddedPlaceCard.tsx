@@ -8,6 +8,7 @@ import type { IMemo } from "@/types/place.types";
 import { useAtom } from "jotai";
 import { addedPlace } from "@/store";
 import { useState } from "react";
+import ESFP from "@/../public/images/ESFP.png";
 
 export const AddedPlaceCard = ({ item, time }: IProps & { time: number }) => {
   const {
@@ -18,9 +19,9 @@ export const AddedPlaceCard = ({ item, time }: IProps & { time: number }) => {
     memo,
     latitude,
     longitude,
-    // photoReference,
+    photoReference,
   } = item;
-  const image = "/images/image1.png"; // 임시
+  const image = photoReference || ESFP;
   const [added, setAdded] = useAtom(addedPlace);
   const [open, setOpen] = useState(false);
 
@@ -51,6 +52,7 @@ export const AddedPlaceCard = ({ item, time }: IProps & { time: number }) => {
                 alt="장소 이미지"
                 fill={true}
                 className="rounded-md"
+                unoptimized={true}
               />
             </div>
 
