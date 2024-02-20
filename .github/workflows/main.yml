@@ -2,7 +2,7 @@ name: CI/CD for Frontend with Docker Cleanup
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 permissions:
   contents: read
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: "18"
 
       - name: Install dependencies
         run: |
@@ -46,6 +46,10 @@ jobs:
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
           platforms: linux/amd64,linux/arm64
+          build-args: |
+            NEXT_PUBLIC_GOOGLEMAP_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLEMAP_API_KEY }}
+            NEXT_PUBLIC_KAKAO_API_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_API_KEY }}
+            NEXT_PUBLIC_KAKAO_RESTAPI_KEY=${{ secrets.NEXT_PUBLIC_KAKAO_RESTAPI_KEY }}
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
