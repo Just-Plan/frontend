@@ -14,19 +14,29 @@ import { StoredPlaceMiniCard } from "..";
 import { Input } from "@/components/Input";
 import { StoredPlaceCard } from "@/components";
 import type { ChangeEvent, MouseEvent } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchPlace } from "@/hooks/useSearchPlace";
 import type { IPlace } from "@/types/place.types";
 import { useDebounde } from "@/hooks";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { storedPlace } from "@/store/place.atoms";
 import { usePostPlaceStored } from "@/hooks/usePostPlaceStored";
+import { planInfoAtom } from "@/store";
+import MyMap from "@/components/MyMap/MyMap";
 
 export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const [search, setSearch] = useState("");
   const stored = useAtomValue(storedPlace);
   // 장소 임시 보관함
   const [addStorePlace, setAddStorePlace] = useState<IPlace[]>([]);
+  const [storedTemp, setStoredTemp] = useState(stored);
+  console.log(storedTemp);
+  console.log("storedTemp 출력", storedTemp);
+  const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
+
+  useEffect(() => {
+    setStoredTemp(stored);
+  }, [stored]);
 
   const cityId = 1; // 제주도. 임시!
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +58,6 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
     cityId,
     debouncedValue,
   );
-  console.log(searchResultData);
 
   const { mutate } = usePostPlaceStored();
 
@@ -71,7 +80,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   };
   if (error) return <div>에러</div>;
   if (isLoading) return <div>로딩중</div>;
-
+  console.log(planInfo.region);
   return (
     <DialogContent className="max-w-md sm:max-w-7xl max-h-[45rem] sm:max-h-[50rem] bg-ourGreen flex flex-col items-center">
       <DialogHeader>
@@ -120,7 +129,9 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
           </div>
         </div>
 
-        <div className="bg-white w-[200rem] hidden sm:flex">지도</div>
+        <div className="bg-white w-full hidden sm:block">
+          <MyMap places={stored} planRegion={planInfo.region} />
+        </div>
       </div>
       <DialogFooter className="m-auto">
         <DialogClose asChild>

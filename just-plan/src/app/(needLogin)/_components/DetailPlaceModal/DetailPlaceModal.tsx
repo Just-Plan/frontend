@@ -41,7 +41,6 @@ const DetailPlaceModal = ({
   } = useGetPlaceComment(placeId);
 
   useEffect(() => {
-    console.log("placeId:", placeId, " 의 open 여부 확인: ", open);
     if (open) {
       console.log("placeId:", placeId, "모달창!!!");
       placeDetailRefetch();

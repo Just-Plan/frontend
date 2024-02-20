@@ -28,7 +28,6 @@ const PlanModifyDaily = ({
   const [added, setAdded] = useAtom(addedPlace);
 
   const [placeDeleteIds, setPlaceDeleteIds] = useAtom(deletePlaceAtom);
-
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
     const sourceKey = source.droppableId;
@@ -67,6 +66,7 @@ const PlanModifyDaily = ({
     // 삭제한거 placeDeleteIds에 넣기
     setPlaceDeleteIds([...placeDeleteIds, deletePlaceId]);
   };
+  console.log(planRegion);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
