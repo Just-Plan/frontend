@@ -1,4 +1,4 @@
-import type { IPlace } from "@/types/place.types";
+// import type { IPlace } from "@/types/place.types";
 
 export interface IPlan {
   id: number;
@@ -15,6 +15,5 @@ export interface IProps {
 }
 
 export interface IDnDProps {
-  dayPlan: IPlace[];
-  day: string;
+  day: number;
 }

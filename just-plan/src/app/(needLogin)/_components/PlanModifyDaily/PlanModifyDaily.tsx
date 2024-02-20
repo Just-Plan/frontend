@@ -8,7 +8,7 @@ import { StoredPlaceCardDnD } from "@/components/StoredPlaceCard/StoredPlaceCard
 import DayPlanCardDnD from "@/components/DayPlanCard/DayPlanCardDnD";
 import { useAtom } from "jotai";
 import { addedPlace, deletePlaceAtom, storedPlace } from "@/store/place.atoms";
-import MyMap from "@/components/MyMap/MyMap";
+// import MyMap from "@/components/MyMap/MyMap";
 import type { IRegion } from "@/types/plan.types";
 import type { MouseEvent } from "react";
 import type { IPlaceResponse } from "@/types/place.types";
@@ -16,7 +16,7 @@ import type { IPlaceResponse } from "@/types/place.types";
 const PlanModifyDaily = ({
   day,
   planRegion,
-  places,
+  // places,
   planId,
 }: {
   day: string;
@@ -122,13 +122,13 @@ const PlanModifyDaily = ({
             ))}
           </div>
           <div className="flex gap-5">
-            <DayPlanCardDnD dayPlan={added[day]} day={day} />
+            <DayPlanCardDnD day={Number(day)} />
             <div className="bg-white w-full hidden sm:block">
-              <MyMap
+              {/* <MyMap
                 places={places.daysPlaces[day]}
                 day={day}
                 planRegion={planRegion}
-              />
+              /> */}
             </div>
           </div>
         </div>
