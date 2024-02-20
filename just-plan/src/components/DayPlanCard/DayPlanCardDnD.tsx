@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Switch } from "../Switch";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import { AddedPlaceCardDnD } from "../AddedPlaceCard/AddedPlaceCardDnD";
@@ -55,13 +54,6 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
           <div className="text-slate-400 text-sm font-bold">
             {dayDate.toISOString().slice(0, 10)}
           </div>
-        </div>
-
-        <div className="flex">
-          <Switch id={day.toString()} />
-          <label htmlFor={day.toString()} className="ml-3">
-            대중교통
-          </label>
         </div>
       </div>
       <Droppable droppableId={"added"}>

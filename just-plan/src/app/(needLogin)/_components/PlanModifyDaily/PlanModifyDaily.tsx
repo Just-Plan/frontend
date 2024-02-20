@@ -12,6 +12,8 @@ import { addedPlace, deletePlaceAtom, storedPlace } from "@/store/place.atoms";
 import type { IRegion } from "@/types/plan.types";
 import type { MouseEvent } from "react";
 import type { IPlaceResponse } from "@/types/place.types";
+import KaKaoMap from "@/components/Maps/KakaoMap/KaKaoMap";
+import GoogleMap from "@/components/Maps/GoogleMap/GoogleMap";
 
 const PlanModifyDaily = ({
   day,
@@ -129,6 +131,21 @@ const PlanModifyDaily = ({
                 day={day}
                 planRegion={planRegion}
               /> */}
+              {planRegion.countryKoreanName === "대한민국" ? (
+                <>
+                  <KaKaoMap
+                    day={day}
+                    planRegion={planRegion}
+                    idName="kakao-map-added"
+                  />
+                  <div
+                    id="kakao-map-added"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </>
+              ) : (
+                <GoogleMap />
+              )}
             </div>
           </div>
         </div>
