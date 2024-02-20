@@ -9,14 +9,27 @@ export const HashTag = ({
   setAddHashTags,
 }: HashTagProps) => {
   return (
-    <div>
-      <AddHashTags
-        setAddHashTags={setAddHashTags}
-        addHashTags={addHashTags}
-        white
-      />
-      <Button onClick={onPreviousStep}>이전</Button>
-      <Button onClick={onNextStep}>완료</Button>
+    <div className="flex flex-col gap-5 text-center items-center">
+      <div className="text-lg text-gray-700 mb-10">
+        여행을 나타낼 해시태그를 추가해보세요!
+      </div>
+
+      <div className="w-96">
+        <AddHashTags
+          setAddHashTags={setAddHashTags}
+          addHashTags={addHashTags}
+          white
+        />
+      </div>
+
+      <div className="flex justify-center items-center w-56 sm:w-96">
+        <Button className="w-1/2" onClick={onPreviousStep}>
+          이전
+        </Button>
+        <Button className="w-1/2" onClick={onNextStep}>
+          다음
+        </Button>
+      </div>
     </div>
   );
 };
