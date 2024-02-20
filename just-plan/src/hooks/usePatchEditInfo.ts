@@ -7,14 +7,22 @@ export const usePatchEditInfo = () => {
   const [userInfo, setUserInfo] = useAtom(localStorageUserInfoAtom);
 
   return useMutation({
-    mutationFn: (info) => patchEditInfo(info),
+    mutationFn: ({
+      name,
+      mbtiName,
+      introduction,
+    }: {
+      name: string;
+      mbtiName: string;
+      introduction: string;
+    }) => patchEditInfo({ name, mbtiName, introduction }),
     onSuccess: (data) => {
       alert("성공");
 
       setUserInfo({
         ...userInfo,
-        name: data.data.name,
-        mbtiName: data.data.mbtiName,
+        name: data.name,
+        mbtiName: data.mbtiName,
       });
     },
     onError: () => {
