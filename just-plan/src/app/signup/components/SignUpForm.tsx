@@ -10,10 +10,19 @@ import { useState } from "react";
 import { fetchComposed } from "@/lib/returnFetch";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 export const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [authId, setAuthId] = useState("");
-  const { register, handleSubmit, watch } = useForm();
+  const router = useRouter();
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  console.log(errors);
   const onVerificationClick = () => {
     setIsLoading(true);
     const emailValue = watch("email");
@@ -79,7 +88,7 @@ export const SignUpForm = () => {
               <Input
                 id="name"
                 placeholder="이름을 입력해주세요"
-                {...register("name")}
+                {...register("name", { required: "이름을 입력하세요" })}
               />
             </div>
             <div className="flex flex-col space-y-1.5">
@@ -141,6 +150,14 @@ export const SignUpForm = () => {
                 })}
               />
             </div>
+            {errors && (
+              <p className="text-red-500">
+                {errors.name?.message ||
+                  errors.email?.message ||
+                  errors.password?.message ||
+                  errors.passwordConfirm?.message}
+              </p>
+            )}
           </div>
         </CardContent>
         <CardFooter className="flex justify-center gap-5 flex-col">
@@ -154,6 +171,7 @@ export const SignUpForm = () => {
                   type="button"
                   variant={"link"}
                   className="text-slate-500"
+                  onClick={() => router.push("signin")}
                 >
                   로그인
                 </Button>
