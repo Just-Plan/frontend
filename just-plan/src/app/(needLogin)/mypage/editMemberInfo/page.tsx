@@ -57,13 +57,14 @@ const Page = () => {
   const { mutate } = usePatchEditInfo();
 
   const onSubmit = () => {
-    // 수정 필요!
     mutate({
       name: modifyInfo.name,
       mbtiName: modifyInfo.mbtiName,
       introduction: modifyInfo.introduction,
     });
   };
+
+  // 만약 회원 정보 수정 페이지라면, 프로필 사진, 배경 사진 수정 가능하도록!
 
   return (
     <div className="flex flex-col w-full">
