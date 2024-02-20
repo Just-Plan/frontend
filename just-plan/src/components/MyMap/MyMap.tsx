@@ -51,6 +51,7 @@ export const MyMap = ({ places, day, planRegion, width, height }: any) => {
       map.setZoom(15);
     }
   };
+
   const containerStyle = {
     width: width || "100%",
     height: height || "100%",
