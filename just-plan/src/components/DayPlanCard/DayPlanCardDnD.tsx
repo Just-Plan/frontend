@@ -2,76 +2,58 @@ import { Switch } from "../Switch";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import { AddedPlaceCardDnD } from "../AddedPlaceCard/AddedPlaceCardDnD";
-import { useAtom } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { addedPlace, storedPlace } from "@/store/place.atoms";
 import type { IDnDProps } from "./DayPlanCard.types";
+import { getKaKaoTravelTimes } from "@/utils/kakaoTravelTime";
+import { useEffect, useState } from "react";
+import { planInfoAtom } from "@/store";
 
 const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
   const [added, setAdded] = useAtom(addedPlace);
+  const [travelTimes, setTravelTimes] = useState<any[]>([]);
+  const planInfo = useAtomValue(planInfoAtom);
+  const startDate = new Date(planInfo.startDate); // Parse the start date string
 
-  const date = "2024-01-01"; // 임시
-  if (day !== "1" && day !== "2") return; // 임시
+  // Function to add days to the date
+  const addDays = (date, days) => {
+    const result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+  };
 
-  const origin = "37.7749,-122.4194"; // 샌프란시스코의 좌표
-  const destination = "34.0522,-118.2437"; // 로스앤젤레스의 좌표
+  const dayDate = addDays(startDate, day - 1); // Adjust day by subtracting 1
 
-  const latLongArray = added[day].map((item) => [
-    item.latitude,
-    item.longitude,
-  ]);
-  // Directions API 호출
-  // fetch(
-  //   `/google/api/directions/json?origin=${origin}&destination=${destination}&key=${process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY}`,
-  // )
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     const duration = data.routes[0].legs[0].duration.text;
+  console.log(dayDate.toISOString().slice(0, 10));
+  useEffect(() => {
+    const fetchTravelTimes = async () => {
+      const latLongArray = added[day].map((item) => [
+        item.longitude,
+        item.latitude,
+      ]);
+      const promises = latLongArray.slice(0, -1).map((startPoint, i) => {
+        const endPoint = latLongArray[i + 1];
+        return getKaKaoTravelTimes(startPoint, endPoint)
+          .then((travelTime) => travelTime)
+          .catch((error) => {
+            console.error("Error fetching travel time:", error);
+            return null;
+          });
+      });
+      const allTravelTimes = await Promise.all(promises);
+      setTravelTimes(allTravelTimes);
+    };
 
-  //     console.log("이동 시간:", duration);
-  //   })
-  //   .catch((error) => {
-  //     console.error("Directions API 호출 중 오류:", error);
-  //   });
-  async function getTravelTimes(coordinates: string | any[]) {
-    const travelTimes = [];
-
-    for (let i = 0; i < coordinates.length - 1; i++) {
-      const origin = coordinates[i];
-      const destination = coordinates[i + 1];
-
-      try {
-        const response = await fetch(
-          `/google/api/directions/json?origin=${origin}&destination=${destination}&key=${process.env.NEXT_PUBLIC_GOOGLEMAP_API_KEY}`,
-        );
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const data = await response.json();
-        console.log(data);
-        const duration = data.routes[0].legs[0].duration.text;
-        travelTimes.push(duration);
-      } catch (error) {
-        console.error("Directions API 호출 중 오류:", error);
-        travelTimes.push(null); // Push null to indicate error for this pair
-      }
-    }
-
-    return travelTimes;
-  }
-
-  getTravelTimes(latLongArray).then((travelTimes) => {
-    console.log("이동 시간 배열:", travelTimes);
-  });
-  console.log(added[day], latLongArray);
-
+    fetchTravelTimes();
+  }, [added, day]);
   return (
     <div className="bg-white flex flex-col w-fit p-6  rounded-3xl">
       <div className="flex justify-between">
         <div>
           <div className="font-bold text-2xl text-slate-400">{day}일차</div>
-          <div className="text-slate-400 text-sm font-bold">{date}</div>
+          <div className="text-slate-400 text-sm font-bold">
+            {dayDate.toISOString().slice(0, 10)}
+          </div>
         </div>
 
         <div className="flex">
@@ -92,23 +74,24 @@ const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
             )}
           >
             <div className="flex flex-col items-center h-[600px] w-full overflow-y-scroll relative">
-              {added[day].map((item, index) => (
-                <Draggable
-                  key={item.name}
-                  draggableId={item.name.toString()}
-                  index={index}
-                >
-                  {(provided, snapshot) => (
-                    <AddedPlaceCardDnD
-                      key={item.name}
-                      item={item}
-                      time={10}
-                      provided={provided}
-                      snapshot={snapshot}
-                    />
-                  )}
-                </Draggable>
-              ))}
+              {added[day] &&
+                added[day].map((item, index) => (
+                  <Draggable
+                    key={item.name}
+                    draggableId={item.name.toString()}
+                    index={index}
+                  >
+                    {(provided, snapshot) => (
+                      <AddedPlaceCardDnD
+                        key={item.name}
+                        item={item}
+                        time={travelTimes[index]}
+                        provided={provided}
+                        snapshot={snapshot}
+                      />
+                    )}
+                  </Draggable>
+                ))}
               {provided.placeholder}
             </div>
           </div>

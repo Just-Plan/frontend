@@ -10,6 +10,7 @@ import { addedPlace, planInfoAtom, storedPlace } from "@/store";
 import { useAtom, useSetAtom } from "jotai";
 import { useGetPlaceInfo } from "@/hooks/useGetPlaceInfo";
 import type { IDayPlan } from "@/types/place.types";
+import MyMap from "@/components/MyMap/MyMap";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -72,7 +73,13 @@ const Page = () => {
         ) : (
           <div className="flex gap-5">
             <DayPlanCard day={day} />
-            <div className="bg-white w-full hidden sm:block">지도</div>
+            <div className="bg-white w-full hidden sm:block">
+              <MyMap
+                places={placeData.daysPlaces[day]}
+                day={day}
+                planRegion={planInfo.region}
+              />
+            </div>
           </div>
         )}
       </div>

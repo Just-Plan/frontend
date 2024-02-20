@@ -10,6 +10,10 @@ const nextConfig = {
         destination: "https://maps.googleapis.com/maps/:path*",
         source: "/google/:path*",
       },
+      {
+        destination: "https://dapi.kakao.com/:path*",
+        source: "/kakao/:path*",
+      },
     ];
   },
 };

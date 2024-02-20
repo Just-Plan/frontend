@@ -10,7 +10,6 @@ export const PlanDayHeader = ({ isModify }: IProps) => {
   const choose = searchParams.get("day");
   const added = useAtomValue(addedPlace);
   const planInfo = useAtomValue(planInfoAtom);
-
   const onChangeDay = (day: string) => {
     const newSearchParams = new URLSearchParams(searchParams);
     newSearchParams.set("day", day);
