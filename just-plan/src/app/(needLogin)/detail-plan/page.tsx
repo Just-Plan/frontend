@@ -89,7 +89,7 @@ const Page = () => {
                   />
                 </>
               ) : (
-                <GoogleMap />
+                <GoogleMap planRegion={planInfo.region} day={day} />
               )}
             </div>
           </div>

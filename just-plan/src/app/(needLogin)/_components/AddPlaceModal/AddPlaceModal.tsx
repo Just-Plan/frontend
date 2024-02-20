@@ -25,14 +25,20 @@ import { useAtom, useAtomValue } from "jotai";
 import { KaKaoMap } from "@/components/Maps/KakaoMap/KaKaoMap";
 import GoogleMap from "@/components/Maps/GoogleMap/GoogleMap";
 
-export const AddPlaceModal = ({ planId }: { planId: number }) => {
+export const AddPlaceModal = ({
+  planId,
+  cityId,
+}: {
+  planId: number;
+  cityId: number;
+}) => {
   const [search, setSearch] = useState("");
   const stored = useAtomValue(storedPlace);
   // 장소 임시 보관함
   const [addStorePlace, setAddStorePlace] = useAtom(addStorePlaceAtom);
   const planInfo = useAtomValue(planInfoAtom);
 
-  const cityId = 1; // 제주도. 임시!
+  // const cityId = 1; // 제주도. 임시!
   const onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
@@ -138,7 +144,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
               />
             </>
           ) : (
-            <GoogleMap />
+            <GoogleMap planRegion={planInfo.region} isStore />
           )}
           {/* <MyMap places={stored} day={1} planRegion={planInfo.region} /> */}
         </div>
