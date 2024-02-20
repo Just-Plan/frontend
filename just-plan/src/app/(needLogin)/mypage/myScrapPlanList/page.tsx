@@ -43,7 +43,11 @@ const Page = ({
             ))}
           </div>
 
-          <Pagination totalPage={data.totalPages} page={page} />
+          <Pagination
+            totalPage={data.totalPages - 1}
+            page={page}
+            location="myScrapPlanList"
+          />
         </div>
       )}
     </div>

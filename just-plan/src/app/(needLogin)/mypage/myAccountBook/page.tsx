@@ -15,7 +15,8 @@ const Page = () => {
   >(undefined);
 
   const handleCardClick = (item: IModifyPlanInfo) => {
-    setSelectedCardData(item);
+    if (selectedCardData === item) setSelectedCardData(undefined);
+    else setSelectedCardData(item);
   };
 
   const { data, error, isLoading } = useGetAccountBook();
@@ -26,35 +27,62 @@ const Page = () => {
   return (
     <div className="flex flex-col w-full">
       <MypageHeader choose="가계부" />
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center">
         <div className="flex flex-1 ">
-          <div className="h-80 overflow-y-auto md:px-0 flex flex-col flex-1  gap-5">
+          <div className="h-96 overflow-y-auto md:px-0 flex flex-col flex-1 gap-5 mx-10">
             {data?.map((item) => (
-              <Card
-                key={item.planId}
-                className={cn(
-                  "p-4 cursor-pointer",
-                  selectedCardData?.planId === item.planId
-                    ? "bg-green-200"
-                    : "bg-ourGreen",
+              <>
+                {selectedCardData?.planId === item.planId && (
+                  <div className="md:hidden block w-full">
+                    {selectedCardData.useExpense ? (
+                      <Chart selectedData={selectedCardData} />
+                    ) : (
+                      <div className="text-2xl font-bold flex justify-center">
+                        예산 정보가 없습니다.
+                      </div>
+                    )}
+                  </div>
                 )}
-                onClick={() => handleCardClick(item)}
-              >
-                <div className="flex gap-6">
-                  <span>{item?.region?.koreanName}</span>
-                  <span className="text-gray-400 flex-1">
-                    {format(item.startDate, "yyyy-mm-dd")} ~{" "}
-                    {format(item.endDate, "yyyy-mm-dd")}
+                <Card
+                  key={item.planId}
+                  className={cn(
+                    "p-4 cursor-pointer shadow-lg",
+                    selectedCardData?.planId === item.planId
+                      ? "bg-ourGreen"
+                      : "",
+                  )}
+                  onClick={() => handleCardClick(item)}
+                >
+                  <div className="flex gap-6 items-center">
+                    <span className="text-lg font-bold">
+                      {item?.region?.koreanName}
+                    </span>
+                    <span className="text-gray-400 flex-1 text-xs">
+                      {format(item.startDate, "yyyy-MM-dd")} ~{" "}
+                      {format(item.endDate, "yyyy-MM-dd")}
+                    </span>
+                  </div>
+                  <span className="text-gray-600 font-semibold">
+                    {item.title}
                   </span>
-                </div>
-                <span>{item.title}</span>
-              </Card>
+                  <div className="text-xs text-gray-400 float-right">
+                    총 {(item.budget.card + item.budget.cash).toLocaleString()}{" "}
+                    원
+                  </div>
+                </Card>
+              </>
             ))}
           </div>
         </div>
         {selectedCardData && (
-          <div>
-            <Chart selectedData={selectedCardData} />
+          <div className="hidden md:block w-96">
+            {selectedCardData.useExpense ? (
+              <Chart selectedData={selectedCardData} />
+            ) : (
+              <div className="text-2xl font-bold flex justify-center">
+                예산 정보가 없습니다.
+              </div>
+            )}
           </div>
         )}
       </div>

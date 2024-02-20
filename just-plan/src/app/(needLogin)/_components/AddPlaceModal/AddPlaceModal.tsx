@@ -22,7 +22,7 @@ import { useDebounde } from "@/hooks";
 import { storedPlace } from "@/store/place.atoms";
 import { usePostPlaceStored } from "@/hooks/usePostPlaceStored";
 import { planInfoAtom } from "@/store";
-import MyMap from "@/components/MyMap/MyMap";
+// import MyMap from "@/components/MyMap/MyMap";
 import { useAtomValue } from "jotai";
 import { KaKaoMap } from "@/components/Maps/KakaoMap/KaKaoMap";
 import GoogleMap from "@/components/Maps/GoogleMap/GoogleMap";

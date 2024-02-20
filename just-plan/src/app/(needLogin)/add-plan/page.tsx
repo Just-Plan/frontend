@@ -60,14 +60,13 @@ const Page = () => {
     });
   };
 
-  console.log("step:", step);
   return (
     <div className=" flex justify-center items-center">
-      <div className="w-[80%] flex flex-col justify-center items-center">
-        <Progress value={progressValue} className="mt-[5rem] w-[80%]" />
-        <Card className="mt-[5rem] flex flex-col justify-center items-center min-w-80  bg-ourGreen">
-          <CardHeader>
-            <CardTitle className="text-[2rem]">여행 일정 작성</CardTitle>
+      <div className=" flex flex-col justify-center items-center">
+        <Progress value={progressValue} className="mt-[5rem]" />
+        <Card className="mt-[5rem] flex flex-col justify-center items-center w-80 sm:w-[60rem] bg-ourGreen py-10">
+          <CardHeader className="p-0 pb-2">
+            <CardTitle className="text-[2rem]">여행 플랜 생성</CardTitle>
           </CardHeader>
           <CardContent>
             {step === 1 && <NameInput onNextStep={handleNextStep} />}

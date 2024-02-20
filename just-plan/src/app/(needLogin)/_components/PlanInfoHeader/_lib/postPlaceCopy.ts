@@ -11,5 +11,5 @@ export const postPlaceCopy = async (
     },
   );
 
-  return res.json();
+  return res;
 };

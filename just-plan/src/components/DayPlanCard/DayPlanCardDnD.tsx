@@ -1,22 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Switch } from "../Switch";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import { AddedPlaceCardDnD } from "../AddedPlaceCard/AddedPlaceCardDnD";
-import { useAtom, useAtomValue } from "jotai";
-import { addedPlace, storedPlace } from "@/store/place.atoms";
+import { useAtomValue } from "jotai";
+import { addedPlace } from "@/store/place.atoms";
 import type { IDnDProps } from "./DayPlanCard.types";
 import { getKaKaoTravelTimes } from "@/utils/kakaoTravelTime";
 import { useEffect, useState } from "react";
 import { planInfoAtom } from "@/store";
 
-const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
-  const [added, setAdded] = useAtom(addedPlace);
+const DayPlanCardDnD = ({ day }: IDnDProps) => {
+  const added = useAtomValue(addedPlace);
   const [travelTimes, setTravelTimes] = useState<any[]>([]);
   const planInfo = useAtomValue(planInfoAtom);
   const startDate = new Date(planInfo.startDate); // Parse the start date string
 
   // Function to add days to the date
-  const addDays = (date, days) => {
+  const addDays = (date: Date, days: number) => {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
@@ -57,8 +58,8 @@ const DayPlanCardDnD = ({ dayPlan, day }: IDnDProps) => {
         </div>
 
         <div className="flex">
-          <Switch id={day} />
-          <label htmlFor={day} className="ml-3">
+          <Switch id={day.toString()} />
+          <label htmlFor={day.toString()} className="ml-3">
             대중교통
           </label>
         </div>

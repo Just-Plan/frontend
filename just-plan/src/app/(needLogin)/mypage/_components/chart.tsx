@@ -12,8 +12,6 @@ export function Chart({ selectedData }: { selectedData: IModifyPlanInfo }) {
     { label: "기타", value: selectedData.expense.etc },
   ];
 
-  console.log("data::::::", data);
-
   const options: ApexOptions = {
     chart: {
       id: "apexchart-example",
@@ -32,14 +30,18 @@ export function Chart({ selectedData }: { selectedData: IModifyPlanInfo }) {
 
   return (
     <div className="flex flex-col justify-center items-center w-96">
-      <span>{selectedData?.region?.koreanName}</span>
-      <span>{selectedData.title}</span>
+      <div className="text-xl font-bold">
+        {selectedData?.region?.koreanName}
+      </div>
+      <div className="text-gray-500 text-sm font-semibold">
+        {selectedData.title}
+      </div>
       <ApexChart
         type="pie"
         options={options}
         series={series}
-        height={400}
-        width={400}
+        height={350}
+        width={350}
       />
     </div>
   );

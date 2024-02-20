@@ -40,7 +40,13 @@ const Page = ({
             ))}
         </div>
 
-        {data && <Pagination totalPage={data.totalPages} page={page} />}
+        {data && (
+          <Pagination
+            totalPage={data.totalPages - 1}
+            page={page}
+            location="myPlanList"
+          />
+        )}
       </div>
     </div>
   );
