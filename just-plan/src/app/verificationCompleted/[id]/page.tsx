@@ -28,6 +28,8 @@ export default function VerificationCompleted() {
       console.error("Error:", error);
     });
   return (
-    <div className="w-full h-dvh flex justify-center items-center">{text}</div>
+    <div className="w-full h-dvh flex justify-center items-center">
+      인증 성공
+    </div>
   );
 }

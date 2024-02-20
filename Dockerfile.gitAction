@@ -1,6 +1,6 @@
 FROM node:18-alpine
 
-WORKDIR /frontend
+WORKDIR /app
 
 COPY just-plan/package.json just-plan/yarn.lock ./
 

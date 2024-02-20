@@ -59,7 +59,7 @@ export const SignInForm = () => {
       });
   };
   const kakaoLogin = () => {
-    fetch("http://13.125.188.226:8080/api/kakao/login")
+    fetchComposed("/api/kakao/login")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

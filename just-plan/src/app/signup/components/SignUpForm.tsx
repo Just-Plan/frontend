@@ -66,6 +66,7 @@ export const SignUpForm = () => {
       .then((response) => response.json())
       .then((data) => {
         if (data.code === 2000) {
+          router.push("/signin");
         } else {
           console.log(`Verification failed with code ${data.code}`);
         }

@@ -1,8 +1,11 @@
-name: Frontend CI/CD
+name: CI/CD for Frontend with Docker Cleanup
 
 on:
   push:
     branches: [ "main" ]
+
+permissions:
+  contents: read
 
 jobs:
   build-and-deploy:
@@ -14,19 +17,35 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14' # 프로젝트에 맞는 Node.js 버전을 지정하세요.
+          node-version: '18'
 
-      - name: Install Dependencies
-        run: npm install
-
-      - name: Build
-        run: npm run build # 빌드 스크립트가 프로젝트에 맞게 설정되어 있는지 확인하세요.
-
-      - name: Docker Build and Push
+      - name: Install dependencies
         run: |
-          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-          docker build -t ${{ secrets.DOCKER_USERNAME }}/${{ secrets.FRONTEND_DOCKER_REPO }}:latest .
-          docker push ${{ secrets.DOCKER_USERNAME }}/${{ secrets.FRONTEND_DOCKER_REPO }}:latest
+          cd just-plan
+          yarn install
+
+      - name: Build the project
+        run: |
+          cd just-plan
+          yarn build
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: Dockerfile.gitAction
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_REPO }}:latest
+          platforms: linux/amd64,linux/arm64
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -39,3 +58,4 @@ jobs:
             sudo docker-compose pull frontend
             sudo docker-compose down
             sudo docker-compose up -d --force-recreate
+            sudo docker system prune -af
