@@ -1,13 +1,8 @@
+import { nextFetch } from "@/lib/returnFetch";
+import type { IPlanInfoDetail } from "@/types/plan.types";
+
 export async function getPlanInfo(planId: string) {
-  const res = await fetch(`http://13.125.188.226:8080/api/plan/${planId}`, {
-    // next: { tags: ["trends"] },
-    // cache: "no-store",
-  });
+  const res = await nextFetch(`/api/plan/${planId}`);
 
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  const result = await res.json();
-  return result.data;
+  return res as IPlanInfoDetail;
 }
