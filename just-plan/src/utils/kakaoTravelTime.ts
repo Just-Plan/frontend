@@ -1,4 +1,7 @@
-export async function getKaKaoTravelTimes(origin, destination) {
+export async function getKaKaoTravelTimes(
+  origin: string[],
+  destination: string[],
+) {
   try {
     const response = await fetch(
       `https://apis-navi.kakaomobility.com/v1/directions?origin=${origin.join(",")}&destination=${destination.join(",")}`,

@@ -150,14 +150,14 @@ export const SignUpForm = () => {
                 })}
               />
             </div>
-            {errors && (
+            {/* {errors && (
               <p className="text-red-500">
                 {errors.name?.message ||
                   errors.email?.message ||
                   errors.password?.message ||
                   errors.passwordConfirm?.message}
               </p>
-            )}
+            )} */}
           </div>
         </CardContent>
         <CardFooter className="flex justify-center gap-5 flex-col">

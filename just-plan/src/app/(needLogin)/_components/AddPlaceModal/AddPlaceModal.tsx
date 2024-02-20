@@ -18,11 +18,11 @@ import { useEffect, useState } from "react";
 import { useSearchPlace } from "@/hooks/useSearchPlace";
 import type { IPlace } from "@/types/place.types";
 import { useDebounde } from "@/hooks";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtomValue } from "jotai";
 import { storedPlace } from "@/store/place.atoms";
 import { usePostPlaceStored } from "@/hooks/usePostPlaceStored";
 import { planInfoAtom } from "@/store";
-import MyMap from "@/components/MyMap/MyMap";
+// import MyMap from "@/components/MyMap/MyMap";
 
 export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const [search, setSearch] = useState("");
@@ -32,7 +32,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const [storedTemp, setStoredTemp] = useState(stored);
   console.log(storedTemp);
   console.log("storedTemp 출력", storedTemp);
-  const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
+  const planInfo = useAtomValue(planInfoAtom);
 
   useEffect(() => {
     setStoredTemp(stored);
@@ -130,7 +130,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
         </div>
 
         <div className="bg-white w-full hidden sm:block">
-          <MyMap places={stored} planRegion={planInfo.region} />
+          {/* <MyMap places={stored} planRegion={planInfo.region} /> */}
         </div>
       </div>
       <DialogFooter className="m-auto">
