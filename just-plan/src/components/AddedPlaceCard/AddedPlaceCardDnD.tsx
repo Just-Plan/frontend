@@ -12,6 +12,7 @@ import type { IMemo, IPlace } from "@/types/place.types";
 import { useAtomValue } from "jotai";
 import { addedPlace } from "@/store";
 import { useState } from "react";
+import ESFP from "@/../public/images/ESFP.png";
 
 export interface IProps {
   item: IPlace;
@@ -37,10 +38,10 @@ export const AddedPlaceCardDnD = ({
     latitude,
     memo,
     longitude,
-    // photoReference,
+    photoReference,
   } = item;
 
-  const image = "/images/image1.png"; // 임시
+  const image = photoReference || ESFP;
 
   const day = "1";
 
@@ -84,6 +85,7 @@ export const AddedPlaceCardDnD = ({
                   alt="장소 이미지"
                   fill={true}
                   className="rounded-md"
+                  unoptimized={true}
                 />
               </div>
 

@@ -2,7 +2,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { useGetUserInfo } from "@/hooks/useGetUserInfo";
 import { localStorageUserInfoAtom } from "@/store/auth.atom";
-import { useAtom } from "jotai";
+import { useAtomValue } from "jotai";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import edit from "@/../public/images/edit.svg";
@@ -10,7 +10,7 @@ import { Label } from "@/components/Label";
 import { usePostProfileImg } from "@/hooks/usePostProfileImg";
 
 const LeftSide = () => {
-  const [userInfo, setUserInfo] = useAtom(localStorageUserInfoAtom);
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
   // const [preview, setPreview] = useState("");
 
   // 회원 정보 조회
@@ -22,7 +22,7 @@ const LeftSide = () => {
 
   useEffect(() => {
     if (userInfoData) {
-      setUserInfo(userInfoData);
+      // setUserInfo(userInfoData);
     }
   }, [userInfoData]);
 
