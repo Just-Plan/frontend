@@ -26,12 +26,17 @@ const Page = ({
 
   return (
     <div className="flex flex-col w-full">
-      <MypageHeader choose="./myPlanList" />
+      <MypageHeader choose="나의 여행 일정" />
       <div className="flex justify-center flex-col">
-        <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-10">
+        <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10 place-items-center">
           {data &&
             data.plans.map((item: IPlan2) => (
-              <PlanCard item={item} key={item.planId} />
+              <PlanCard
+                item={item}
+                key={item.planId}
+                cityId={0}
+                mbtiList={[]}
+              />
             ))}
         </div>
 

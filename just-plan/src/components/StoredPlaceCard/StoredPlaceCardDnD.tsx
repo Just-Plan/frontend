@@ -6,6 +6,7 @@ import { Button } from "../Button";
 import { cn } from "@/lib/utils";
 import type { IDnDProps } from "./StoredPlaceCard.types";
 import { useState } from "react";
+import ESFP from "@/../public/images/ESFP.png";
 
 export const StoredPlaceCardDnD = ({
   item,
@@ -14,7 +15,6 @@ export const StoredPlaceCardDnD = ({
   onDeletePlace,
 }: IDnDProps) => {
   const {
-    googlePlaceId,
     placeId,
     name,
     formattedAddress,
@@ -23,9 +23,9 @@ export const StoredPlaceCardDnD = ({
     longitude,
     photoReference,
   } = item;
-  const image = "/images/image1.png"; // 임시
-  const [open, setOpen] = useState(false);
 
+  const [open, setOpen] = useState(false);
+  const image = photoReference || ESFP;
   return (
     <div
       ref={provided.innerRef}
@@ -45,6 +45,7 @@ export const StoredPlaceCardDnD = ({
                   alt="장소 이미지"
                   fill={true}
                   className="rounded-md"
+                  unoptimized={true}
                 />
               </div>
 

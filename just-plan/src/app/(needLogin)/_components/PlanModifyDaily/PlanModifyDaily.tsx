@@ -11,6 +11,7 @@ import { addedPlace, deletePlaceAtom, storedPlace } from "@/store/place.atoms";
 import MyMap from "@/components/MyMap/MyMap";
 import type { IRegion } from "@/types/plan.types";
 import type { MouseEvent } from "react";
+import type { IPlaceResponse } from "@/types/place.types";
 
 const PlanModifyDaily = ({
   day,
@@ -20,14 +21,13 @@ const PlanModifyDaily = ({
 }: {
   day: string;
   planRegion: IRegion;
-  places: any;
+  places: IPlaceResponse;
   planId: number;
 }) => {
   const [stored, setStored] = useAtom(storedPlace);
   const [added, setAdded] = useAtom(addedPlace);
 
   const [placeDeleteIds, setPlaceDeleteIds] = useAtom(deletePlaceAtom);
-
   const onDragEnd = ({ source, destination }: DropResult) => {
     if (!destination) return;
     const sourceKey = source.droppableId;
@@ -66,6 +66,7 @@ const PlanModifyDaily = ({
     // 삭제한거 placeDeleteIds에 넣기
     setPlaceDeleteIds([...placeDeleteIds, deletePlaceId]);
   };
+  console.log(planRegion);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

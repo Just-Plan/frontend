@@ -1,31 +1,19 @@
 "use client";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/Card";
+import { Card, CardContent, CardFooter, CardHeader } from "@/components/Card";
 
 import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { Label } from "@/components/Label";
 import Image from "next/image";
 import { Spinner } from "@/components/Spinner";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { fetchComposed } from "@/lib/returnFetch";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 export const SignUpForm = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [authId, setAuthId] = useState("");
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit, watch } = useForm();
   const onVerificationClick = () => {
     setIsLoading(true);
     const emailValue = watch("email");
@@ -51,7 +39,9 @@ export const SignUpForm = () => {
       })
       .finally(() => setIsLoading(false));
   };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (data: any) => {
+    // 나중에 any 변경 필요
     const requestBody = JSON.stringify({
       email: data.email,
       name: data.name,

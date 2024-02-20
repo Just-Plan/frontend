@@ -8,13 +8,13 @@ import { add, format } from "date-fns";
 const DayPlanCard = ({ day }: IProps) => {
   const planInfo = useAtomValue(planInfoAtom);
   const added = useAtomValue(addedPlace);
-  const latLongArray = added[day].map((item) => [
-    item.latitude,
-    item.longitude,
-  ]);
+  // const latLongArray = added[day].map((item) => [
+  //   item.latitude,
+  //   item.longitude,
+  // ]);
 
-  const origin = "37.7749,-122.4194"; // 샌프란시스코의 좌표
-  const destination = "34.0522,-118.2437"; // 로스앤젤레스의 좌표
+  // const origin = "37.7749,-122.4194"; // 샌프란시스코의 좌표
+  // const destination = "34.0522,-118.2437"; // 로스앤젤레스의 좌표
 
   // Directions API 호출
   // fetch(
@@ -51,7 +51,7 @@ const DayPlanCard = ({ day }: IProps) => {
         </div>
       </div>
       <div className="flex flex-col items-center h-[600px] w-full overflow-y-scroll relative">
-        {added[day].map((item, i) => (
+        {added[day].map((item) => (
           <AddedPlaceCard key={item.name} item={item} time={10} />
         ))}
       </div>

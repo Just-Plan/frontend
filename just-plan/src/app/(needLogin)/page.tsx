@@ -106,11 +106,15 @@ const Home = () => {
   if (popularPlanError) {
     return <div>에러</div>;
   }
+  console.log("popularPlanList::::::", popularPlanList);
 
+  console.log("planList::::::", planList);
+
+  // sm:px-60
   return (
-    <div className="py-10 px-5 sm:px-60 sm:py-32">
-      <div className="flex flex-col justify-around sm:flex-row ">
-        <div className="h-52 sm:h-96">
+    <div className="py-10 px-5 sm:px-20 sm:py-32 md:px-44 gap-10">
+      <div className="flex flex-col justify-around  lg:flex-row">
+        <div className="h-52 md:h-96 sm:h-72">
           <div className="h-5/6 relative">
             <Image
               src="/images/mascot1.png"
@@ -119,7 +123,7 @@ const Home = () => {
               className="object-contain"
             />
           </div>
-          <div className="h-1/6 w-96 bg-red relative">
+          <div className="h-1/6 md:w-96 relative m-auto">
             <Image
               src="/images/logo.png"
               fill={true}
@@ -128,14 +132,14 @@ const Home = () => {
             />
           </div>
         </div>
-        <div className="">
+        <div className="flex justify-center flex-col items-center">
           <div className="text-sky-700 font-bold text-3xl mt-5 text-center">
             나의 여행 플랜 찾기
           </div>
           <SearchCity setRegion={setRegion} />
         </div>
       </div>
-      <div className=" text-center mt-20">
+      <div className="text-center mt-20">
         <Dialog>
           <DialogTrigger
             className="bg-white text-cyan-600 border-cyan-600 border-4 rounded-2xl w-80 h-14 hover:bg-cyan-600/20"
@@ -156,9 +160,16 @@ const Home = () => {
             </>
           )}
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-5 gap-y-16">
+        {/* <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 place-items-center mt-5 gap-y-16 gap-x-20"> */}
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center mt-5  gap-y-16 gap-x-36">
           {popularPlanList?.plans.map((item: IPlan2) => (
-            <PlanCard item={item} key={item.planId} />
+            <PlanCard
+              item={item}
+              key={item.planId}
+              cityId={region.id}
+              mbtiList={selectMBTI}
+            />
           ))}
         </div>
         <div className="text-3xl font-bold mt-12">{MBTIPlan}</div>
@@ -178,10 +189,10 @@ const Home = () => {
             <div>{MBTIPlanDefaultDescription}</div>
           )}
         </div>
-        <Carousel className="my-5 mx-12 sm:mx-40">
+        <Carousel className="my-5 mx-12 md:mx-0 ">
           <CarouselContent>
             <CarouselItem>
-              <div className="flex w-full justify-center gap-1 sm:gap-5">
+              <div className="flex w-full justify-center gap-1 md:gap-2 lg:gap-5">
                 {MBTI.slice(0, 8).map((item) => (
                   <Badge
                     key={item}
@@ -196,7 +207,7 @@ const Home = () => {
               </div>
             </CarouselItem>
             <CarouselItem>
-              <div className="flex w-full justify-center gap-1 sm:gap-5">
+              <div className="flex w-full justify-center gap-1 md:gap-2 lg:gap-5">
                 {MBTI.slice(8).map((item) => (
                   <Badge
                     key={item}
@@ -214,10 +225,16 @@ const Home = () => {
           <CarouselPrevious />
           <CarouselNext />
         </Carousel>
-        <div className="grid grid-cols-1 sm:grid-cols-3 place-items-center mt-5 gap-y-16">
+        {/* <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 place-items-center mt-5 gap-y-16 gap-x-20"> */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 place-items-center mt-5  gap-y-16 gap-x-36">
           {planList?.pages.map((itemList) =>
             itemList.plans.map((item: IPlan2) => (
-              <PlanCard item={item} key={item.planId} />
+              <PlanCard
+                item={item}
+                key={item.planId}
+                cityId={region.id}
+                mbtiList={selectMBTI}
+              />
             )),
           )}
           <div ref={ref} className="h-10 bg-red-200" />

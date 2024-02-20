@@ -18,16 +18,21 @@ import { useEffect, useState } from "react";
 import { useSearchPlace } from "@/hooks/useSearchPlace";
 import type { IPlace } from "@/types/place.types";
 import { useDebounde } from "@/hooks";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { storedPlace } from "@/store/place.atoms";
 import { usePostPlaceStored } from "@/hooks/usePostPlaceStored";
+import { planInfoAtom } from "@/store";
+import MyMap from "@/components/MyMap/MyMap";
 
 export const AddPlaceModal = ({ planId }: { planId: number }) => {
   const [search, setSearch] = useState("");
   const stored = useAtomValue(storedPlace);
   // 장소 임시 보관함
+  const [addStorePlace, setAddStorePlace] = useState<IPlace[]>([]);
   const [storedTemp, setStoredTemp] = useState(stored);
+  console.log(storedTemp);
   console.log("storedTemp 출력", storedTemp);
+  const [planInfo, setPlanInfo] = useAtom(planInfoAtom);
 
   useEffect(() => {
     setStoredTemp(stored);
@@ -39,24 +44,13 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
   };
 
   const onClickAdd = (
-    e: MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>,
     place: IPlace,
   ) => {
     e.stopPropagation();
     console.log(place);
-    // setStored([...stored, place]);
-    setStoredTemp([...storedTemp, place]);
-  };
 
-  const onDeletePlace = (place: IPlace) => {
-    const newStored = storedTemp.filter(
-      (item) =>
-        !(
-          item.latitude === place.latitude && item.longitude === place.longitude
-        ),
-    );
-    setStoredTemp(newStored);
-    console.log("삭제, 기존:", place, "새로:", newStored);
+    setAddStorePlace([...addStorePlace, place]);
   };
 
   const debouncedValue = useDebounde(search, 400);
@@ -64,13 +58,12 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
     cityId,
     debouncedValue,
   );
-  console.log(searchResultData);
 
   const { mutate } = usePostPlaceStored();
 
   const onSubmitStored = () => {
-    console.log("되는가 보자:", storedTemp);
-    const bodyTemp = storedTemp.map((item) => {
+    console.log("되는가 보자:", addStorePlace);
+    const bodyTemp = addStorePlace.map((item) => {
       return {
         googlePlaceId: item.googlePlaceId,
         name: item.name,
@@ -82,11 +75,12 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
       };
     });
     console.log("정제한 body: ", bodyTemp);
+    setAddStorePlace([]);
     mutate({ planId: planId, body: bodyTemp });
   };
   if (error) return <div>에러</div>;
   if (isLoading) return <div>로딩중</div>;
-
+  console.log(planInfo.region);
   return (
     <DialogContent className="max-w-md sm:max-w-7xl max-h-[45rem] sm:max-h-[50rem] bg-ourGreen flex flex-col items-center">
       <DialogHeader>
@@ -107,12 +101,11 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
             <div className="text-xs font-semibold">장소 보관함</div>
           </div>
           <div className="bg-white p-4 rounded-xl gap-3 flex flex-col h-96 sm:h-[32rem] overflow-y-auto">
-            {storedTemp.map((item) => (
-              <StoredPlaceMiniCard
-                key={item.name}
-                place={item}
-                onDeletePlace={onDeletePlace}
-              />
+            {stored.map((item) => (
+              <StoredPlaceMiniCard key={item.name} place={item} />
+            ))}
+            {addStorePlace.map((item) => (
+              <StoredPlaceMiniCard key={item.name} place={item} isNew />
             ))}
           </div>
         </div>
@@ -126,7 +119,7 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
             />
           </div>
           <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto">
-            {searchResultData.data.map((item: IPlace) => (
+            {searchResultData?.map((item: IPlace) => (
               <StoredPlaceCard
                 key={item.name}
                 item={item}
@@ -136,7 +129,9 @@ export const AddPlaceModal = ({ planId }: { planId: number }) => {
           </div>
         </div>
 
-        <div className="bg-white w-[200rem] hidden sm:flex">지도</div>
+        <div className="bg-white w-full hidden sm:block">
+          <MyMap places={stored} planRegion={planInfo.region} />
+        </div>
       </div>
       <DialogFooter className="m-auto">
         <DialogClose asChild>
