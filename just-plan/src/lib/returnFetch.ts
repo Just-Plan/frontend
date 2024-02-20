@@ -2,7 +2,8 @@
 import returnFetch from "return-fetch";
 
 const fetchExtended = returnFetch({
-  baseUrl: "http://13.125.188.226:8080",
+  // baseUrl: "http://13.125.188.226:8080",
+  baseUrl: "https://justplan.site",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -50,7 +51,9 @@ if (typeof window !== "undefined") {
 }
 
 const fetcher = returnFetch({
-  baseUrl: "http://13.125.188.226:8080",
+  // baseUrl: "http://13.125.188.226:8080",
+  baseUrl: "https://justplan.site",
+
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -82,7 +85,7 @@ const fetcher = returnFetch({
       if (res.code === 4005) {
         // 1. 토큰 재발급
         const refreshTokenFetch = await fetch(
-          `http://13.125.188.226:8080/api/user/reissue-token`,
+          `https://justplan.site/api/user/reissue-token`,
           {
             credentials: "include",
           },

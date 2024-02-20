@@ -29,7 +29,7 @@ export const Header = () => {
   };
 
   return (
-    <div className="justify-between	px-8 size-full h-14 flex items-center bg-white shadow-lg fixed ">
+    <div className="justify-between	px-8 size-full h-14 flex items-center bg-white shadow-lg">
       <div
         className="w-32 h-full flex items-center cursor-pointer"
         onClick={() => onMoveToOtherPage("/")}
