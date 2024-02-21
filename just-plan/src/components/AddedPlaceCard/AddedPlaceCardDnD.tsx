@@ -14,6 +14,7 @@ import { addedPlace } from "@/store";
 import { useState } from "react";
 import ESFP from "@/../public/images/ESFP.png";
 import { cutStirng } from "@/utils/cutString";
+import { convertPlaceType } from "@/utils/convertPlaceType";
 
 export interface IProps {
   item: IPlace;
@@ -105,9 +106,11 @@ export const AddedPlaceCardDnD = ({
                 </Dialog>
 
                 <div className="flex">
-                  <div className=" text-sky-600 font-bold mr-2">{types}</div>
+                  <div className=" text-sky-600 font-bold mr-2">
+                    {convertPlaceType(types)}
+                  </div>
                   <div className=" text-slate-400" title={formattedAddress}>
-                    {cutStirng(formattedAddress)}
+                    {cutStirng(formattedAddress, 12)}
                   </div>
                 </div>
                 <Dialog>

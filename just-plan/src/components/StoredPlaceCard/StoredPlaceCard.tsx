@@ -7,6 +7,8 @@ import { Button } from "../Button";
 import { useState } from "react";
 import ESFP from "@/../public/images/ESFP.png";
 import { cutStirng } from "@/utils/cutString";
+import { convertPlaceType } from "@/utils/convertPlaceType";
+import { Badge } from "../Badge";
 
 export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
   const {
@@ -17,6 +19,7 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
     latitude,
     longitude,
     photoReference,
+    mbti,
   } = item;
   const image = photoReference || ESFP;
   const [open, setOpen] = useState(false);
@@ -37,11 +40,22 @@ export const StoredPlaceCard = ({ item, onClickAdd }: IProps) => {
             </div>
 
             <div className="flex flex-col flex-1 ml-3">
-              <div className="font-bold flex">{name}</div>
               <div className="flex">
-                <div className=" text-sky-600 font-bold mr-2">{types}</div>
+                <div className="font-bold flex flex-1" title={name}>
+                  {cutStirng(name, 10)}
+                </div>
+                {mbti!.length !== 0 && (
+                  <Badge className="bg-ourGreen text-gray-600 mr-2">
+                    {mbti![0]}
+                  </Badge>
+                )}
+              </div>
+              <div className="flex">
+                <div className=" text-sky-600 font-bold mr-2">
+                  {convertPlaceType(types)}
+                </div>
                 <div className=" text-slate-400" title={formattedAddress}>
-                  {cutStirng(formattedAddress)}
+                  {cutStirng(formattedAddress, 12)}
                 </div>
               </div>
               <div className="flex justify-end w-full">

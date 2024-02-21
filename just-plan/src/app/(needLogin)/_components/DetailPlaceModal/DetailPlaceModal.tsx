@@ -7,6 +7,7 @@ import { useGetPlaceComment } from "@/hooks/useGetPlaceComment";
 import { useGetPlaceDetail } from "@/hooks/useGetPlaceDetail";
 import { useEffect, useState } from "react";
 import { usePostPlaceComment } from "@/hooks/usePostPlaceComment";
+import ENTP from "@/../public/images/ENTP.png";
 
 const DetailPlaceModal = ({
   open,
@@ -70,6 +71,10 @@ const DetailPlaceModal = ({
     });
   };
 
+  // 영업 종료 시간!
+  // 오늘 요일 확인,
+  // const temp = placeDetailData?.opening_hours.periods[0].close.time;
+
   if (placeDetailError || commentError) return <div>에러1111</div>;
   if (placeDetailIsLoading || commentIsLoading) return <div>로딩중</div>;
 
@@ -94,7 +99,7 @@ const DetailPlaceModal = ({
         </DialogTitle>
         <div className="flex flex-col sm:flex-row justify-between gap-6">
           <div className="flex flex-1 flex-col">
-            {placeDetailData && (
+            {placeDetailData?.photos ? (
               <Image
                 src={placeDetailData.photos[0].photo_reference as string}
                 alt="장소 이미지"
@@ -103,10 +108,27 @@ const DetailPlaceModal = ({
                 className="rounded-2xl"
                 unoptimized={true}
               />
+            ) : (
+              <Image
+                src={ENTP}
+                alt="장소 이미지 없음"
+                width={300}
+                height={200}
+                className="rounded-2xl"
+              />
             )}
-            <div className="bg-ourGreen p-1 rounded-xl my-5 text-xs font-bold flex justify-center">
-              {placeDetailData?.mbti.join(",")}가 가장 많이 스크랩한 장소입니다.
-            </div>
+            {placeDetailData?.mbti !== null &&
+            placeDetailData?.mbti.length !== 0 ? (
+              <div className="bg-ourGreen p-1 rounded-xl my-5 text-xs font-bold flex justify-center">
+                {placeDetailData?.mbti.join(",")}가 가장 많이 스크랩한
+                장소입니다.
+              </div>
+            ) : (
+              <div className="bg-ourGreen p-1 rounded-xl my-5 text-xs font-bold flex justify-center">
+                아직 스크랩 한 사람이 없습니다.
+              </div>
+            )}
+
             {placeDetailData?.opening_hours ? (
               <div>
                 <div className="flex">
@@ -115,7 +137,7 @@ const DetailPlaceModal = ({
                       ? "영업중"
                       : "영업 종료"}
                   </div>
-                  <div className="font-bold">{endTime}에 영업 종료</div>
+                  {/* <div className="font-bold">{temp}에 영업 종료</div> */}
                 </div>
                 <div className="flex">
                   <div className="text-blue-500 font-bold">영업시간 안내</div>
