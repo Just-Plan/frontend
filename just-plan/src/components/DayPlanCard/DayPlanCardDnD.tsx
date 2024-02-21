@@ -24,7 +24,6 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
 
   const dayDate = addDays(startDate, day - 1); // Adjust day by subtracting 1
 
-  console.log(dayDate.toISOString().slice(0, 10));
   useEffect(() => {
     const fetchTravelTimes = async () => {
       const latLongArray = added[day].map((item) => [
@@ -46,6 +45,7 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
 
     fetchTravelTimes();
   }, [added, day]);
+
   return (
     <div className="bg-white flex flex-col w-fit p-6  rounded-3xl">
       <div className="flex justify-between">

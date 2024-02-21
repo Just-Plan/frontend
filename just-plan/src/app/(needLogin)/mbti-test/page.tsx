@@ -40,6 +40,10 @@ const MBTIPage = () => {
     }
   }, [progressValue, mutate]);
 
+  const handleResetMbtiStep = () => {
+    setMbtiStep(0);
+  };
+
   if (error) return <div>에러</div>;
   if (isLoading) return <div>로딩중</div>;
 
@@ -53,7 +57,7 @@ const MBTIPage = () => {
           </CardHeader>
           {progressValue === 100 ? (
             <div>
-              <MbtiResult mbti={data?.data} />
+              <MbtiResult mbti={data?.data} reset={handleResetMbtiStep} />
             </div>
           ) : (
             <MbtiSelectSection

@@ -1,8 +1,7 @@
 import type { IDayPlan, IPlace } from "@/types/place.types";
 import { atom } from "jotai";
 
-// 장소 보관함
-export const storedPlace = atom<IPlace[]>([
+const storedPlaceMockData = [
   {
     googlePlaceId: "2",
     name: "카페그루0",
@@ -13,8 +12,12 @@ export const storedPlace = atom<IPlace[]>([
     photoReference:
       "https://lh3.googleusercontent.com/p/AF1QipPgjnSs7v28R0lxK-E5PUbL2SFtBkAQNoeakQNN=w400",
   },
-]);
+];
 
+// 장소 보관함
+export const storedPlace = atom<IPlace[]>(storedPlaceMockData);
+
+export const addStorePlaceAtom = atom<IPlace[]>([]); // 장소보관함에서 추가한거
 export const addedPlace = atom<IDayPlan>({
   "1": [
     {
