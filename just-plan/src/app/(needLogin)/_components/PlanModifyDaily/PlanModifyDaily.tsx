@@ -80,7 +80,7 @@ const PlanModifyDaily = ({
               <DialogTrigger className="flex h-full bg-indigo-400 rounded-none text-white p-2">
                 장소 추가
               </DialogTrigger>
-              <AddPlaceModal planId={planId} />
+              <AddPlaceModal planId={planId} cityId={planRegion.id} />
             </Dialog>
           </div>
 
@@ -144,7 +144,7 @@ const PlanModifyDaily = ({
                   />
                 </>
               ) : (
-                <GoogleMap />
+                <GoogleMap day={day} planRegion={planRegion} />
               )}
             </div>
           </div>

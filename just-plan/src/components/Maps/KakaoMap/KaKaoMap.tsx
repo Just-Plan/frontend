@@ -2,7 +2,7 @@
 // any 나중에 수정 필요!
 "use client";
 import React, { useEffect } from "react";
-import { addedPlace, storedPlace } from "@/store";
+import { addStorePlaceAtom, addedPlace, storedPlace } from "@/store";
 import { useAtomValue } from "jotai";
 
 declare const kakao: any; // kakao maps 타입 선언이 필요. 실제 프로젝트에서는 kakao maps 타입 정의를 사용해야 할 수도 있음.
@@ -16,8 +16,10 @@ interface IProps {
 export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
   const added = useAtomValue(addedPlace);
   const stored = useAtomValue(storedPlace);
+  const addStorePlace = useAtomValue(addStorePlaceAtom);
 
-  const temp = isStore ? stored : added[day];
+  // isStore가 true 일 때, stored랑 addStorePlace랑 붙인다.
+  const temp = isStore ? [...stored, ...addStorePlace] : added[day];
   // 만약 장소 보관함의 장소 추가라면
   // added[day]가 마커 찍히는게 아니라, store 에 있는게 찍히는거!
   console.log("isStore: ", isStore, "day:", day, "temp:", temp);
@@ -65,7 +67,7 @@ export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
         });
       });
     };
-  }, [added, stored, day, planRegion]);
+  }, [added, stored, day, planRegion, addStorePlace]);
   // planRegion -> 제주도 등
   return (
     <>
