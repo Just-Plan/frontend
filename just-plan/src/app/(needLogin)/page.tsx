@@ -22,6 +22,7 @@ import { localStorageUserInfoAtom } from "@/store/auth.atom";
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
 import BeforeCreatePlanModal from "./_components/BeforeCreatePlanModal/BeforeCreatePlanModal";
 import { SearchCity } from "@/components/SearchCity/SearchCity";
+import { Spinner } from "@/components/Spinner";
 
 const Home = () => {
   const router = useRouter();
@@ -98,10 +99,6 @@ const Home = () => {
       setSelectMBTI(newMBTIList);
     }
   };
-
-  if (popularPlanisLoading) {
-    return <div>로딩중</div>;
-  }
 
   if (popularPlanError) {
     return <div>에러</div>;
@@ -240,6 +237,11 @@ const Home = () => {
           <div ref={ref} className="h-10 bg-red-200" />
         </div>
       </div>
+      {popularPlanisLoading && (
+        <div className="fixed bottom-4 right-4 bg-gray-500 rounded-lg p-4">
+          <Spinner className="w-8 h-8" />
+        </div>
+      )}
     </div>
   );
 };

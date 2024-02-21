@@ -89,7 +89,13 @@ export const SignUpForm = () => {
               <Input
                 id="name"
                 placeholder="이름을 입력해주세요"
-                {...register("name", { required: "이름을 입력하세요" })}
+                {...register("name", {
+                  required: "이름을 입력하세요",
+                  maxLength: {
+                    value: 5,
+                    message: "5자 이하로 부탁드려요!",
+                  },
+                })}
               />
             </div>
             <div className="flex flex-col space-y-1.5">

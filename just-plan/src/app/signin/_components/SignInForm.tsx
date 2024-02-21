@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/Card";
 import Image from "next/image";
@@ -17,7 +17,7 @@ interface FormData {
 }
 export const SignInForm = () => {
   const [userInfo, setUserInfo] = useAtom(localStorageUserInfoAtom);
-
+  const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
   userInfo.isLoggedIn && router.push("/");
   const {
@@ -51,7 +51,7 @@ export const SignInForm = () => {
           setUserInfo(userInfo);
           router.push("/");
         } else {
-          console.error("Sign-in failed:", result.error);
+          setErrorMessage(result.message);
         }
       })
       .catch((error) => {
@@ -122,6 +122,7 @@ export const SignInForm = () => {
               {errors.password && (
                 <p className="text-red-500">{errors.password.message}</p>
               )}
+              {errorMessage && <p className="text-red-500">{errorMessage}</p>}
             </div>
           </div>
         </CardContent>
