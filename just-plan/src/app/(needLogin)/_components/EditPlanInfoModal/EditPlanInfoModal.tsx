@@ -100,6 +100,19 @@ const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
     onSubmitModify(newModifyInfo);
   };
 
+  const onChangeExpense = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (Number.isNaN(Number(value))) return null;
+    console.log(name, value);
+    setModifyInfo({
+      ...modifyInfo,
+      expense: {
+        ...modifyInfo.expense,
+        [name]: value,
+      },
+    });
+  };
+
   return (
     <DialogContent className="w-90 sm:w-[450px] max-h-[40rem] overflow-y-auto overflow-x-hidden">
       <form onSubmit={onSubmit} className="flex flex-col">
@@ -195,7 +208,13 @@ const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
               />
             </div>
           </div>
-          {modifyInfo.useExpense && <HouseholdContent />}
+          {modifyInfo.useExpense && (
+            <HouseholdContent
+              totalMoney={modifyInfo.budget.card + modifyInfo.budget.cash}
+              expense={modifyInfo.expense}
+              onChangeExpense={onChangeExpense}
+            />
+          )}
         </DialogHeader>
         <DialogFooter className="m-auto mt-5">
           <DialogClose asChild>

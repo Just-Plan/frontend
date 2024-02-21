@@ -9,7 +9,7 @@ import ShowMoney from "../ShowMoney/ShowMoney";
 import type { IModifyPlanInfo, IOwner } from "@/types/plan.types";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
-import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
+import { usePatchPlanInfo } from "../../modify/_lib/patchPlanInfo";
 import { format } from "date-fns";
 import {
   addedPlace,
