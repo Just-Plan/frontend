@@ -9,7 +9,7 @@ import ShowMoney from "../ShowMoney/ShowMoney";
 import type { IModifyPlanInfo, IOwner } from "@/types/plan.types";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { IPlanInfoHeader } from "./PlanInfoHeader.types";
-import { usePatchPlanInfo } from "../../modify/_lib/postPlanInfo";
+import { usePatchPlanInfo } from "../../modify/_lib/patchPlanInfo";
 import { format } from "date-fns";
 import {
   addedPlace,
@@ -198,36 +198,48 @@ export const PlanInfoHeader = ({ isModify, onReload }: IPlanInfoHeader) => {
         </div>
       </div>
       <div className="flex">
-        <div className="flex items-center flex-1">
-          <div className="font-bold text-2xl sm:text-3xl my-2 sm:my-3 mr-5">
-            {info.title}
-          </div>
-          {isModify && (
-            <Dialog>
-              <DialogTrigger className="hover:cursor-pointer rounded-full p-1 hover:bg-gray-200">
-                <Image
-                  src="/images/edit.svg"
-                  alt="수정"
-                  width={27}
-                  height={27}
+        <div className="flex flex-1 flex-col">
+          <div className="flex">
+            <div className="font-bold text-2xl sm:text-3xl my-2 sm:my-3 mr-5">
+              {info.title}
+            </div>
+            {isModify && (
+              <Dialog>
+                <DialogTrigger className="hover:cursor-pointer rounded-full p-1 hover:bg-gray-200">
+                  <Image
+                    src="/images/edit.svg"
+                    alt="수정"
+                    width={27}
+                    height={27}
+                  />
+                </DialogTrigger>
+                <EditPlanInfoModal
+                  info={info}
+                  onSubmitModify={onSubmitModify}
                 />
-              </DialogTrigger>
-              <EditPlanInfoModal info={info} onSubmitModify={onSubmitModify} />
-            </Dialog>
+              </Dialog>
+            )}
+          </div>
+
+          {!!planInfo.originPlan && (
+            <div
+              onClick={onMoveToOrigin}
+              className="font-thin hover:cursor-pointe leading-3 pl-1"
+            >
+              cloned by{" "}
+              <span className="underline text-blue-500 font-normal">
+                {cloneInfo.name}님의 {planInfo.originPlan.title}
+              </span>
+            </div>
           )}
         </div>
-        {!!planInfo.originPlan && (
-          <div onClick={onMoveToOrigin}>
-            cloned by {cloneInfo.name}님의 {planInfo.originPlan.title}
-          </div>
-        )}
 
         <div className="hidden sm:flex items-center hover:cursor-pointer rounded-full p-1 w-10 h-10 hover:bg-gray-200">
           <Image src="/images/map.png" alt="지도" width={40} height={40} />
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex mt-2">
         <div className="text-cyan-600 font-bold flex-1 my-auto flex gap-3">
           {info.tags?.map((tag) => <div key={tag}># {tag}</div>)}
         </div>

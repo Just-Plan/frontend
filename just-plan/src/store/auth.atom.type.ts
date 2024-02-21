@@ -8,4 +8,5 @@ export interface UserInfo {
   totalScrap?: number;
   totalUserPlan?: number;
   introduction?: null | string;
+  background?: string | null;
 }

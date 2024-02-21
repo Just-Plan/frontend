@@ -22,6 +22,8 @@ import type { DateRange } from "react-day-picker";
 import { add } from "date-fns";
 import { AddHashTags } from "../AddHashTags/AddHashTags";
 import type { IModifyPlanInfo } from "@/types/plan.types";
+import { MAX_LEN_PLAN_TITLE } from "@/constants/MaxLen";
+import { isValidString } from "@/utils/isValidString";
 
 const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
   const [addHashTags, setAddHashTags] = useState<string[]>([]);
@@ -89,6 +91,9 @@ const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // 유효한 입력이 아니면 통과 안되도록
+    if (!isValidString(modifyInfo.title)) return;
+
     const newModifyInfo = {
       ...modifyInfo,
       tags: addHashTags,
@@ -98,6 +103,19 @@ const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
 
     // api 요청 보내기
     onSubmitModify(newModifyInfo);
+  };
+
+  const onChangeExpense = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    if (Number.isNaN(Number(value))) return null;
+    console.log(name, value);
+    setModifyInfo({
+      ...modifyInfo,
+      expense: {
+        ...modifyInfo.expense,
+        [name]: value,
+      },
+    });
   };
 
   return (
@@ -113,9 +131,20 @@ const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
               id="title"
               value={modifyInfo.title}
               placeholder={modifyInfo.title}
-              className="bg-ourGreen/80 mb-3 mt-1"
+              className="border-2 border-ourGreen/80 mb-3 mt-1"
               onChange={onChangeTitle}
+              maxLength={MAX_LEN_PLAN_TITLE}
             />
+            {modifyInfo.title.length >= MAX_LEN_PLAN_TITLE && (
+              <div className="text-red-400 text-xs -mt-1.5 mb-2 pl-3">
+                {MAX_LEN_PLAN_TITLE}이하로 입력해주세요
+              </div>
+            )}
+            {!isValidString(modifyInfo.title) && (
+              <div className="text-red-400 text-xs -mt-1.5 mb-2 pl-3">
+                유효한 입력이 아닙니다.
+              </div>
+            )}
             <Label htmlFor="hashtag" variant="subTitle">
               여행 해시태그
             </Label>
@@ -152,6 +181,7 @@ const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
                     value={modifyInfo.budget.cash}
                     onChange={onChangeMoney}
                   />
+                  <div className="absolute right-2 top-2 text-sm">₩</div>
                 </div>
                 <div className="flex relative justify-center">
                   <Image
@@ -167,6 +197,7 @@ const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
                     value={modifyInfo.budget.card}
                     onChange={onChangeMoney}
                   />
+                  <div className="absolute right-2 top-2 text-sm">₩</div>
                 </div>
                 <div className="flex relative ">
                   <div className="absolute top-1 left-2 w-8 h-8 text-md font-bold flex items-center justify-center">
@@ -180,6 +211,7 @@ const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
                     }
                     readOnly
                   />
+                  <div className="absolute right-2 top-2 text-sm">₩</div>
                 </div>
               </div>
             </div>
@@ -195,11 +227,19 @@ const EditPlanInfoModal = ({ info, onSubmitModify }: IProps) => {
               />
             </div>
           </div>
-          {modifyInfo.useExpense && <HouseholdContent />}
+          {modifyInfo.useExpense && (
+            <HouseholdContent
+              totalMoney={modifyInfo.budget.card + modifyInfo.budget.cash}
+              expense={modifyInfo.expense}
+              onChangeExpense={onChangeExpense}
+            />
+          )}
         </DialogHeader>
         <DialogFooter className="m-auto mt-5">
           <DialogClose asChild>
-            <Button type="submit">저장하기</Button>
+            <Button type="submit" disabled={!isValidString(modifyInfo.title)}>
+              저장하기
+            </Button>
           </DialogClose>
         </DialogFooter>
       </form>
