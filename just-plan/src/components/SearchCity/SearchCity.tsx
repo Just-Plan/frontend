@@ -7,12 +7,13 @@ import type { IRegion } from "@/types/plan.types";
 import { useEffect, useState } from "react";
 import type { IProps } from "./SearchCity.types";
 import { ScrollArea } from "../ScrollArea";
+import { Spinner } from "../Spinner";
 
 export const SearchCity = ({ setRegion }: IProps) => {
   const [searchRegion, setSearchRegion] = useState("");
   const { data: searchResult, error, isLoading } = useGetCities();
 
-  const debouncedValue = useDebounde(searchRegion, 400);
+  const debouncedValue = useDebounde(searchRegion, 500);
   const {
     data: searchRegionData,
     error: searchRegionError,
@@ -29,10 +30,6 @@ export const SearchCity = ({ setRegion }: IProps) => {
   const onClickRegion = (regionInfo: IRegion) => {
     setRegion(regionInfo);
   };
-
-  if (isLoading || searchRegionIsLoading) {
-    return <div>로딩중</div>;
-  }
 
   if (error || searchRegionError) {
     return <div>에러</div>;
@@ -76,20 +73,28 @@ export const SearchCity = ({ setRegion }: IProps) => {
         ) : (
           <ScrollArea className="w-72 sm:w-96 h-48 rounded-md border mt-5 bg-white">
             <div className="py-4 px-4">
-              {searchRegionData?.cities.map((item: IRegion) => (
-                <div
-                  key={item.id}
-                  className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
-                  onClick={() => onClickRegion(item)}
-                >
-                  <div className="font-bold text-neutral-600 text-2xl">
-                    {item.koreanName}
+              {searchRegionData?.cities.length ? (
+                searchRegionData?.cities.map((item: IRegion) => (
+                  <div
+                    key={item.id}
+                    className="flex justify-between p-1 items-end hover:cursor-pointer hover:bg-gray-100 rounded-md gap-1 px-4"
+                    onClick={() => onClickRegion(item)}
+                  >
+                    <div className="font-bold text-neutral-600 text-2xl">
+                      {item.koreanName}
+                    </div>
+                    <div className="text-neutral-400">
+                      {item.countryKoreanName}
+                    </div>
                   </div>
-                  <div className="text-neutral-400">
-                    {item.countryKoreanName}
-                  </div>
+                ))
+              ) : isLoading || searchRegionIsLoading ? (
+                <div className="flex justify-center">
+                  <Spinner />
                 </div>
-              ))}
+              ) : (
+                <div className="text-center">검색 결과가 없습니다</div>
+              )}
             </div>
           </ScrollArea>
         )}
