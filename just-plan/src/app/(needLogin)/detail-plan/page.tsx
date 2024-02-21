@@ -14,7 +14,6 @@ import { Spinner } from "@/components/Spinner";
 import KaKaoMap from "@/components/Maps/KakaoMap/KaKaoMap";
 import GoogleMap from "@/components/Maps/GoogleMap/GoogleMap";
 
-
 const Page = () => {
   const searchParams = useSearchParams();
   const planId = searchParams.get("planId") as string;

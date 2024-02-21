@@ -2,7 +2,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/Avatar";
 import { useGetUserInfo } from "@/hooks/useGetUserInfo";
 import { localStorageUserInfoAtom } from "@/store/auth.atom";
-import { useAtom, useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { useEffect } from "react";
 
 const LeftSide = () => {

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { addStorePlaceAtom, addedPlace, storedPlace } from "@/store";
 import { useAtomValue } from "jotai";
 import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
-import { IPlace } from "@/types/place.types";
+import type { IPlace } from "@/types/place.types";
 import { Dialog } from "@/components/dialog";
 
 declare const kakao: any; // kakao maps 타입 선언이 필요. 실제 프로젝트에서는 kakao maps 타입 정의를 사용해야 할 수도 있음.
@@ -90,7 +90,7 @@ export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
         });
 
         // 지도에 표시할 선을 생성합니다
-        const polyline = new kakao.maps.Polyline({
+        new kakao.maps.Polyline({
           path: linePath, // 선을 구성하는 좌표배열 입니다
           strokeWeight: 5, // 선의 두께 입니다
           strokeColor: "#FFAE00", // 선의 색깔입니다

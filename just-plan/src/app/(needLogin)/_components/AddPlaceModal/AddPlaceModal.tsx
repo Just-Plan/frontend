@@ -20,11 +20,9 @@ import { useDebounde } from "@/hooks";
 import { addStorePlaceAtom, storedPlace } from "@/store/place.atoms";
 import { usePostPlaceStored } from "@/hooks/usePostPlaceStored";
 import { planInfoAtom } from "@/store";
-// import MyMap from "@/components/MyMap/MyMap";
 import { useAtom, useAtomValue } from "jotai";
 import { KaKaoMap } from "@/components/Maps/KakaoMap/KaKaoMap";
 import GoogleMap from "@/components/Maps/GoogleMap/GoogleMap";
-import DetailPlaceModal from "../DetailPlaceModal/DetailPlaceModal";
 
 export const AddPlaceModal = ({
   planId,
@@ -80,8 +78,6 @@ export const AddPlaceModal = ({
     mutate({ planId: planId, body: bodyTemp });
   };
 
-  const [open, setOpen] = useState<IPlace | undefined>(undefined); //
-
   if (error) return <div>에러</div>;
   if (isLoading) return <div>로딩중</div>;
   console.log(planInfo.region);
@@ -133,7 +129,6 @@ export const AddPlaceModal = ({
         </div>
 
         <div className="bg-white w-full sm:block">
-          {/* <MyMap places={stored} planRegion={planInfo.region} /> */}
           {/* 대한민국이면 카카오, 해외면 구글 */}
           {planInfo.region.countryKoreanName === "대한민국" ? (
             <>
@@ -150,7 +145,6 @@ export const AddPlaceModal = ({
           ) : (
             <GoogleMap planRegion={planInfo.region} isStore />
           )}
-          {/* <MyMap places={stored} day={1} planRegion={planInfo.region} /> */}
         </div>
       </div>
       <DialogFooter className="m-auto w-96 flex">
@@ -168,15 +162,6 @@ export const AddPlaceModal = ({
           </Button>
         </DialogClose>
       </DialogFooter>
-      {open && (
-        <DetailPlaceModal
-          open={true}
-          placeId={open.placeId!}
-          name={open.name}
-          latitude={open.latitude}
-          longitude={open.longitude}
-        />
-      )}
     </DialogContent>
   );
 };
