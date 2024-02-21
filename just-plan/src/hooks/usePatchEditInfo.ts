@@ -1,10 +1,13 @@
 import { patchEditInfo } from "@/app/(needLogin)/mypage/_lib/patchEditInfo";
+import { userKeys } from "@/constants/queries";
 import { localStorageUserInfoAtom } from "@/store/auth.atom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAtom } from "jotai";
 
 export const usePatchEditInfo = () => {
   const [userInfo, setUserInfo] = useAtom(localStorageUserInfoAtom);
+
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: ({
@@ -19,11 +22,7 @@ export const usePatchEditInfo = () => {
     onSuccess: (data) => {
       alert("성공");
 
-      setUserInfo({
-        ...userInfo,
-        name: data.name,
-        mbtiName: data.mbtiName,
-      });
+      queryClient.invalidateQueries({ queryKey: userKeys.all });
     },
     onError: () => {
       alert("실패");

@@ -2,6 +2,8 @@ import Image from "next/image";
 import { AspectRatio } from "@/components/AspectRatio";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { useAtomValue } from "jotai";
+import { localStorageUserInfoAtom } from "@/store/auth.atom";
 
 const menuArr = [
   { name: "나의 여행 일정", content: "./myPlanList?page=1" },
@@ -11,18 +13,20 @@ const menuArr = [
 ];
 
 const MypageHeader = ({ choose }: { choose: string }) => {
+  const userInfo = useAtomValue(localStorageUserInfoAtom);
   return (
     <div className="flex flex-col bg-white gap-5 mb-5 mx-5">
       <AspectRatio ratio={16 / 3} className="max-h-80">
         <Image
-          src="/images/test.jpg"
+          src={userInfo.background!}
           alt="Image"
           fill
           className="rounded-2xl object-cover"
+          unoptimized={true}
         />
       </AspectRatio>
 
-      <div className="flex w-full justify-between relative">
+      <div className="flex w-full justify-between relative mb-2">
         {menuArr.map((el) => (
           <Link
             key={el.name}
