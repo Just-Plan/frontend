@@ -98,7 +98,7 @@ const HouseholdContent = ({ totalMoney, expense, onChangeExpense }: IProps) => {
           </div>
         </div>
       </div>
-      <div className="bg-ourGreen sm:p-3 sm:px-5 rounded-3xl justify-center items-center text-center flex flex-col gap-4">
+      <div className="bg-ourGreen sm:p-3 sm:px-5 rounded-3xl justify-center items-center text-center flex flex-col gap-8">
         <div>
           <div className="text-sm font-bold text-gray-700">총 지출 예상</div>
           <div className="text-gray-400">
@@ -108,12 +108,6 @@ const HouseholdContent = ({ totalMoney, expense, onChangeExpense }: IProps) => {
         <div>
           <div className="text-sm font-bold text-gray-700">총 예산</div>
           <div className="text-gray-400">{totalMoney.toLocaleString()} ₩</div>
-        </div>
-        <div>
-          <div className="text-sm font-bold text-gray-700">초과 예산</div>
-          <div className="text-gray-400">
-            {(totalEstimated - totalMoney).toLocaleString()} ₩
-          </div>
         </div>
       </div>
     </div>
