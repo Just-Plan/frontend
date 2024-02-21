@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { useGetPlanInfo } from "@/hooks";
 import { useGetPlaceInfo } from "@/hooks/useGetPlaceInfo";
 import type { IDayPlan } from "@/types/place.types";
+import { Spinner } from "@/components/Spinner";
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -60,7 +61,6 @@ const Page = () => {
     placeRefetch();
   };
 
-  if (planIsLoading || placeIsLoading) return <div>로딩중</div>;
   if (planError || placeError) return <div>에러</div>;
 
   return (
@@ -84,6 +84,12 @@ const Page = () => {
           planId={Number(planId)}
         />
       )}
+      {planIsLoading ||
+        (placeIsLoading && (
+          <div className="fixed bottom-4 right-4 bg-gray-500 rounded-lg p-4">
+            <Spinner className="w-8 h-8" />
+          </div>
+        ))}
     </div>
   );
 };

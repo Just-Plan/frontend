@@ -10,6 +10,7 @@ import { addedPlace, planInfoAtom, storedPlace } from "@/store";
 import { useAtom, useSetAtom } from "jotai";
 import { useGetPlaceInfo } from "@/hooks/useGetPlaceInfo";
 import type { IDayPlan } from "@/types/place.types";
+import { Spinner } from "@/components/Spinner";
 // import MyMap from "@/components/MyMap/MyMap";
 
 const Page = () => {
@@ -56,7 +57,6 @@ const Page = () => {
     }
   }, [placeData]);
 
-  if (planIsLoading || placeIsLoading) return <div>로딩중</div>;
   if (planError || placeError) return <div>에러</div>;
 
   return (
@@ -83,6 +83,12 @@ const Page = () => {
           </div>
         )}
       </div>
+      {planIsLoading ||
+        (placeIsLoading && (
+          <div className="fixed bottom-4 right-4 bg-gray-500 rounded-lg p-4">
+            <Spinner className="w-8 h-8" />
+          </div>
+        ))}
     </div>
   );
 };
