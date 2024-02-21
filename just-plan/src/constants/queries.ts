@@ -7,7 +7,7 @@ export const userKeys = {
 // 일정 조회
 export const planKeys = {
   all: ["plans"] as const,
-  detail: (id: number) => [...planKeys.all, id] as const,
+  detail: (id: string) => [...planKeys.all, id] as const,
   myPlan: (page: number) => [...planKeys.all, "my", page] as const, // 내 일정 조회
   scrap: (page: number) => [...planKeys.all, "scrap", page] as const, // 스크랩 일정 조회
   mbtiFilter: (cityId: number, mbti: string[]) =>
