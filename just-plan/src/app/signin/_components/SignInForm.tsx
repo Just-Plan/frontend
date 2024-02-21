@@ -60,19 +60,7 @@ export const SignInForm = () => {
       });
   };
   const kakaoLogin = () => {
-    fetchComposed("/oauth2/authorization/kakao")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error("There was a problem with the fetch operation:", error);
-      });
+    router.push("/api/kakao/login");
   };
   return (
     <Card className="w-[350px] bg-ourGreen rounded-3xl ">
