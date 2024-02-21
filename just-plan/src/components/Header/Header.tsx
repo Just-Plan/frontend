@@ -4,6 +4,7 @@ import BeforeCreatePlanModal from "@/app/(needLogin)/_components/BeforeCreatePla
 import { localStorageUserInfoAtom, useLogout } from "@/store/auth.atom";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Dialog, DialogTrigger } from "@radix-ui/react-dialog";
+import { useQueryClient } from "@tanstack/react-query";
 import { useAtomValue } from "jotai";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -24,7 +25,12 @@ export const Header = () => {
     }
   };
 
+  const queryClient = useQueryClient();
+
   const onLogout = () => {
+    queryClient.invalidateQueries();
+    router.replace("/");
+    alert("로그아웃 되었습니다.");
     logout();
   };
 
