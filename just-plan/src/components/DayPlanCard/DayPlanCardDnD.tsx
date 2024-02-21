@@ -8,6 +8,7 @@ import type { IDnDProps } from "./DayPlanCard.types";
 import { getKaKaoTravelTimes } from "@/utils/kakaoTravelTime";
 import { useEffect, useState } from "react";
 import { planInfoAtom } from "@/store";
+import { add, format } from "date-fns";
 
 const DayPlanCardDnD = ({ day }: IDnDProps) => {
   const added = useAtomValue(addedPlace);
@@ -52,7 +53,10 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
         <div>
           <div className="font-bold text-2xl text-slate-400">{day}일차</div>
           <div className="text-slate-400 text-sm font-bold">
-            {dayDate.toISOString().slice(0, 10)}
+            {format(
+              add(planInfo.startDate, { days: Number(day) - 1 }),
+              "yyyy.MM.dd",
+            )}{" "}
           </div>
         </div>
       </div>

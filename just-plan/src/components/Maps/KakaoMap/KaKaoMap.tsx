@@ -51,7 +51,7 @@ export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
         const map = new kakao.maps.Map(container, options); // 위에거 적용해서 맵 만들기 -> 객체?로 만든다.
 
         // Add markers to the map -> 장소 추가 시 마커 추가하는 부분
-        temp.forEach((location: IPlace) => {
+        temp?.forEach((location: IPlace) => {
           const marker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(
               location.latitude,
@@ -83,7 +83,7 @@ export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
         });
 
         const linePath: any[] = [];
-        temp.forEach((location: any) => {
+        temp?.forEach((location: any) => {
           linePath.push(
             new kakao.maps.LatLng(location.latitude, location.longitude),
           );

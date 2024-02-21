@@ -29,7 +29,7 @@ const Page = ({
 
   return (
     <div className="flex flex-col w-full">
-      <MypageHeader choose="스크럼 여행 일정" />
+      <MypageHeader choose="스크랩 여행 일정" />
       {data && (
         <div className="flex justify-center flex-col">
           <div className="grid xl:grid-cols-3 lg:grid-cols-2 grid-cols-1 gap-10">
