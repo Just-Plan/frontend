@@ -11,7 +11,9 @@ import { useAtom, useSetAtom } from "jotai";
 import { useGetPlaceInfo } from "@/hooks/useGetPlaceInfo";
 import type { IDayPlan } from "@/types/place.types";
 import { Spinner } from "@/components/Spinner";
-// import MyMap from "@/components/MyMap/MyMap";
+import KaKaoMap from "@/components/Maps/KakaoMap/KaKaoMap";
+import GoogleMap from "@/components/Maps/GoogleMap/GoogleMap";
+
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -74,11 +76,21 @@ const Page = () => {
           <div className="flex gap-5">
             <DayPlanCard day={day} />
             <div className="bg-white w-full hidden sm:block">
-              {/* <MyMap
-                places={placeData.daysPlaces[day]}
-                day={day}
-                planRegion={planInfo.region}
-              /> */}
+              {planInfo.region.countryKoreanName === "대한민국" ? (
+                <>
+                  <KaKaoMap
+                    day={day}
+                    planRegion={planInfo.region}
+                    idName="kakao-map-added"
+                  />
+                  <div
+                    id="kakao-map-added"
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </>
+              ) : (
+                <GoogleMap planRegion={planInfo.region} day={day} />
+              )}
             </div>
           </div>
         )}

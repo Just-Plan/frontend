@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Switch } from "../Switch";
 import { Draggable, Droppable } from "@hello-pangea/dnd";
 import { cn } from "@/lib/utils";
 import { AddedPlaceCardDnD } from "../AddedPlaceCard/AddedPlaceCardDnD";
@@ -9,6 +8,7 @@ import type { IDnDProps } from "./DayPlanCard.types";
 import { getKaKaoTravelTimes } from "@/utils/kakaoTravelTime";
 import { useEffect, useState } from "react";
 import { planInfoAtom } from "@/store";
+import { getGoogleTravelTimes } from "@/utils/googleTravelTime";
 
 const DayPlanCardDnD = ({ day }: IDnDProps) => {
   const added = useAtomValue(addedPlace);
@@ -25,7 +25,6 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
 
   const dayDate = addDays(startDate, day - 1); // Adjust day by subtracting 1
 
-  console.log(dayDate.toISOString().slice(0, 10));
   useEffect(() => {
     const fetchTravelTimes = async () => {
       const latLongArray = added[day].map((item) => [
@@ -34,12 +33,21 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
       ]);
       const promises = latLongArray.slice(0, -1).map((startPoint, i) => {
         const endPoint = latLongArray[i + 1];
-        return getKaKaoTravelTimes(startPoint, endPoint)
-          .then((travelTime) => travelTime)
-          .catch((error) => {
-            console.error("Error fetching travel time:", error);
-            return null;
-          });
+        if (planInfo.region.countryKoreanName === "대한민국") {
+          return getKaKaoTravelTimes(startPoint, endPoint)
+            .then((travelTime) => travelTime)
+            .catch((error) => {
+              console.error("Error fetching travel time:", error);
+              return null;
+            });
+        } else {
+          return getGoogleTravelTimes(startPoint, endPoint)
+            .then((travelTime) => travelTime)
+            .catch((error) => {
+              console.error("Error fetching travel time:", error);
+              return null;
+            });
+        }
       });
       const allTravelTimes = await Promise.all(promises);
       setTravelTimes(allTravelTimes);
@@ -47,6 +55,7 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
 
     fetchTravelTimes();
   }, [added, day]);
+
   return (
     <div className="bg-white flex flex-col w-fit p-6  rounded-3xl">
       <div className="flex justify-between">
@@ -55,13 +64,6 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
           <div className="text-slate-400 text-sm font-bold">
             {dayDate.toISOString().slice(0, 10)}
           </div>
-        </div>
-
-        <div className="flex">
-          <Switch id={day.toString()} />
-          <label htmlFor={day.toString()} className="ml-3">
-            대중교통
-          </label>
         </div>
       </div>
       <Droppable droppableId={"added"}>

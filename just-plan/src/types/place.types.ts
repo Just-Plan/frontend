@@ -28,8 +28,11 @@ export interface IDayUpdates {
   [key: string]: IPlaceRequestInner[];
 }
 
-export interface IPlaceRequestBody {
+export interface IPlaceResponseBody {
   dayUpdates: IDayUpdates;
+}
+
+export interface IPlaceRequestBody extends IPlaceResponseBody {
   placeDeleteIds: number[];
 }
 

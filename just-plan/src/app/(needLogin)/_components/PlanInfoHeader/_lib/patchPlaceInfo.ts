@@ -1,5 +1,8 @@
 import { nextFetch } from "@/lib/returnFetch";
-import type { IPlaceRequestBody } from "@/types/place.types";
+import type {
+  IPlaceRequestBody,
+  IPlaceResponseBody,
+} from "@/types/place.types";
 
 export const patchPlaceInfo = async (
   planId: number,
@@ -9,5 +12,5 @@ export const patchPlaceInfo = async (
     method: "PATCH",
     body: JSON.stringify(body),
   });
-  return res;
+  return res as IPlaceResponseBody;
 };

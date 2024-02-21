@@ -59,7 +59,7 @@ export const SignInForm = () => {
       });
   };
   const kakaoLogin = () => {
-    fetchComposed("/api/kakao/login")
+    fetchComposed("/api/oauth2/authorization/kakao")
       .then((response) => {
         if (!response.ok) {
           throw new Error("Network response was not ok");

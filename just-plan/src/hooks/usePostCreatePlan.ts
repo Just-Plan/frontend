@@ -9,7 +9,7 @@ export const usePostCreatePlan = () => {
   return useMutation({
     mutationFn: (body: ICreatePlanReqBody) => postCreatePlan(body),
     onSuccess: (data) => {
-      router.push(`/detail-plan?planId=${data.planId}`);
+      router.push(`/modify?planId=${data.planId}`);
     },
     onError: () => {
       console.log("실패");

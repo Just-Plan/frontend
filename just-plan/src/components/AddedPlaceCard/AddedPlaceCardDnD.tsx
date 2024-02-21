@@ -12,6 +12,8 @@ import type { IMemo, IPlace } from "@/types/place.types";
 import { useAtomValue } from "jotai";
 import { addedPlace } from "@/store";
 import { useState } from "react";
+import ESFP from "@/../public/images/ESFP.png";
+import { cutStirng } from "@/utils/cutString";
 
 export interface IProps {
   item: IPlace;
@@ -37,10 +39,10 @@ export const AddedPlaceCardDnD = ({
     latitude,
     memo,
     longitude,
-    // photoReference,
+    photoReference,
   } = item;
 
-  const image = "/images/image1.png"; // 임시
+  const image = photoReference || ESFP;
 
   const day = "1";
 
@@ -84,6 +86,7 @@ export const AddedPlaceCardDnD = ({
                   alt="장소 이미지"
                   fill={true}
                   className="rounded-md"
+                  unoptimized={true}
                 />
               </div>
 
@@ -103,7 +106,9 @@ export const AddedPlaceCardDnD = ({
 
                 <div className="flex">
                   <div className=" text-sky-600 font-bold mr-2">{types}</div>
-                  <div className=" text-slate-400">{formattedAddress}</div>
+                  <div className=" text-slate-400" title={formattedAddress}>
+                    {cutStirng(formattedAddress)}
+                  </div>
                 </div>
                 <Dialog>
                   <DialogTrigger className="flex hover:underline">
