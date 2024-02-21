@@ -11,6 +11,7 @@ import { useAtom } from "jotai";
 import { useRouter } from "next/navigation";
 import { localStorageUserInfoAtom } from "@/store/auth.atom";
 import type { UserInfo } from "@/store/auth.atom.type";
+import { useQueryClient } from "@tanstack/react-query";
 interface FormData {
   email: string;
   password: string;
@@ -19,6 +20,8 @@ export const SignInForm = () => {
   const [userInfo, setUserInfo] = useAtom(localStorageUserInfoAtom);
   const [errorMessage, setErrorMessage] = useState("");
   const router = useRouter();
+  const queryClient = useQueryClient();
+
   userInfo.isLoggedIn && router.push("/");
   const {
     register,
@@ -50,6 +53,8 @@ export const SignInForm = () => {
             introduction: result.data.introduction,
           };
           setUserInfo(userInfo);
+          // 로그인 성공 후 모든 쿼리 무효화
+          queryClient.invalidateQueries();
           router.push("/");
         } else {
           setErrorMessage(result.message);
