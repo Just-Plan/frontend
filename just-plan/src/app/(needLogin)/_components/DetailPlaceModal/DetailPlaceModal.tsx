@@ -22,7 +22,7 @@ const DetailPlaceModal = ({
   latitude: string;
   longitude: string;
 }) => {
-  const endTime = "19:00";
+  // const endTime = "19:00";
   const [commentValue, setCommentValue] = useState("");
 
   // 장소 상세 정보

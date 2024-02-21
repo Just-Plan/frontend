@@ -15,16 +15,16 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
   const added = useAtomValue(addedPlace);
   const [travelTimes, setTravelTimes] = useState<any[]>([]);
   const planInfo = useAtomValue(planInfoAtom);
-  const startDate = new Date(planInfo.startDate); // Parse the start date string
+  // const startDate = new Date(planInfo.startDate); // Parse the start date string
 
   // Function to add days to the date
-  const addDays = (date: Date, days: number) => {
-    const result = new Date(date);
-    result.setDate(result.getDate() + days);
-    return result;
-  };
+  // const addDays = (date: Date, days: number) => {
+  //   const result = new Date(date);
+  //   result.setDate(result.getDate() + days);
+  //   return result;
+  // };
 
-  const dayDate = addDays(startDate, day - 1); // Adjust day by subtracting 1
+  // const dayDate = addDays(startDate, day - 1); // Adjust day by subtracting 1
 
   useEffect(() => {
     const fetchTravelTimes = async () => {
