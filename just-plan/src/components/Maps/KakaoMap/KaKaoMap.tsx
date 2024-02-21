@@ -63,12 +63,30 @@ export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
 
             map.setLevel(4); // 클릭했을 때 중앙으로 이동하고 확대한다.
           }); // Push the marker into the places array for later reference
+
           location.marker = marker; // ?
+        });
+
+        const linePath: any[] = [];
+        temp.forEach((location: any) => {
+          linePath.push(
+            new kakao.maps.LatLng(location.latitude, location.longitude),
+          );
+        });
+
+        // 지도에 표시할 선을 생성합니다
+        const polyline = new kakao.maps.Polyline({
+          path: linePath, // 선을 구성하는 좌표배열 입니다
+          strokeWeight: 5, // 선의 두께 입니다
+          strokeColor: "#FFAE00", // 선의 색깔입니다
+          strokeOpacity: 0.7, // 선의 불투명도 입니다 1에서 0 사이의 값이며 0에 가까울수록 투명합니다
+          strokeStyle: "solid", // 선의 스타일입니다
+          map: map, // 지도에 선을 표시
         });
       });
     };
   }, [added, stored, day, planRegion, addStorePlace]);
-  // planRegion -> 제주도 등
+
   return (
     <>
       {/* <div id="kakao-map" style={{ width: "100%", height: "100%" }} /> */}
