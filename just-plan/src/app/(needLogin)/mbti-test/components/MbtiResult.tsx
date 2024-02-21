@@ -8,6 +8,9 @@ const MbtiResult: React.FC<MbtiResultProps> = ({ mbti, reset }) => {
   const mbtiUpperCase = mbti ? mbti.toUpperCase() : "";
   const router = useRouter();
 
+const MbtiResult: React.FC<MbtiResultProps> = ({ mbti }) => {
+  const mbtiUpperCase = mbti ? mbti.toUpperCase() : "";
+
   return (
     <div className="flex flex-col gap-2 justify-center items-center pb-4">
       {mbtiUpperCase} 입니다!
