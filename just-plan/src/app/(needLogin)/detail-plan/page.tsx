@@ -24,15 +24,22 @@ const Page = () => {
     data: planData,
     error: planError,
     isLoading: planIsLoading,
+    refetch: planRefetch,
   } = useGetPlanInfo(planId);
   const {
     data: placeData,
     error: placeError,
     isLoading: placeIsLoading,
+    refetch: placeRefetch,
   } = useGetPlaceInfo(planId);
 
   const setStored = useSetAtom(storedPlace);
   const [added, setAdded] = useAtom(addedPlace);
+
+  useEffect(() => {
+    planRefetch();
+    placeRefetch();
+  }, [planId]);
 
   useEffect(() => {
     if (planData) {
