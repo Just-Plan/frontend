@@ -1,9 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // any 나중에 수정 필요!
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { addStorePlaceAtom, addedPlace, storedPlace } from "@/store";
 import { useAtomValue } from "jotai";
+import DetailPlaceModal from "@/app/(needLogin)/_components/DetailPlaceModal/DetailPlaceModal";
+import { IPlace } from "@/types/place.types";
+import { Dialog } from "@/components/dialog";
 
 declare const kakao: any; // kakao maps 타입 선언이 필요. 실제 프로젝트에서는 kakao maps 타입 정의를 사용해야 할 수도 있음.
 
@@ -17,6 +20,8 @@ export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
   const added = useAtomValue(addedPlace);
   const stored = useAtomValue(storedPlace);
   const addStorePlace = useAtomValue(addStorePlaceAtom);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedPlace, setSelectedPlace] = useState<IPlace | null>(null);
 
   // isStore가 true 일 때, stored랑 addStorePlace랑 붙인다.
   const temp = isStore ? [...stored, ...addStorePlace] : added[day];
@@ -46,7 +51,7 @@ export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
         const map = new kakao.maps.Map(container, options); // 위에거 적용해서 맵 만들기 -> 객체?로 만든다.
 
         // Add markers to the map -> 장소 추가 시 마커 추가하는 부분
-        temp.forEach((location: any) => {
+        temp.forEach((location: IPlace) => {
           const marker = new kakao.maps.Marker({
             position: new kakao.maps.LatLng(
               location.latitude,
@@ -61,10 +66,20 @@ export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
 
             map.setCenter(markerPosition);
 
-            map.setLevel(4); // 클릭했을 때 중앙으로 이동하고 확대한다.
+            map.setLevel(10); // 클릭했을 때 중앙으로 이동하고 확대한다.
+            // 해당 장소의 상세 정보 모달 띄우기
+            <DetailPlaceModal
+              open={true}
+              placeId={location.placeId!}
+              name={location.name}
+              latitude={location.latitude}
+              longitude={location.longitude}
+            />;
+            setSelectedPlace(location); // 선택된 위치 상태 업데이트
+            setModalVisible(true); // 모달 표시 상태를 true로 설정
           }); // Push the marker into the places array for later reference
 
-          location.marker = marker; // ?
+          // location.marker = marker; // ?
         });
 
         const linePath: any[] = [];
@@ -91,6 +106,17 @@ export const KaKaoMap = ({ day, planRegion, isStore, idName }: IProps) => {
     <>
       {/* <div id="kakao-map" style={{ width: "100%", height: "100%" }} /> */}
       <div></div>
+      <Dialog open={modalVisible} onOpenChange={setModalVisible}>
+        {modalVisible && selectedPlace && (
+          <DetailPlaceModal
+            open={modalVisible}
+            placeId={selectedPlace.placeId!}
+            name={selectedPlace.name}
+            latitude={selectedPlace.latitude}
+            longitude={selectedPlace.longitude}
+          />
+        )}
+      </Dialog>
     </>
   );
 };

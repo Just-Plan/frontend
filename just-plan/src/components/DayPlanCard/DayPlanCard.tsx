@@ -15,12 +15,12 @@ const DayPlanCard = ({ day }: IProps) => {
 
   useEffect(() => {
     const fetchTravelTimes = async () => {
-      const latLongArray = added[day].map((item) => [
+      const latLongArray = added[day]?.map((item) => [
         item.longitude,
         item.latitude,
       ]);
       console.log("latLongArray", latLongArray);
-      const promises = latLongArray.slice(0, -1).map(async (startPoint, i) => {
+      const promises = latLongArray?.slice(0, -1).map((startPoint, i) => {
         const endPoint = latLongArray[i + 1];
         console.log("start:", startPoint, "end:", endPoint);
         return getKaKaoTravelTimes(startPoint, endPoint)
