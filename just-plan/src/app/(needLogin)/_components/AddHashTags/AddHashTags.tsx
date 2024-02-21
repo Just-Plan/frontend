@@ -2,12 +2,14 @@ import { Button } from "@/components/Button";
 import { Input } from "@/components/Input";
 import { useState } from "react";
 import type { IProps } from "./AddHashTag.types";
+import { isValidString } from "@/utils/isValidString";
 
 export const AddHashTags = ({ addHashTags, setAddHashTags, white }: IProps) => {
   const [addHashTag, setAddHashTag] = useState<string>("");
 
   const onAddHashTag = () => {
     if (addHashTag === "") return;
+    if (!isValidString(addHashTag)) return;
     setAddHashTags([...addHashTags, addHashTag]);
     setAddHashTag("");
   };
@@ -22,7 +24,7 @@ export const AddHashTags = ({ addHashTags, setAddHashTags, white }: IProps) => {
         <Input
           id="hashtag"
           placeholder="추가할 태그를 입력해주세요"
-          className={`bg-ourGreen/80 mb-3 mt-1 ${white} && bg-white`}
+          className={`bg-ourGreen/80 mb-3 mt-1 ${white} && bg-white border-2 border-ourGreen/80`}
           value={addHashTag}
           onChange={(e) => setAddHashTag(e.target.value)}
         />

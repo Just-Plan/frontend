@@ -10,7 +10,10 @@ interface IProps {
 
 const HouseholdContent = ({ totalMoney, expense, onChangeExpense }: IProps) => {
   // 총 예산 구하기
-  const totalEstimated = Object.values(expense).reduce((a, b) => a + b);
+  const totalEstimated = Object.values(expense).reduce(
+    (a, b) => Number(a) + Number(b),
+    0,
+  );
   return (
     <div className="flex justify-between">
       <div className="flex flex-col gap-2">
@@ -25,7 +28,7 @@ const HouseholdContent = ({ totalMoney, expense, onChangeExpense }: IProps) => {
               value={expense.food}
               onChange={onChangeExpense}
               variant={"detailMoney"}
-              placeholder="400,000"
+              placeholder="ex) 400000"
             />
           </div>
         </div>
@@ -40,7 +43,7 @@ const HouseholdContent = ({ totalMoney, expense, onChangeExpense }: IProps) => {
               value={expense.transportation}
               onChange={onChangeExpense}
               variant={"detailMoney"}
-              placeholder="400,000"
+              placeholder="ex) 400000"
             />
           </div>
         </div>
@@ -55,7 +58,7 @@ const HouseholdContent = ({ totalMoney, expense, onChangeExpense }: IProps) => {
               value={expense.lodging}
               onChange={onChangeExpense}
               variant={"detailMoney"}
-              placeholder="400,000"
+              placeholder="ex) 400000"
             />
           </div>
         </div>
@@ -75,7 +78,7 @@ const HouseholdContent = ({ totalMoney, expense, onChangeExpense }: IProps) => {
               value={expense.shopping}
               onChange={onChangeExpense}
               variant={"detailMoney"}
-              placeholder="400,000"
+              placeholder="ex) 400000"
             />
           </div>
         </div>
@@ -90,24 +93,24 @@ const HouseholdContent = ({ totalMoney, expense, onChangeExpense }: IProps) => {
               value={expense.etc}
               onChange={onChangeExpense}
               variant={"detailMoney"}
-              placeholder="400,000"
+              placeholder="ex) 400000"
             />
           </div>
         </div>
       </div>
-      <div className="bg-ourGreen sm:p-3 sm:px-5 rounded-3xl justify-center items-center flex flex-col gap-4">
+      <div className="bg-ourGreen sm:p-3 sm:px-5 rounded-3xl justify-center items-center text-center flex flex-col gap-4">
         <div>
-          <div className="text-sm font-bold text-center">총 지출 예상</div>
+          <div className="text-sm font-bold text-gray-700">총 지출 예상</div>
           <div className="text-gray-400">
             {totalEstimated.toLocaleString()} ₩
           </div>
         </div>
         <div>
-          <div className="text-sm font-bold text-center">총 예산</div>
+          <div className="text-sm font-bold text-gray-700">총 예산</div>
           <div className="text-gray-400">{totalMoney.toLocaleString()} ₩</div>
         </div>
         <div>
-          <div className="text-sm font-bold text-center">초과 예산</div>
+          <div className="text-sm font-bold text-gray-700">초과 예산</div>
           <div className="text-gray-400">
             {(totalEstimated - totalMoney).toLocaleString()} ₩
           </div>

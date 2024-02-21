@@ -17,7 +17,7 @@ const DateRangePicker = ({ setDate, date }: IProps) => {
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[300px] justify-start text-left font-norma bg-ourGreen/80 rounded-3xl mb-3 mt-1",
+              "w-[300px] justify-start text-left font-norma border-2 border-ourGreen/80 rounded-3xl mb-3 mt-1",
               !date && "text-muted-foreground",
             )}
           >
