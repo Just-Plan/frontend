@@ -8,6 +8,7 @@ import type { IDnDProps } from "./DayPlanCard.types";
 import { getKaKaoTravelTimes } from "@/utils/kakaoTravelTime";
 import { useEffect, useState } from "react";
 import { planInfoAtom } from "@/store";
+import { getGoogleTravelTimes } from "@/utils/googleTravelTime";
 import { add, format } from "date-fns";
 
 const DayPlanCardDnD = ({ day }: IDnDProps) => {
@@ -33,12 +34,21 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
       ]);
       const promises = latLongArray.slice(0, -1).map((startPoint, i) => {
         const endPoint = latLongArray[i + 1];
-        return getKaKaoTravelTimes(startPoint, endPoint)
-          .then((travelTime) => travelTime)
-          .catch((error) => {
-            console.error("Error fetching travel time:", error);
-            return null;
-          });
+        if (planInfo.region.countryKoreanName === "대한민국") {
+          return getKaKaoTravelTimes(startPoint, endPoint)
+            .then((travelTime) => travelTime)
+            .catch((error) => {
+              console.error("Error fetching travel time:", error);
+              return null;
+            });
+        } else {
+          return getGoogleTravelTimes(startPoint, endPoint)
+            .then((travelTime) => travelTime)
+            .catch((error) => {
+              console.error("Error fetching travel time:", error);
+              return null;
+            });
+        }
       });
       const allTravelTimes = await Promise.all(promises);
       setTravelTimes(allTravelTimes);

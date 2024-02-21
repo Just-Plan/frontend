@@ -9,6 +9,7 @@ import MbtiResult from "./components/MbtiResult";
 
 import { usePostMbtiResult } from "@/hooks/usePostMbtiResult";
 import { useGetMbtiQuestions } from "@/hooks/useGetMbtiQuestions";
+import { Spinner } from "@/components/Spinner";
 
 const MBTIPage = () => {
   const [mbtiStep, setMbtiStep] = useState(0);
@@ -45,7 +46,6 @@ const MBTIPage = () => {
   };
 
   if (error) return <div>에러</div>;
-  if (isLoading) return <div>로딩중</div>;
 
   return (
     <div className=" flex justify-center items-center">
@@ -68,6 +68,11 @@ const MBTIPage = () => {
           )}
         </Card>
       </div>
+      {isLoading && (
+        <div className="fixed bottom-4 right-4 bg-gray-500 rounded-lg p-4">
+          <Spinner className="w-8 h-8" />
+        </div>
+      )}
     </div>
   );
 };

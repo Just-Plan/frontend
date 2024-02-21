@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { useGetAccountBook } from "@/hooks/useGetAccountBook";
 import { format } from "date-fns";
 import type { IModifyPlanInfo } from "@/types/plan.types";
+import { Spinner } from "@/components/Spinner";
 
 const Page = () => {
   const [selectedCardData, setSelectedCardData] = useState<
@@ -22,7 +23,6 @@ const Page = () => {
   const { data, error, isLoading } = useGetAccountBook();
 
   if (error) return <div>에러</div>;
-  if (isLoading) return <div>로딩중</div>;
 
   return (
     <div className="flex flex-col w-full">
@@ -86,6 +86,11 @@ const Page = () => {
           </div>
         )}
       </div>
+      {isLoading && (
+        <div className="fixed bottom-4 right-4 bg-gray-500 rounded-lg p-4">
+          <Spinner className="w-8 h-8" />
+        </div>
+      )}
     </div>
   );
 };

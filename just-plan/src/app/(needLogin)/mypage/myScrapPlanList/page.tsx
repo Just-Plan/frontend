@@ -6,6 +6,7 @@ import type { IPlan2 } from "@/types/plan.types";
 import Pagination from "../_components/Pagination.tsx/Pagination";
 import { useEffect } from "react";
 import { useGetScrapList } from "@/hooks/useGetScrapList";
+import { Spinner } from "@/components/Spinner";
 
 const Page = ({
   searchParams,
@@ -24,7 +25,6 @@ const Page = ({
   const page = parseInt(searchParams.page as string) || 1;
 
   if (error) return <div>에러</div>;
-  if (isLoading) return <div>로딩중</div>;
   console.log("data", data);
 
   return (
@@ -48,6 +48,11 @@ const Page = ({
             page={page}
             location="myScrapPlanList"
           />
+        </div>
+      )}
+      {isLoading && (
+        <div className="fixed bottom-4 right-4 bg-gray-500 rounded-lg p-4">
+          <Spinner className="w-8 h-8" />
         </div>
       )}
     </div>

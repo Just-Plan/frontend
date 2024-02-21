@@ -46,7 +46,7 @@ export const GoogleMap = ({ day, planRegion, isStore }: IProps) => {
   useEffect(() => {
     if (map) {
       // Add new markers
-      temp.forEach((location: IPlace, index: number) => {
+      temp?.forEach((location: IPlace, index: number) => {
         const marker = new google.maps.Marker({
           // 마커를 새로 찍고, 그곳에 줌 들어가기 위해 eventListener 추가
           position: {
@@ -108,7 +108,7 @@ export const GoogleMap = ({ day, planRegion, isStore }: IProps) => {
           onUnmount={onUnmount}
         >
           {/* 구글 지도 마커를 컴포넌트 안에 넣는다는 느낌  마커 말고도 다른게 들어갈 수 있다. GoogleMap 컴포넌트 안에 children으로 마커 등을 넣어서 추가 */}
-          {temp.map((location, index) => (
+          {temp?.map((location, index) => (
             <Marker
               key={location.name}
               position={{
