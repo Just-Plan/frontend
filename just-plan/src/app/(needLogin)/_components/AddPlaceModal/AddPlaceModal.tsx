@@ -23,6 +23,7 @@ import { planInfoAtom } from "@/store";
 import { useAtom, useAtomValue } from "jotai";
 import { KaKaoMap } from "@/components/Maps/KakaoMap/KaKaoMap";
 import GoogleMap from "@/components/Maps/GoogleMap/GoogleMap";
+import { Spinner } from "@/components/Spinner";
 
 export const AddPlaceModal = ({
   planId,
@@ -79,7 +80,6 @@ export const AddPlaceModal = ({
   };
 
   if (error) return <div>에러</div>;
-  if (isLoading) return <div>로딩중</div>;
   console.log(planInfo.region);
   return (
     <DialogContent className="max-w-md sm:max-w-7xl max-h-[45rem] sm:max-h-[50rem] bg-ourGreen flex flex-col items-center">
@@ -99,7 +99,7 @@ export const AddPlaceModal = ({
             />
             <div className="text-xs font-semibold">장소 보관함</div>
           </div>
-          <div className="bg-white p-4 rounded-xl gap-3 flex flex-col h-96 sm:h-[32rem] overflow-y-auto">
+          <div className="bg-white p-4 rounded-xl gap-3 flex flex-col h-96 sm:h-[32rem] overflow-y-auto w-20 items-center">
             {stored.map((item) => (
               <StoredPlaceMiniCard key={item.name} place={item} />
             ))}
@@ -117,14 +117,23 @@ export const AddPlaceModal = ({
               onChange={onChangeSearch}
             />
           </div>
-          <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto">
-            {searchResultData?.map((item: IPlace) => (
-              <StoredPlaceCard
-                key={item.name}
-                item={item}
-                onClickAdd={onClickAdd}
-              />
-            ))}
+
+          <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto w-[280px] sm:w-96">
+            {searchResultData ? (
+              searchResultData?.map((item: IPlace) => (
+                <StoredPlaceCard
+                  key={item.name}
+                  item={item}
+                  onClickAdd={onClickAdd}
+                />
+              ))
+            ) : isLoading ? (
+              <div className="flex justify-center">
+                <Spinner />
+              </div>
+            ) : (
+              <div>결과가 없어요</div>
+            )}
           </div>
         </div>
 

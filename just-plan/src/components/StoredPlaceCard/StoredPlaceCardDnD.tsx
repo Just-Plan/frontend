@@ -65,7 +65,7 @@ export const StoredPlaceCardDnD = ({
             <div className="flex">
               <div className=" text-sky-600 font-bold mr-2">{types}</div>
               <div className=" text-slate-400" title={formattedAddress}>
-                {cutStirng(formattedAddress)}
+                {cutStirng(formattedAddress, 12)}
               </div>
             </div>
             <div className="flex justify-end w-full">
