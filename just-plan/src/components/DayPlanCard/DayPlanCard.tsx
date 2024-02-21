@@ -38,7 +38,7 @@ const DayPlanCard = ({ day }: IProps) => {
   }, [added[day]]);
 
   return (
-    <div className="bg-white flex flex-col w-fit p-6  rounded-3xl">
+    <div className="bg-white flex flex-col w-[300px] sm:w-96 p-6 rounded-3xl">
       <div className="flex justify-between">
         <div>
           <div className="font-bold text-2xl text-slate-400">{day}일차</div>
@@ -50,7 +50,7 @@ const DayPlanCard = ({ day }: IProps) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col items-center h-[600px] w-full overflow-y-scroll relative">
+      <div className="flex flex-col items-center h-[600px] w-[280px] sm:w-[20rem] overflow-y-auto relative mt-3">
         {added[day]?.map((item, index) => (
           <AddedPlaceCard
             key={item.name}

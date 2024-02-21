@@ -80,7 +80,7 @@ const DayPlanCardDnD = ({ day }: IDnDProps) => {
               snapshot.isDraggingOver ? "shadow-lg" : "",
             )}
           >
-            <div className="flex flex-col items-center h-[600px] w-full overflow-y-scroll relative">
+            <div className="flex flex-col items-center h-[600px] overflow-y-auto relative w-[280px] sm:w-[20rem] mt-3">
               {added[day] &&
                 added[day].map((item, index) => (
                   <Draggable

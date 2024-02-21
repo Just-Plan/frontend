@@ -99,7 +99,7 @@ export const AddPlaceModal = ({
             />
             <div className="text-xs font-semibold">장소 보관함</div>
           </div>
-          <div className="bg-white p-4 rounded-xl gap-3 flex flex-col h-96 sm:h-[32rem] overflow-y-auto">
+          <div className="bg-white p-4 rounded-xl gap-3 flex flex-col h-96 sm:h-[32rem] overflow-y-auto w-20 items-center">
             {stored.map((item) => (
               <StoredPlaceMiniCard key={item.name} place={item} />
             ))}
@@ -117,7 +117,7 @@ export const AddPlaceModal = ({
               onChange={onChangeSearch}
             />
           </div>
-          <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto">
+          <div className="bg-white rounded-xl gap-5 flex flex-col h-[26rem] sm:h-[35rem] p-3 sm:p-5 overflow-y-auto  w-[280px] sm:w-96">
             {searchResultData?.map((item: IPlace) => (
               <StoredPlaceCard
                 key={item.name}

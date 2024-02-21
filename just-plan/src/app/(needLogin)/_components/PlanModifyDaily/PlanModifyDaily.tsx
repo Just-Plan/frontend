@@ -90,7 +90,7 @@ const PlanModifyDaily = ({
                 ref={provided.innerRef}
                 {...provided.droppableProps}
                 className={cn(
-                  "flex flex-col gap-5",
+                  "flex flex-col gap-5 w-[280px] sm:w-80",
                   snapshot.isDraggingOver ? "shadow-lg" : "",
                 )}
               >
