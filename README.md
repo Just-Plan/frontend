@@ -35,12 +35,12 @@
 
 <table>
    <tr>
-    <td>
+    <td align="center">
       <a href="https://github.com/dbswl701">
         <img src="https://avatars.githubusercontent.com/u/73208914?v=4" width="120px" height="120px"/>
       </a>
     </td>
-    <td>
+    <td align="center">
       <a href="https://github.com/choiminwoo98">
         <img src="https://avatars.githubusercontent.com/u/61531483?v=4" width="120px" height="120px"/>
       </a> 
